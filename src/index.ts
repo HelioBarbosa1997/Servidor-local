@@ -1,5 +1,6 @@
 import express, { type Request, type Response } from "express"
-import { adicionarServico, listarServicos, apagarServico, obterServico } from "./servico.js"
+import { adicionarServico, listarServicos, apagarServico, obterServico, } from "./servico.js"
+import {processarPedido, selecionarServico} from "./orcamento.js"
 
 const app = express()
 app.use(express.json())
@@ -30,7 +31,7 @@ app.get("/listar-servico", (req: Request, res: Response) => {
 app.delete("/apagar-servico", (req: Request, res: Response) => {
     const { nome } = req.query
     if (nome) {
-        const apagarServicoResponse = apagarServico(nome as string)
+        const apagarServicoResponse = apagarServico(nome as string) 
         res.json(apagarServicoResponse)
     } else {
         res.json({
@@ -49,6 +50,17 @@ app.get("/obter-servico", (req: Request, res: Response) => {
             message: "Nome do servico e obrigatorio"
         })
     }
+})
+//Rotas para selecionar serviços
+app.post("/selecionar-servico", (req: Request, res: Response) => {
+    const { nome } = req.body
+    const selecionarServicoResponse = selecionarServico(nome as string)
+})
+//Rota para calcular orcamento
+app.post("/calcular-orcamento", (req: Request, res: Response) => {
+    const { pedido } = req.body
+const calcularOrcamentoResponse = processarPedido(pedido)
+res.json(calcularOrcamentoResponse)
 })
 
 app.listen(8080, () => {

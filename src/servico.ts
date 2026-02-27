@@ -1,12 +1,6 @@
-interface Servico {
-    nome: string;
-    precoHora: number;
-    categoria: string;
-    minimoDesconto: number;
-    percentagemDesconto: number;
-}
+import { type PedidoServico, type Servico} from "./utils/types.js"
 
-let catalogoServico: Servico[] = [];
+export let catalogoServico: Servico[] = [];
 
 // Adicionar um serviço novo
 export function adicionarServico(servico: Servico) {
@@ -43,7 +37,7 @@ export function listarServicos(): Servico[] {
 
 }
 
-// apagar um serviço
+// Apagar um serviço
 export function apagarServico(nome: string): boolean {
     //TODO: implementar delete de serviço
 
@@ -60,7 +54,7 @@ export function apagarServico(nome: string): boolean {
     return true
 }
 
-//obter um servico pelo nome
+//Obter um servico pelo nome
 
 export function obterServico(nome: string): Servico | null {
     for (let i = 0; i < catalogoServico.length; i++) {
