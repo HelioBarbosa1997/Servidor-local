@@ -1,12 +1,14 @@
 import { catalogoServico } from "./servico.js"
-
 import { type PedidoServico, type Servico } from "./utils/types.js"
+import {Prestadortype}
 
 const taxaUrgencia: number = 0.3
 const minimoParaDesconto: number = 100
 const percentagemDesconto: number = 0.1
 
 const servicosSelecionados: Servico[] = []
+const prestadoresDeservico: Prestadortype[] = []
+const prestadorSelecionados: Prestadortype[] = []
 
 //Função para selecionar serviços e horasEstimadas
 export function selecionarServico(nome: string) {
@@ -17,6 +19,26 @@ export function selecionarServico(nome: string) {
         }
     }
     return false
+}
+// Funcção para criar prestadores de serviço
+export function criarPrestadorDeServico(novoPrestador: Prestadortype) {
+    //verificar se o prestador ja esta no array
+    prestadoresDeservico.map((prestadorExistente: Prestadortype) => {
+        if (prestadorExistente.nome === novoPrestador.nome ) {
+            return {
+                status: false,
+                message: "Ja exite um prestador de serviço com esse nome",
+                data: null
+            }
+        }
+    })
+    //Se o prestador nao existir, adcionar um novo prestador
+    prestadoresDeservico.push(novoPrestador)
+    return {
+        status: true,
+        message: "Prestador de serviço adicionado com sucesso!",
+        data: novoPrestador
+    }
 }
 
 
