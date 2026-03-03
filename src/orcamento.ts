@@ -1,14 +1,14 @@
 import { catalogoServico } from "./servico.js"
-import { type PedidoServico, type Servico } from "./utils/types.js"
-import {Prestadortype}
+import { type PedidoServico, type PrestadorType, type Servico } from "./utils/types.js"
+
 
 const taxaUrgencia: number = 0.3
 const minimoParaDesconto: number = 100
 const percentagemDesconto: number = 0.1
 
 const servicosSelecionados: Servico[] = []
-const prestadoresDeservico: Prestadortype[] = []
-const prestadorSelecionados: Prestadortype[] = []
+const prestadoresDeservico: PrestadorType[] = []
+const prestadorSelecionados: PrestadorType[] = []
 
 //Função para selecionar serviços e horasEstimadas
 export function selecionarServico(nome: string) {
@@ -21,10 +21,10 @@ export function selecionarServico(nome: string) {
     return false
 }
 // Funcção para criar prestadores de serviço
-export function criarPrestadorDeServico(novoPrestador: Prestadortype) {
+export function criarPrestadorDeServico(novoPrestador: PrestadorType) {
     //verificar se o prestador ja esta no array
-    prestadoresDeservico.map((prestadorExistente: Prestadortype) => {
-        if (prestadorExistente.nome === novoPrestador.nome ) {
+    prestadoresDeservico.map((prestadorExistente: PrestadorType) => {
+        if (prestadorExistente.nome === novoPrestador.nome) {
             return {
                 status: false,
                 message: "Ja exite um prestador de serviço com esse nome",
@@ -40,8 +40,19 @@ export function criarPrestadorDeServico(novoPrestador: Prestadortype) {
         data: novoPrestador
     }
 }
+// Exercico TPC
+// Função uqe recebe o nome do prestador
+export function selecionarPrestatoresDeServico(nomeDoPrestador: string) {
+    for (let i = 0; i < prestadoresDeservico.length; i++) {
 
+        if (prestadoresDeservico[i]?.nome === nomeDoPrestador) {
 
+            prestadorSelecionados.push(prestadoresDeservico[i]!)
+            return true
+        }
+    }
+    return false
+}
 
 //Função para calcular orçamento
 export function processarPedido(pedido: PedidoServico) {
