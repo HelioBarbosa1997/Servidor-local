@@ -54,6 +54,72 @@ export function selecionarPrestatoresDeServico(nomeDoPrestador: string) {
     return false
 }
 
+//Funcção para editar um prestador de serviço
+export function editarPrestadorDeServico(nomeDoPrestador: string, novosDadosDoPrestador: PrestadorType) {
+    //Encontrar o prestador de serviço a editar na minha lista
+    //Cilco que percore a lista e verifica o nome do prestadorde serviço
+    prestadoresDeservico.map((prestadorExistente: PrestadorType) => {
+        if (prestadorExistente.nome === nomeDoPrestador) {
+            prestadorExistente.nome = novosDadosDoPrestador.nome
+            prestadorExistente.precoHora = novosDadosDoPrestador.precoHora
+            prestadorExistente.profissao = novosDadosDoPrestador.profissao
+            prestadorExistente.minimoParaDesconto = novosDadosDoPrestador.minimoParaDesconto
+            prestadorExistente.percentagemDesconto = novosDadosDoPrestador.percentagemDesconto
+            prestadorExistente.taxaUrgencia = novosDadosDoPrestador.taxaUrgencia
+
+            return {
+                status: true,
+                message: "Prestador de serviço editado com sucesso!",
+                data: prestadorExistente
+            }
+        }
+
+    })
+    // Se nao existir nenhum prestador com o nome recebido, retoma uma mensagem de erro
+    return {
+        status: false,
+        message: "Nao exite prestador de serviço com este nome!",
+        data: null
+    }
+}
+//Função para apagar um prestador de serviço
+export function apagarPrestadorServico(nomeDoPrestador: string) {
+    //Ciclo para percorer a lista de prestadores
+    //for (let i = 0; i < prestadoresDeservico.length; i++) {
+    //Se o nome for igual
+    //if (prestadoresDeservico[i]?.nome === nomeDoPrestador) {
+    //remover prestador 
+    //prestadoresDeservico.splice(i, 1)
+
+    //return {
+    // status: true,
+    //message: "Prestador removido com sucesso",
+    // } 
+
+    //  }
+    // }
+    //Nao encontrado prestador
+    //return "Erro Prestador nao encontrado"
+    prestadoresDeservico.filter(
+        (prestadorExistente: PrestadorType) =>
+            prestadorExistente.nome !== nomeDoPrestador
+    )
+    // Validar o nome do prestador
+    if (nomeDoPrestador === "") {
+        return {
+            status: false,
+            message: "O nome do prestador de serviço é obrigatorio!",
+            data: prestadorSelecionados
+        }
+    }
+    return {
+        status: false,
+        message: "Nenhum prestadorde serviço com nome foi encontrado!",
+        data: null
+    }
+
+}
+
 //Função para calcular orçamento
 export function processarPedido(pedido: PedidoServico) {
     let totalBruto: number = 0

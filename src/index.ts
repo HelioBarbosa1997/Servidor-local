@@ -1,6 +1,6 @@
 import express, { type Request, type Response } from "express"
 import { adicionarServico, listarServicos, apagarServico, obterServico } from "./servico.js"
-import { processarPedido, selecionarServico, selecionarPrestatoresDeServico, criarPrestadorDeServico } from "./orcamento.js"
+import { processarPedido, selecionarServico, selecionarPrestatoresDeServico, criarPrestadorDeServico, editarPrestadorDeServico, apagarPrestadorServico} from "./orcamento.js"
 
 const app = express()
 app.use(express.json())
@@ -61,7 +61,10 @@ app.post("/selecionar-servico", (req: Request, res: Response) => {
 app.post("/processarPedido", (req: Request, res: Response) => {
     const { pedido } = req.body
     const calcularOrcamentoResponse = processarPedido(pedido)
-    res.json(calcularOrcamentoResponse)
+    res.json({
+        message: "Orcamento calculado com sucesso!",
+        orcamentoTotal: calcularOrcamentoResponse
+    })
 })
 //Rota para selecionar prestador encontrado
 app.post("/prestadorEncontrado", (req: Request, res: Response) => {
@@ -79,6 +82,22 @@ app.post("/criar-prestador", (req: Request, res: Response) => {
     const criarPrestadorResponse = criarPrestadorDeServico(novoPrestador)
     res.json(criarPrestadorResponse)
 })
+
+//Rota para editar um prestador de serviço
+app.put("/editarPrestadorDeServico",(req: Request, res: Response) => {
+    const {nomeDoPrestador, novosDadosDoPrestador} = req.body
+    const editarPrestadorResponse = editarPrestadorDeServico(nomeDoPrestador as string, novosDadosDoPrestador)
+    res.json(editarPrestadorResponse)
+})
+
+app.delete("/apagar-prestador",(req: Request, res: Response) => {
+    const {nomeDoPrestador} = req.query
+    if (nomeDoPrestador) {
+        const apagarPrestadorResponse = apagarPrestadorServico(nomeDoPrestador as string) 
+        res.json(apagarPrestadorResponse)
+    }
+})
+
 app.listen(8080, () => {
     console.log("Server running on port 8080")
 });
