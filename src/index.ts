@@ -1,6 +1,9 @@
 import express, { type Request, type Response } from "express"
 import { adicionarServico, listarServicos, apagarServico, obterServico } from "./servico.js"
-import { processarPedido, selecionarServico, selecionarPrestatoresDeServico, criarPrestadorDeServico, editarPrestadorDeServico, apagarPrestadorServico} from "./orcamento.js"
+import { processarPedido, selecionarServico, selecionarPrestatoresDeServico, criarPrestadorDeServico, editarPrestadorDeServico, apagarPrestadorServico } from "./orcamento.js"
+import { request } from "node:http"
+import { getUserById, getUsers, userInside } from "./users.js";
+
 
 const app = express()
 app.use(express.json())
@@ -84,19 +87,66 @@ app.post("/criar-prestador", (req: Request, res: Response) => {
 })
 
 //Rota para editar um prestador de serviço
-app.put("/editarPrestadorDeServico",(req: Request, res: Response) => {
-    const {nomeDoPrestador, novosDadosDoPrestador} = req.body
+app.put("/editarPrestadorDeServico", (req: Request, res: Response) => {
+    const { nomeDoPrestador, novosDadosDoPrestador } = req.body
     const editarPrestadorResponse = editarPrestadorDeServico(nomeDoPrestador as string, novosDadosDoPrestador)
     res.json(editarPrestadorResponse)
 })
 
-app.delete("/apagar-prestador",(req: Request, res: Response) => {
-    const {nomeDoPrestador} = req.query
+app.delete("/apagar-prestador", (req: Request, res: Response) => {
+    const { nomeDoPrestador } = req.query
     if (nomeDoPrestador) {
-        const apagarPrestadorResponse = apagarPrestadorServico(nomeDoPrestador as string) 
+        const apagarPrestadorResponse = apagarPrestadorServico(nomeDoPrestador as string)
         res.json(apagarPrestadorResponse)
     }
 })
+
+//Rota para selecionar todos os presentes na base de dados
+app.get("/get-users", async (req: Request, res: Response) => {
+    const getUsersResponse = await getUsers()
+    res.json(getUsersResponse)
+})
+
+//Rota para selecionar os utilizadores por id
+app.get("/get-user-by-id", async (req: Request, res: Response) => {
+    const { id } = req.query
+
+    if (id) {
+        const getUserByIdResponse = await getUserById(id as string)
+
+        res.json(getUserByIdResponse)
+    } else {
+        res.json({
+            message: "Id é obrigatorio"
+        })
+    }
+})
+/*
+if (!getUserByResponse) {
+res.status(404).json({
+status:"error"
+message:"Utilizador nao encontrado"
+data: null
+})
+}
+res.status(200).json({
+status:"success"
+message:"Utilizador encontrado"
+data: getUserByResponse
+ */
+
+//Rota para cria utilizadores no BD
+app.get("/user-inside", async (req: Request, res: Response) => {
+    const userId = req.query.id as string; 
+
+    if (!userId) return res.status(400).json({ error: "ID do usuário é obrigatório" });
+
+    const response = await userInside({ id: userId });
+
+    res.json(response);
+});
+
+
 
 app.listen(8080, () => {
     console.log("Server running on port 8080")

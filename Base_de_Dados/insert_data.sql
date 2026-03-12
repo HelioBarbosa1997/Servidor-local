@@ -37,7 +37,7 @@ VALUES (
    
    INSERT INTO tbl_prestador
    VALUES (
-   "21b9c02c-7c6c-4cbf-b021-63fb4c698e27",
+   "9a5d7c3b-2f1a-4c6d-9b1f-4d8e12345678",
    1433566,
    "Contabelista",
    0.2,
@@ -64,6 +64,22 @@ VALUES (
      NOW(),
      NOW()
      );
+     
+     INSERT INTO tbl_utilizadores
+     VALUE (
+     "5b36eb75-4ec3-4790-8d92-ca9a2b9c77e9",
+     "Carlos Tavares",
+     "M002S",
+     "1997-03-21",
+     "heliofurtado@gmail.com",
+     "9854730",
+     "Cabo Verde",
+     "Ponta d agua",
+     "$2a$12$GVZJ/zuh0H8WtxlfgZGas.PNCyq6VMhrBnvyaai9LlCvRnEjM3.qy",
+     true,
+     NOW(),
+     NOW()
+     )
    
    
    
