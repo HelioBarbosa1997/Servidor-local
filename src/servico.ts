@@ -64,3 +64,29 @@ export function obterServico(nome: string): Servico | null {
     }
     return null
 }
+
+// Funcões  servicos base de dados
+export async function userInside(users: any) {
+    try {
+    const body = `
+     SELECT * FROM tbl_servicos;
+    (id, nome, descricao, categoria, enabled, created, updated)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+    const values = [
+        users.id,
+        users.nome,
+        users.descricacao,
+        users.categoria,
+        users.enabled,
+        new Date(),
+        new Date()
+    ];
+
+    const [results] = await db.execute(body, values);
+
+    return results;
+    } catch(err) {
+        return null
+    }
+}

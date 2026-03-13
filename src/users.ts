@@ -14,7 +14,12 @@ export async function getUserById(id: string) {
 }
 
 export async function userInside(users: any) {
-    const query = "INSERT INTO tbl_utilizadores (id, nome, numero_identificacao, data_nascimento, email, telefone, pais, localidade, `password`, enabled, create_at, updated_at)"
+    try {
+    const body = `
+    INSERT INTO tbl_utilizadores 
+    (id, nome, numero_identificacao, data_nascimento, email, telefone, pais, localidade, password, enabled, create_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
     const values = [
         users.id,
         users.nome,
@@ -26,10 +31,14 @@ export async function userInside(users: any) {
         users.localidade,
         users.password,
         users.enabled,
-        users.create_at,
-        users.updated_at
-    ]
-    const [results] = await db.execute(query, values)
-    return results
+        new Date(),
+        new Date()
+    ];
 
+    const [results] = await db.execute(body, values);
+
+    return results;
+    } catch(err) {
+        return null
+    }
 }

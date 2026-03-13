@@ -23,3 +23,12 @@ export interface PrestadorType {
     taxaUrgencia: number
 }
 
+export interface ServicosType {
+    nome: string
+    descricao: string
+    categoria: string
+    enabled: boolean
+    created_at: Date
+    update_at: Date
+}
+

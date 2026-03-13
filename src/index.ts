@@ -136,12 +136,15 @@ data: getUserByResponse
  */
 
 //Rota para cria utilizadores no BD
-app.get("/user-inside", async (req: Request, res: Response) => {
-    const userId = req.query.id as string; 
+app.post("/user-inside", async (req: Request, res: Response) => {
 
-    if (!userId) return res.status(400).json({ error: "ID do usuário é obrigatório" });
+    const user = req.body;
 
-    const response = await userInside({ id: userId });
+    if (!user) {
+        return res.status(400).json({ error: "Utilizador nao encontrado!" });
+    }
+
+    const response = await userInside(user);
 
     res.json(response);
 });
