@@ -1,5 +1,6 @@
 import { catalogoServico } from "./servico.js"
 import { type PedidoServico, type PrestadorType, type Servico } from "./utils/types.js"
+import db from "./lib/db.js"
 
 
 const taxaUrgencia: number = 0.3
@@ -155,4 +156,28 @@ export function processarPedido(pedido: PedidoServico) {
     desconto sobre o total bruto: 150 * 0.1 = 10
     */
 
+}
+
+export async function budgetInside(service: any) {
+    try {
+    const body = `
+    INSERT INTO tbl_orcamento;
+    (id, total, id_utilizadore, enabled, created, updated)
+    VALUES (?, ?, ?, ?, ?, ?)
+    `;
+    const values = [
+        null, 
+        service.nome,
+        service.id_utilizadore,
+        service.enabled,
+        new Date(),
+        new Date()
+    ];
+
+    const [results] = await db.execute(body, values);
+
+    return results;
+    } catch(err) {
+        return null
+    }
 }

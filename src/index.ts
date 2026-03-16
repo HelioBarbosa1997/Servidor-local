@@ -2,7 +2,8 @@ import express, { type Request, type Response } from "express"
 import { adicionarServico, listarServicos, apagarServico, obterServico } from "./servico.js"
 import { processarPedido, selecionarServico, selecionarPrestatoresDeServico, criarPrestadorDeServico, editarPrestadorDeServico, apagarPrestadorServico } from "./orcamento.js"
 import { request } from "node:http"
-import { getUserById, getUsers, userInside } from "./users.js";
+import { getUserById, getUsers, userInside, } from "./users.js";
+import { getServiceById, getService, serviceInside } from "./servico.js"
 
 
 const app = express()
@@ -149,6 +150,35 @@ app.post("/user-inside", async (req: Request, res: Response) => {
     res.json(response);
 });
 
+//Rota para selecionar serviços BD
+
+app.post("/service-inside", async (req: Request, res: Response) => {
+    const service = req.body;
+    if (!service) {
+        return res.status(400).json({ error: "Serviço nao encontrado" });
+    }
+    const response = await serviceInside(service)
+    res.json(service);
+});
+// Listar todos os serviços
+app.get("/service", async (req: Request, res: Response) => {
+    const services = await getService();
+    res.json(services);
+});
+// Obter serviço por id
+app.get("/get-service-by-id", async (req: Request, res: Response) => {
+    const { id } = req.query
+
+    if (id) {
+        const getUserByIdResponse = await getServiceById(id as string)
+
+        res.json(getUserByIdResponse)
+    } else {
+        res.json({
+            message: "Id é obrigatorio"
+        })
+    }
+});
 
 
 app.listen(8080, () => {

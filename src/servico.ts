@@ -1,4 +1,5 @@
 import { type PedidoServico, type Servico} from "./utils/types.js"
+import db from "./lib/db.js"
 
 export let catalogoServico: Servico[] = [];
 
@@ -66,19 +67,31 @@ export function obterServico(nome: string): Servico | null {
 }
 
 // Funcões  servicos base de dados
-export async function userInside(users: any) {
+export async function getService() {
+    const [rows] = await db.execute("SELECT * FROM tbl_servicos")
+
+    return rows;
+}
+export async function getServiceById(id: string) {
+    const [rows] = await db.execute("SELECT * FROM tbl_servicos; WHERE SELECT * tbl_servicos.id = [id]")
+
+    if (Array.isArray(rows) && rows.length === 0) return null
+    return Array.isArray(rows) ? rows[0] : null
+}
+
+export async function serviceInside(service: any) {
     try {
     const body = `
-     SELECT * FROM tbl_servicos;
+    Insert Into tbl_servicos;
     (id, nome, descricao, categoria, enabled, created, updated)
     VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
     const values = [
-        users.id,
-        users.nome,
-        users.descricacao,
-        users.categoria,
-        users.enabled,
+        null, 
+        service.nome,
+        service.descricao,
+        service.categoria,
+        service.enabled,
         new Date(),
         new Date()
     ];
