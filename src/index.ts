@@ -1,5 +1,5 @@
 import express, { type Request, type Response } from "express"
-import { addServicesToDB, adicionarServico, apagarServico, getAllServices, getServiceById, listarServicos, obterServico } from "./servico.js"
+import { addServicesToDB, adicionarServico, apagarServico, getAllServices, getServiceById, listarServicos, obterServico, updatedService } from "./servico.js"
 import { apagarPrestadorDeServico, calcularOrcamento, criarPrestadoresDeServico, editarPrestadorDeServico, listarPrestadoresDeServico, selecionarPrestadoresDeServico, selecionarServicos } from "./orcamento.js"
 import { createUser, getUserById, getUsers } from "./users.js"
 import type { ServicoDBType, UserType } from "./utils/types.js"
@@ -256,6 +256,65 @@ app.get("/get-all-services", async (req: Request, res: Response) => {
     status: "success",
     message: "Servicos encontrados",
     data: getAllServicesResponse
+  })
+})
+app.put("/update-service-by-id/:id", async (req: Request, res: Response) => {
+  const { id } = req.params
+  const updatedService: ServicoDBType = req.body
+  if (!id) {
+    return res.status(400).json({
+      status: "error",
+      message: "Id é obrigatorio!",
+      data: null
+    })
+
+  }
+
+  const updateServiceResponse = await updatedService(id as string, updatedService)
+  if (!updatedService) {
+    return res.status(400).json({
+      status: "error",
+      message: "Erro ao atualizar servico",
+      data: null
+    })
+  }
+  return res.status(200).json({
+    status: "success",
+    message: "Serviço atualizado com sucesso!",
+    data: updateServiceResponse
+  })
+})
+
+app.delete("/delete-service-by-id/:id", async (req: Request, res: Response) => {
+  const { id } = req.params
+  const deleteService: ServicoDBType = req.body
+  if (!id) {
+    return res.status(400).json({
+      status: "error",
+      message: "Id é obrigatorio",
+      data: null
+    })
+  }
+
+  if (!deleteService) {
+    return res.status(400).json({
+      status: "error",
+      message: "Dados de serviço inavalidos!",
+      data: null
+    })
+  }
+  const deleteServiceResponse = await deleteService(id as string)
+  if (!deleteServiceResponse) {
+    return res.status(400).json({
+      status: "error",
+      message: "Erro ao apgar serviço!",
+      data: null
+    })
+  }
+  return res.status(200).json({
+    status: "success",
+    message: "Serviço Pagado com sucesso",
+    data: deleteServiceResponse
   })
 })
 

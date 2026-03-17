@@ -122,3 +122,47 @@ export async function getAllServices() {
         return null
     }
 }
+
+// update de dados
+export async function updatedServiceById(id: string, updatedService: ServicoDBType) {
+    try {
+        const query = `UPDATE tbl_servico 
+                    SET 
+                        nome=?
+                        descricao=?
+                        categoria=?
+                        enabled=?
+                        updated_at=?
+
+                    WHERE 
+                        id=?
+                            ;`
+        const values = [
+            updatedService.nome,
+            updatedService.descricao,
+            updatedService.categoria,
+            updatedService.enabled,
+            new Date(),
+            id
+        ]
+        const rows = await db.execute(query, values)
+
+        return rows
+    }catch (error) {
+    console.log(error)
+    return null
+    }
+}
+export async function deleteService(id: string) {
+    try {
+        const query = `DELETE FROM tbl_servico WHERE id=?`
+        const value = [id]
+        const rows = await db.execute(query,value)
+        return rows
+
+    } catch (error) {
+    console.log(error)
+    return null
+    }
+}
+
