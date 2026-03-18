@@ -124,15 +124,15 @@ export async function getAllServices() {
 }
 
 // update de dados
-export async function updatedServiceById(id: string, updatedService: ServicoDBType) {
+export async function updatedService(id: string, updatedService: ServicoDBType) {
     try {
-        const query = `UPDATE tbl_servico 
+        const query = `UPDATE tbl_servicos 
                     SET 
-                        nome=?
-                        descricao=?
-                        categoria=?
-                        enabled=?
-                        updated_at=?
+                        nome=?,
+                        descricao=?,
+                        categoria=?,
+                        enabled=?,
+                        uptaded=?
 
                     WHERE 
                         id=?
@@ -155,10 +155,10 @@ export async function updatedServiceById(id: string, updatedService: ServicoDBTy
 }
 export async function deleteService(id: string) {
     try {
-        const query = `DELETE FROM tbl_servico WHERE id=?`
+        const query = `DELETE FROM tbl_servicos WHERE id=?`
         const value = [id]
-        const rows = await db.execute(query,value)
-        return rows
+        const rows: any = await db.execute(query,value)
+        return rows [0]?.affectedRows === 0 ? null : rows
 
     } catch (error) {
     console.log(error)
