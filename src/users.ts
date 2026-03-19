@@ -1,4 +1,6 @@
 import db from "./lib/db.js"
+import { formatDateDDMMYYYY } from "./utils/date.js"
+import { hashPassword } from "./utils/password.js"
 import type { UserType } from "./utils/types.js"
 import { generateUUID } from "./utils/uuid.js"
 
@@ -38,12 +40,12 @@ export async function createUser(user: UserType) {
                 generateUUID(),
                 user.nome,
                 user.numero_identificacao,
-                user.data_nascimento,
+                formatDateDDMMYYYY(user.data_nascimento),
                 user.email,
                 user.telefone,
                 user.pais,
                 user.localidade,
-                user.password,
+                await hashPassword(user.password),
                 user.enabled,
                 new Date(),
                 new Date()
@@ -77,12 +79,12 @@ export async function updateUser(id:string, updateUser: UserType) {
         const values = [
                 updateUser.nome,
                 updateUser.numero_identificacao,
-                updateUser.data_nascimento,
+                formatDateDDMMYYYY(updateUser.data_nascimento),
                 updateUser.email,
                 updateUser.telefone,
                 updateUser.pais,
                 updateUser.localidade,
-                updateUser.password,
+                await hashPassword(updateUser.password),
                 updateUser.enabled,
                 new Date(),
         ]
