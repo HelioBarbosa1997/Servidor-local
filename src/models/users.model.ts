@@ -33,5 +33,49 @@ export const usersModel = {
         }
     },
 
+    async get(id: string) {
+         const [rows] = await db.execute("SELECT * FROM tbl_utilizadores")
+
+    return rows
+    },
     
-}
+    async  updatedUser(id:string, updateUser: UserType) {
+         try {
+        const query = `UPDATE tbl_utilizadores
+                        SET
+                        nome = ?,
+                        numero_identificacao = ?,
+                        data_nascimento = ?,
+                        email = ?,
+                        telefone = ?,
+                        pais = ?,
+                        localidade = ?,
+                        password = ?,
+                        enabled = ?,
+                        updated_at = ?
+
+                        WHERE id = ?
+                        `
+        const values = [
+                updateUser.nome,
+                updateUser.numero_identificacao,
+                formatDateDDMMYYYY(updateUser.data_nascimento),
+                updateUser.email,
+                updateUser.telefone,
+                updateUser.pais,
+                updateUser.localidade,
+                await hashPassword(updateUser.password),
+                updateUser.enabled,
+                new Date(),
+        ]
+    const rows: any = await db.execute(query,values)
+    return Array.isArray(rows) && rows.length > 0 ? rows[0] : null
+    
+    }catch (error) {
+        console.log(error)
+        return null
+    }
+
+    }
+    
+    }

@@ -19,6 +19,13 @@ export const userControler = {
         const createUserResponse = await usersModel.create(newUser)
 
         res.json(createUserResponse)
+    },
+
+
+    async get(req: Request, res: Response) {
+        const getUsersResponse = await usersModel.get()
+
+        res.json(getUsersResponse);
     }
 }
 
