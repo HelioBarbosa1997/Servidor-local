@@ -30,5 +30,77 @@ export const PropostaModel = {
             console.log(error);
             return null;
         }
+    },
+    async getAll() {
+        try {
+            const query = `SELECT * FROM tbl_proposta`
+
+            const rows = await db.execute(query)
+
+            return Array.isArray(rows) && rows.length > 0 ? rows[0] : []
+
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    },
+    async get(id: string) {
+        try {
+            const query = `SELECT * FROM tbl_proposta WHERE id = ?`
+
+            const value = [id]
+
+            const rows = await db.execute(query, value)
+
+            return Array.isArray(rows) && rows.length > 0 ? rows[0] : null
+
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    },
+    async update(id: string, PropostaAtualizado: PropostaTypeDB) {
+        try {
+            const query = `UPDATE tbl_proposta 
+                    SET 
+                        nome=?,
+                        descricao=?,
+                        categoria=?,
+                        enabled=?,
+                        uptaded=?
+
+                    WHERE 
+                        id=?
+                            ;`
+            const values = [
+                
+                id,
+                PropostaAtualizado.id_prestacao_servico,
+                PropostaAtualizado.preco_hora,
+                PropostaAtualizado.horas_estimadas,
+                PropostaAtualizado.estado,
+                PropostaAtualizado.enabled,
+                Date()
+            ]
+            const rows = await db.execute(query, values)
+
+            return rows
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    },
+
+    async delete(id: string) {
+        try {
+            const query = `DELETE FROM tbl_proposta WHERE id=?`
+            const value = [id]
+            const rows: any = await db.execute(query, value)
+            return rows[0]?.affectedRows === 0 ? null : rows
+
+        } catch (error) {
+            console.log(error)
+            return null
+        }
     }
 }
