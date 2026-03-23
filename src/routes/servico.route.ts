@@ -12,7 +12,7 @@ const router = Router()
 router.get(ServiceRoute.getAll,ServicoControler.getAll)
 router.get(ServiceRoute.getById,ServicoControler.get)
 router.post(ServiceRoute.create,ServicoControler.createServico)
-router.put(ServiceRoute.update,ServicoControler.update)
+router.put(ServiceRoute.update,ServicoControler.updated)
 router.delete(ServiceRoute.delete,ServicoControler.delete)
 
 

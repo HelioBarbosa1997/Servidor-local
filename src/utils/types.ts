@@ -53,3 +53,14 @@ export interface ServicoDBType {
     created_at: string,
     updated_at: string
 }
+
+export interface PropostaTypeDB {
+    id: string,
+    id_prestacao_servico: string,
+    preco_hora: string,
+    horas_estimadas: string,
+    estado: string,
+    enabled: boolean,
+    created_at: string,
+    updated_at: string
+}

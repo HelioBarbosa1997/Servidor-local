@@ -67,7 +67,7 @@ export const ServicoControler = {
             data: getServiceResponse
         })
     },
-    async update(req: Request, res: Response) {
+    async updated(req: Request, res: Response) {
         const { id } = req.params
 
         const updateService: ServicoDBType = req.body
