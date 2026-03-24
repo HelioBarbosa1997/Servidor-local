@@ -92,3 +92,19 @@ export interface pretadorDeServicoType {
     updated: string
 }
 
+export interface PrestadorServicoTypeDB {
+    id: string,
+	designacao: string,
+	subtotal: number,
+	horas_estimadas: number,
+	id_prestador: string,
+	id_servicos: string,
+	preco_hora: number,
+	estado: string,
+	id_orcamento: string,
+	enabled: boolean,
+	created_at: string
+	updated_at: string
+}
+
+

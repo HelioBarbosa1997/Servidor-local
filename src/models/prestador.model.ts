@@ -80,7 +80,6 @@ export const PrestadorModel = {
                             ;`
             const values = [
                 
-                id,
                 PrestadorAtualizado.nome,
                 PrestadorAtualizado.precoHora,
                 PrestadorAtualizado.profissao,

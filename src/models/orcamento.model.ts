@@ -7,7 +7,7 @@ export const OrcamentoModel = {
 
             const [rows] = await db.execute(
                 `INSERT INTO tbl_prestador
-            ( id, nome, precoHora, minimoParaDesconto, percentagemDesconto, enabled, created_at, updated_at)
+            ( id, total, id_utilizadores, enabled, created_at, updated_at)
             VALUES (?, ?, ?, ?, ?, ?, ?,?)`,
                 [
                     null,
