@@ -107,4 +107,15 @@ export interface PrestadorServicoTypeDB {
 	updated_at: string
 }
 
+export interface PropostaType {
+    id: string,
+    id_prestacao_servico: string,
+    preco_hora: number,
+    horas_estimadas: number,
+    estado: string,
+    enabled: boolean,
+    created_at: string,
+    updated_at: string
+}
+
 
