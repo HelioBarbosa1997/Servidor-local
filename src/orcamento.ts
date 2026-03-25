@@ -1,5 +1,6 @@
+import db from "./lib/db.js"
 import { catalogoServicos } from "./servico.js"
-import { type PedidoServicoType, type PrestadorType, type ServicoType } from "./utils/types.js"
+import { type OrcamentoTypeDB, type PedidoServicoType, type PrestadorType, type ServicoType } from "./utils/types.js"
 
 
 const taxaUrgencia: number = 0.3
@@ -194,3 +195,110 @@ export function calcularOrcamento(pedido: PedidoServicoType) {
 
     */
 }
+
+
+
+    export async function create(newOrcamento: OrcamentoTypeDB) {
+        try {
+
+            const [rows] = await db.execute(
+                `INSERT INTO tbl_prestador
+            ( id, total, id_utilizadores, enabled, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?,?)`,
+                [
+                    null,
+                    newOrcamento.total,
+                    newOrcamento.id_utilizadores,
+                    newOrcamento.enabled,
+                    new Date(),
+                    new Date()
+                ]
+            );
+
+            console.log({ rows });
+
+            return rows;
+
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
+
+    export async function getAll() {
+        try {
+            const query = `SELECT * FROM tbl_orcamento`
+
+            const rows = await db.execute(query)
+
+            return Array.isArray(rows) && rows.length > 0 ? rows[0] : []
+
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    }
+
+    export async function get(id: string) {
+        try {
+            const query = `SELECT * FROM tbl_orcamento WHERE id = ?`
+
+            const value = [id]
+
+            const rows = await db.execute(query, value)
+
+            return Array.isArray(rows) && rows.length > 0 ? rows[0] : null
+
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    }
+
+
+    export async function updateOrcamento(id: string, OrcamentoAtualizado: OrcamentoTypeDB) {
+        try {
+            const query = `UPDATE tbl_prestador 
+                    SET 
+                        id=?,
+                        total=?,
+                        id_utilizadores=?,
+                        enabled=?,
+                        uptaded=?
+
+                    WHERE 
+                        id=?
+                            ;`
+            const values = [
+
+                id,
+                OrcamentoAtualizado.id,
+                OrcamentoAtualizado.total,
+                OrcamentoAtualizado.id_utilizadores,
+                OrcamentoAtualizado.enabled,
+                Date()
+            ]
+            const rows = await db.execute(query, values)
+
+            return rows
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    }
+
+    export async function deleteOrcamento(id: string) {
+        try {
+            const query = `DELETE FROM tbl_orcamento WHERE id=?`
+            const value = [id]
+            const rows: any = await db.execute(query, value)
+            return rows[0]?.affectedRows === 0 ? null : rows
+
+        } catch (error) {
+            console.log(error)
+            return null
+        }
+    }
+
+
+
