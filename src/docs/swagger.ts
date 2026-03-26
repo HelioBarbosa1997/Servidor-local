@@ -13,12 +13,12 @@ const options: swaggerJsdoc.Options = {
                 url:'http://lacalhost:8080',
                 description:'dev',
             }
-        ],
-        apis: [
-            path.join(process.cwd(),"./src/docs/scremas/*.yaml"),
-            path.join(process.cwd(),"./src/docs/paths/*.yaml"),
         ]
-    }
+    },
+    apis: [
+        path.join(process.cwd(),"./src/docs/scremas/*.yaml"),
+        path.join(process.cwd(),"./src/docs/paths/*.yaml"),
+    ]
 
 }
 export const swaggerSpec = swaggerJsdoc(options);
