@@ -1,44 +1,44 @@
 paths:
-  /prestador:
+  /user:
     get:
-      summary: Listar todos os prestadores
+      summary: Listar todos os usuários
       tags:
-        - Prestador
-      description: Retorna uma lista de todos os prestadores disponíveis
+        - Usuarios
+      description: Retorna uma lista de todos os usuários disponíveis
       responses:
         "200":
-          description: Lista de prestadores
+          description: Lista de usuários
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Prestador"
+                  $ref: "#/components/schemas/User"
         "400":
-          description: Nenhum prestador encontrado
+          description: Nenhum usuário encontrado
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
     post:
-      summary: Criar um novo prestador
+      summary: Criar um novo usuário
       tags:
-        - Prestador
-      description: Cria um novo prestador
+        - Usuarios 
+      description: Cria um novo usuário
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreatePrestador"
+              $ref: "#/components/schemas/CreateUser"
       responses:
         "200":
-          description: Prestador criado com sucesso
+          description: Usuário criado com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSucessPrestador"
+                $ref: "#/components/schemas/ResponseSucess"
         "400":
           description: Dados inválidos
           content:
@@ -46,44 +46,44 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /prestador/{id}:
+  /user/{id}:
     get:
-      summary: Buscar prestador por ID
+      summary: Buscar usuário por ID
       tags:
-        - Prestador
-      description: Retorna um prestador específico pelo ID
+        - Usuarios
+      description: Retorna um usuário específico pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do prestador
+          description: ID do usuário
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Prestador encontrado
+          description: Usuário encontrado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSucessPrestador"
+                $ref: "#/components/schemas/ResponseSucess"
         "404":
-          description: Prestador não encontrado
+          description: Usuário não encontrado
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
     put:
-      summary: Atualizar prestador
+      summary: Atualizar usuário
       tags:
-        - Prestador
-      description: Atualiza um prestador pelo ID
+        - Usuarios
+      description: Atualiza um usuário pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do prestador
+          description: ID do usuário
           schema:
             type: integer
             example: 1
@@ -92,14 +92,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreatePrestador"
+              $ref: "#/components/schemas/CreateUser"
       responses:
         "200":
-          description: Prestador atualizado
+          description: Usuário atualizado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSucessPrestador"
+                $ref: "#/components/schemas/ResponseSucess"
         "400":
           description: Dados inválidos
           content:
@@ -107,34 +107,34 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseError"
         "404":
-          description: Prestador não encontrado
+          description: Usuário não encontrado
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
     delete:
-      summary: Apagar prestador
+      summary: Apagar usuário
       tags:
-        - Prestador
-      description: Remove um prestador pelo ID
+        - Usuarios
+      description: Remove um usuário pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do prestador
+          description: ID do usuário
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Prestador apagado
+          description: Usuário apagado
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSucessPrestador"
+                $ref: "#/components/schemas/ResponseSucess"
         "404":
-          description: Prestador não encontrado
+          description: Usuário não encontrado
           content:
             application/json:
               schema:

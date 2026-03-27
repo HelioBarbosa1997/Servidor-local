@@ -16,7 +16,7 @@ const options: swaggerJsdoc.Options = {
         ]
     },
     apis: [
-        path.join(process.cwd(),"./src/docs/scremas/*.yaml"),
+        path.join(process.cwd(),"./src/docs/schemas/*.yaml"),
         path.join(process.cwd(),"./src/docs/paths/*.yaml"),
     ]
 

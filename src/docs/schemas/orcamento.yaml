@@ -1,0 +1,69 @@
+components:
+  schemas:
+    Orcamento:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        total:
+          type: number
+          format: float
+          example: 350.75
+        id_utilizadores:
+          type: integer
+          example: 10
+        enabled:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          format: date-time
+          example: "2022-01-01T00:00:00.000Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2022-01-01T00:00:00.000Z"
+
+    # Schema para criar novo orçamento
+    CreateOrcamento:
+      type: object
+      properties:
+        total:
+          type: number
+          format: float
+          example: 400
+        id_utilizadores:
+          type: integer
+          example: 10
+        enabled:
+          type: boolean
+          example: true
+
+    # Schema genérico de resposta de sucesso
+    ResponseSucess:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Orçamento criado com sucesso"
+        status:
+          type: boolean
+          example: true
+        data:
+          type: object
+          $ref: "#/components/schemas/Orcamento"
+
+    # Schema genérico de resposta de erro
+    ResponseError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Erro ao processar orçamento"
+        status:
+          type: boolean
+          example: false
+        data:
+          nullable: true
+          example: null

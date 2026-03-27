@@ -1,0 +1,91 @@
+components:
+  schemas:
+    Prestador:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        taxa_urgente:
+          type: number
+          format: float
+          example: 25.5
+        percentagem_desconto:
+          type: number
+          format: float
+          example: 10
+        minimo_desconto:
+          type: number
+          format: float
+          example: 100
+        nif:
+          type: string
+          example: "123456789"
+        profissao:
+          type: string
+          example: "Eletricista"
+        enabled:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          format: date-time
+          example: "2022-01-01T00:00:00.000Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2022-01-01T00:00:00.000Z"
+
+    # Schema para criar prestador
+    CreatePrestador:
+      type: object
+      properties:
+        taxa_urgente:
+          type: number
+          format: float
+          example: 30
+        percentagem_desconto:
+          type: number
+          format: float
+          example: 15
+        minimo_desconto:
+          type: number
+          format: float
+          example: 200
+        nif:
+          type: string
+          example: "987654321"
+        profissao:
+          type: string
+          example: "Canalizador"
+        enabled:
+          type: boolean
+          example: true
+
+    # Schema genérico de resposta de sucesso
+    ResponseSucess:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Prestador criado com sucesso"
+        status:
+          type: boolean
+          example: true
+        data:
+          type: object
+          $ref: "#/components/schemas/Prestador"
+
+    # Schema genérico de resposta de erro
+    ResponseError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Erro ao processar prestador"
+        status:
+          type: boolean
+          example: false
+        data:
+          nullable: true
+          example: null

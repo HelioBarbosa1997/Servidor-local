@@ -1,101 +1,97 @@
-#paths/servico.yaml
-
 paths:
-  /service:
+  /orcamento:
     get:
-      summary: Listar todos os serviços
+      summary: Listar todos os orçamentos
       tags:
-        - Serviço
-      description: Retorna uma lista de todos os serviços disponiveis
+        - Orçamento
+      description: Retorna uma lista de todos os orçamentos disponíveis
       responses:
         "200":
-          description: Lista de serviços
+          description: Lista de orçamentos
           content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: "#/components/schemas/Servico"
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Orcamento"
         "400":
-          description: "Nenhum serviço encontrado"
+          description: "Nenhum orçamento encontrado"
           content:
             application/json:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseError"
 
-    
-  /service/create:
+  /orcamento/create:
     post:
-      summary: Criar um novo serviço
+      summary: Criar um novo orçamento
       tags:
-        - Serviço
-      description: Criar um novo serviço
+        - Orçamento
+      description: Criar um novo orçamento
       requestBody:
         required: true
-        content:
-          application/json:
-            schema:
-            type: object
-            $ref: "#/components/schemas/CreateService"
-      responses:
-        "200":
-          description: Serviço criado com sucesso
-          content:
-            application/json:
-              schema:
-                type: object
-                $ref: "#/components/schemas/ResponseSucess"
-        "400":
-        description:
         content:
           application/json:
             schema:
               type: object
-              $ref: "#/components/schemas/ResponseError"
-
-  /service/get-by-id/{id}:
-    get:
-      summary: Buscar um serviço por id
-      tags:
-        - Serviço
-      description: Retoma um serviço específico pelo id
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: ID do serviço
-          schema:
-            type: integer
-            example: 1
+              $ref: "#/components/schemas/CreateOrcamento"
       responses:
         "200":
-          description: Serviço encontrado
+          description: Orçamento criado com sucesso
           content:
             application/json:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseSucess"
-
-        "404":
-          description: Serviço nao encontrado
+        "400":
+          description: Dados inválidos
           content:
             application/json:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseError"
 
-  /service/update/{id}:
-    put:
-      summary: Atualizar um serviço
+  /orcamento/get-by-id/{id}:
+    get:
+      summary: Buscar um orçamento por id
       tags:
-        - Serviços
-      description: Atualiar um serviço especifico pelo id
+        - Orçamento
+      description: Retorna um orçamento específico pelo id
       parameters:
         - name: id
           in: path
           required: true
-          description: ID de serviço a ser atualizado
+          description: ID do orçamento
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Orçamento encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSucess"
+        "404":
+          description: Orçamento não encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseError"
+
+  /orcamento/update/{id}:
+    put:
+      summary: Atualizar um orçamento
+      tags:
+        - Orçamento
+      description: Atualiza um orçamento específico pelo id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do orçamento a ser atualizado
           schema:
             type: integer
             example: 1
@@ -104,59 +100,57 @@ paths:
         content:
           application/json:
             schema:
-              type: object    
-              $ref: "#/components/schemas/CreateService"
+              type: object
+              $ref: "#/components/schemas/CreateOrcamento"
       responses:
         "200":
-          description: Serviço atualizado
+          description: Orçamento atualizado
           content:
             application/json:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseSucess"
         "400":
-          description: Dados invalidos
+          description: Dados inválidos
           content:
             application/json:
-              schemas:
+              schema:
                 type: object
                 $ref: "#/components/schemas/ResponseError"
         "404":
-          description: Serviço nao encontrado
+          description: Orçamento não encontrado
           content:
             application/json:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseError"
 
-  /service/delete/{id}:
+  /orcamento/delete/{id}:
     delete:
-      summary: Apagar um serviço
+      summary: Apagar um orçamento
       tags:
-        - Serviços
-      description: Apagar um serviço especifico pelo ID
+        - Orçamento
+      description: Apagar um orçamento específico pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do serviço a ser apagado
+          description: ID do orçamento a ser apagado
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Serviço apagado
+          description: Orçamento apagado
           content:
             application/json:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseSucess"
         "404":
-          description: Serviço nao encontrado
+          description: Orçamento não encontrado
           content:
             application/json:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseError"
-      
-                      

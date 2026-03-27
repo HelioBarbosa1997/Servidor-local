@@ -1,0 +1,82 @@
+components:
+  schemas:
+    Proposta:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        id_prestacao_servico:
+          type: integer
+          example: 5
+        preco_hora:
+          type: number
+          format: float
+          example: 15.5
+        horas_estimadas:
+          type: number
+          format: float
+          example: 8
+        estado:
+          type: string
+          example: "pendente"
+        enabled:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          format: date-time
+          example: "2022-01-01T00:00:00.000Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2022-01-01T00:00:00.000Z"
+
+    # Schema para criar proposta
+    CreateProposta:
+      type: object
+      properties:
+        id_prestacao_servico:
+          type: integer
+          example: 5
+        preco_hora:
+          type: number
+          format: float
+          example: 20
+        horas_estimadas:
+          type: number
+          format: float
+          example: 10
+        estado:
+          type: string
+          example: "pendente"
+        enabled:
+          type: boolean
+          example: true
+
+    # Schema genérico de sucesso
+    ResponseSucess:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Operação realizada com sucesso"
+        status:
+          type: boolean
+          example: true
+        data:
+          $ref: "#/components/schemas/Proposta"
+
+    # Schema genérico de erro
+    ResponseError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Erro ao processar proposta"
+        status:
+          type: boolean
+          example: false
+        data:
+          nullable: true
+          example: null

@@ -1,44 +1,44 @@
 paths:
-  /prestador:
+  /proposta:
     get:
-      summary: Listar todos os prestadores
+      summary: Listar todas as propostas
       tags:
-        - Prestador
-      description: Retorna uma lista de todos os prestadores disponíveis
+        - Proposta
+      description: Retorna uma lista de todas as propostas disponíveis
       responses:
         "200":
-          description: Lista de prestadores
+          description: Lista de propostas
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Prestador"
+                  $ref: "#/components/schemas/Proposta"
         "400":
-          description: Nenhum prestador encontrado
+          description: Nenhuma proposta encontrada
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
     post:
-      summary: Criar um novo prestador
+      summary: Criar uma nova proposta
       tags:
-        - Prestador
-      description: Cria um novo prestador
+        - Proposta
+      description: Cria uma nova proposta
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreatePrestador"
+              $ref: "#/components/schemas/CreateProposta"
       responses:
         "200":
-          description: Prestador criado com sucesso
+          description: Proposta criada com sucesso
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSucessPrestador"
+                $ref: "#/components/schemas/ResponseSucess"
         "400":
           description: Dados inválidos
           content:
@@ -46,44 +46,44 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /prestador/{id}:
+  /proposta/{id}:
     get:
-      summary: Buscar prestador por ID
+      summary: Buscar proposta por ID
       tags:
-        - Prestador
-      description: Retorna um prestador específico pelo ID
+        - Proposta
+      description: Retorna uma proposta específica pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do prestador
+          description: ID da proposta
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Prestador encontrado
+          description: Proposta encontrada
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSucessPrestador"
+                $ref: "#/components/schemas/ResponseSucess"
         "404":
-          description: Prestador não encontrado
+          description: Proposta não encontrada
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
     put:
-      summary: Atualizar prestador
+      summary: Atualizar proposta
       tags:
-        - Prestador
-      description: Atualiza um prestador pelo ID
+        - Proposta
+      description: Atualiza uma proposta pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do prestador
+          description: ID da proposta
           schema:
             type: integer
             example: 1
@@ -92,14 +92,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreatePrestador"
+              $ref: "#/components/schemas/CreateProposta"
       responses:
         "200":
-          description: Prestador atualizado
+          description: Proposta atualizada
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSucessPrestador"
+                $ref: "#/components/schemas/ResponseSucess"
         "400":
           description: Dados inválidos
           content:
@@ -107,34 +107,34 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseError"
         "404":
-          description: Prestador não encontrado
+          description: Proposta não encontrada
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
     delete:
-      summary: Apagar prestador
+      summary: Apagar proposta
       tags:
-        - Prestador
-      description: Remove um prestador pelo ID
+        - Proposta
+      description: Remove uma proposta pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do prestador
+          description: ID da proposta
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Prestador apagado
+          description: Proposta apagada
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResponseSucessPrestador"
+                $ref: "#/components/schemas/ResponseSucess"
         "404":
-          description: Prestador não encontrado
+          description: Proposta não encontrada
           content:
             application/json:
               schema:
