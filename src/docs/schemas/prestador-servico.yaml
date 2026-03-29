@@ -84,7 +84,7 @@ components:
     # #shema generico de resposta a erro
     ResponseError:
       type: object
-        properties:
+      properties:
         message:
           type: string
           example: "Error ao buscar serviços"

@@ -1,0 +1,146 @@
+# paths/prestador-servico.yaml
+
+paths:
+  /prestador-servico:
+    get:
+      summary: Listar todos os prestadores de serviço
+      tags:
+        - Prestador-Servico
+      description: Retorna uma lista de todas as relações entre prestadores e serviços
+      responses:
+        "200":
+          description: Lista de prestador-servico
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PrestadorServico"
+        "400":
+          description: Nenhum registro encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+  /prestador-servico/create:
+    post:
+      summary: Criar uma relação prestador-serviço
+      tags:
+        - Prestador-Servico
+      description: Associa um prestador a um serviço
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePrestadorServico"
+      responses:
+        "200":
+          description: Relação criada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSucess"
+        "400":
+          description: Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+  /prestador-servico/get-by-id/{id}:
+    get:
+      summary: Buscar relação por ID
+      tags:
+        - Prestador-Servico
+      description: Retorna uma relação específica pelo ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da relação
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Relação encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrestadorServico"
+        "404":
+          description: Relação não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+  /prestador-servico/update/{id}:
+    put:
+      summary: Atualizar relação
+      tags:
+        - Prestador-Servico
+      description: Atualiza uma relação existente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da relação
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePrestadorServico"
+      responses:
+        "200":
+          description: Relação atualizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSucess"
+        "400":
+          description: Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "404":
+          description: Relação não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+
+  /prestador-servico/delete/{id}:
+    delete:
+      summary: Apagar relação
+      tags:
+        - Prestador-Servico
+      description: Remove uma relação entre prestador e serviço
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da relação
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: Relação removida com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSucess"
+        "404":
+          description: Relação não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
