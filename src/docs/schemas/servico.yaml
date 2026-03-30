@@ -3,29 +3,28 @@
 components:
   schemas:
     servico:
-      type: object
       properties:
       id:
         type: intenger
         example: 1
-    nome:
-      type: string
-      example: "Serviço de Limpeza"
-    descricao:
-      type: string
-      example: "Serviço de limpeza profissional para residencias"
-    categoria:
-      type: string
-      example: "Limpeza"
-    enabled:
-      type: boolean
-      example: true
-    created_at:
-      type: string
-      example: "2022-01-01T00:00:00.000Z"  
-    updated_at:
-      type: string
-      example: "2022-01-01T00:00:00.000Z"
+      nome:
+        type: string
+        example: "Serviço de Limpeza"
+      descricao:
+        type: string
+        example: "Serviço de limpeza profissional para residencias"
+      categoria:
+        type: string
+        example: "Limpeza"
+      enabled:
+        type: boolean
+        example: true
+      created_at:
+        type: string
+        example: "2022-01-01T00:00:00.000Z"  
+      updated_at:
+        type: string
+        example: "2022-01-01T00:00:00.000Z"
 
     #schema para criar um novo serviço
     CreateService:

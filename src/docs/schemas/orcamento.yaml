@@ -51,7 +51,6 @@ components:
           type: boolean
           example: true
         data:
-          type: object
           $ref: "#/components/schemas/Orcamento"
 
     # Schema genérico de resposta de erro

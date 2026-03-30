@@ -1,18 +1,19 @@
-import { id } from "date-fns/locale"
 import { usersModel } from "../models/users.model.js"
-import { updateUser } from "../users.js"
+import { comparePassword } from "../utils/password.js"
 import type { UserType } from "../utils/types.js"
 import type { Request, Response } from "express"
+import jwt from "jsonwebtoken"
 
 export const userController = {
+    
     async createUsers(req: Request, res: Response) {
         const newUser: UserType = req.body
 
         if (!newUser) {
-            res.status(400).json({
+            return res.status(400).json({
                 status: "error",
-                message: "Dados de utilizador invalidos",
-                data: null
+                message: "Dados de utilizador inválidos",
+                data: null,
             })
         }
 
@@ -20,90 +21,143 @@ export const userController = {
 
         const createUserResponse = await usersModel.create(newUser)
 
-        res.json(createUserResponse)
+        return res.status(201).json({
+            status: "success",
+            message: "Utilizador criado com sucesso",
+            data: createUserResponse,
+        })
     },
 
-
+    // Listar todos os utilizadores
     async get(req: Request, res: Response) {
         const getUsersResponse = await usersModel.get()
-
-        res.json(getUsersResponse);
+        return res.status(200).json({
+            status: "success",
+            data: getUsersResponse,
+        })
     },
 
+    
     async getUserById(req: Request, res: Response) {
         const { id } = req.query
-
-        if (id) {
-            const getUserByIdResponse = await usersModel.getUserById(id as string)
-
-            if (!getUserByIdResponse) {
-                res.status(404).json({
-                    status: "error",
-                    message: "Utilizador nao encontrado",
-                    data: null
-                })
-            }
-
-            res.status(200).json({
-                status: "success",
-                message: "Utilizador encontrado",
-                data: getUserByIdResponse
-            })
-        } else {
-            res.status(400).json({
-                status: "error",
-                message: "Id eh obrigatorio",
-                data: null
-            })
-        }
-    },
-
-
-    async updated(req: Request, res: Response) {
-        const { id } = req.params
-
-        const updateUser: UserType = req.body
 
         if (!id) {
             return res.status(400).json({
                 status: "error",
-                message: "Id é obrigatorio!",
-                data: null
+                message: "Id é obrigatório",
+                data: null,
             })
         }
-        if (!updateUser) {
+
+        const getUserByIdResponse = await usersModel.getUserById(id as string)
+
+        if (!getUserByIdResponse) {
+            return res.status(404).json({
+                status: "error",
+                message: "Utilizador não encontrado",
+                data: null,
+            })
+        }
+
+        return res.status(200).json({
+            status: "success",
+            message: "Utilizador encontrado",
+            data: getUserByIdResponse,
+        })
+    },
+
+    
+    async login(req: Request, res: Response) {
+        const { email, password } = req.body
+
+        if (!email || !password) {
             return res.status(400).json({
                 status: "error",
-                message: "Erro ao atualizar utilizador",
+                message: "Credenciais inválidas",
+                data: null,
+            })
+        }
+
+        const userData = await usersModel.getByEmail(email as string)
+
+        if (!userData) {
+            return res.status(404).json({
+                status: "error",
+                message: "Email ou senha incorretos",
+                data: null,
+            })
+        }
+
+        /*return res.status(200).json({
+            status: "success",
+            message: "Login realizado com sucesso",
+            data: userData,
+        })*/
+        const isPasswordValid = await comparePassword(password, userData.password)
+        
+        if (!isPasswordValid) {
+            return res.status(401).json({
+                status: "error",
+                message:"Credenciais invalidos",
                 data: null
             })
         }
 
-        const updateUserResponse = await usersModel.updatedUser(id as string, updateUser)
+        const playload = {
+            id: userData.id,
+            email:userData.email,
+            nome:userData.nome
+        }
+        const token = jwt.sign(playload, process.env.JWT as string, {expiresIn: "1h"})
+    },
+
+    
+    async updateUser(req: Request, res: Response) {
+        const { id } = req.params
+        const updatedUser: UserType = req.body
+
+        if (!id) {
+            return res.status(400).json({
+                status: "error",
+                message: "Id é obrigatório",
+                data: null,
+            })
+        }
+
+        if (!updatedUser) {
+            return res.status(400).json({
+                status: "error",
+                message: "Erro ao atualizar utilizador",
+                data: null,
+            })
+        }
+
+        const updateUserResponse = await usersModel.updatedUser(id as string, updatedUser)
+
         if (!updateUserResponse) {
             return res.status(400).json({
                 status: "error",
                 message: "Erro ao atualizar utilizador",
-                data: null
+                data: null,
             })
         }
+
         return res.status(200).json({
             status: "success",
-            message: "Utilizador atualizado com sucesso!",
-            data: updateUserResponse
+            message: "Utilizador atualizado com sucesso",
+            data: updateUserResponse,
         })
     },
 
-
+    
     async delete(req: Request, res: Response) {
         const { id } = req.params
-
 
         if (!id) {
             return res.status(400).json({
                 status: "error",
-                message: "Id é obrigatorio",
-                data: null
+                message: "Id é obrigatório",
+                data: null,
             })
         }
 
@@ -112,16 +166,15 @@ export const userController = {
         if (!deleteUserResponse) {
             return res.status(400).json({
                 status: "error",
-                message: "Erro ao apagar utilizador!",
-                data: null
+                message: "Erro ao apagar utilizador",
+                data: null,
             })
         }
+
         return res.status(200).json({
             status: "success",
             message: "Utilizador apagado com sucesso",
-            data: deleteUserResponse
+            data: deleteUserResponse,
         })
-    }
+    },
 }
-
-
