@@ -20,7 +20,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
-
+  prestador/create:
     post:
       summary: Criar um novo prestador
       tags:
@@ -73,7 +73,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
-
+  prestador/update/{id}:
     put:
       summary: Atualizar prestador
       tags:
@@ -112,7 +112,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
-
+                
+  prestador/delete/{id}:
     delete:
       summary: Apagar prestador
       tags:

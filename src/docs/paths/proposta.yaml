@@ -20,7 +20,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
-
+  proposta/create:
     post:
       summary: Criar uma nova proposta
       tags:
@@ -46,7 +46,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /proposta/{id}:
+  /proposta/getById{id}:
     get:
       summary: Buscar proposta por ID
       tags:
@@ -73,7 +73,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
-
+  proposta/update/{id}:
     put:
       summary: Atualizar proposta
       tags:
@@ -112,7 +112,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
-
+  proposta/delete/{id}:
     delete:
       summary: Apagar proposta
       tags:

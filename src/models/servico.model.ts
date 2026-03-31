@@ -1,5 +1,6 @@
 import db from "../lib/db.js";
 import type { ServicoDBType } from "../utils/types.js";
+import { generateUUID } from "../utils/uuid.js";
 
 export const ServiceModel = {
     async create(newService: ServicoDBType) {
@@ -8,7 +9,7 @@ export const ServiceModel = {
             const query = `INSERT INTO tbl_servicos VALUES (?, ?, ?, ?, ?, ?, ?)`
 
             const values = [
-                null,
+                generateUUID(),
                 newService.nome,
                 newService.descricao,
                 newService.categoria,

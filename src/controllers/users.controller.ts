@@ -88,11 +88,7 @@ export const userController = {
             })
         }
 
-        /*return res.status(200).json({
-            status: "success",
-            message: "Login realizado com sucesso",
-            data: userData,
-        })*/
+    
         const isPasswordValid = await comparePassword(password, userData.password)
         
         if (!isPasswordValid) {
@@ -108,11 +104,20 @@ export const userController = {
             email:userData.email,
             nome:userData.nome
         }
-        const token = jwt.sign(playload, process.env.JWT as string, {expiresIn: "1h"})
+        const token = jwt.sign(playload, process.env.JWT_SECRET as string, {expiresIn: "1h"})
+
+        return res.status(200).json({
+            status: "sucess",
+            message: "Login realizado com sucesso",
+            data: {
+                token,
+                user:playload
+            }
+        })
     },
 
     
-    async updateUser(req: Request, res: Response) {
+    async update(req: Request, res: Response) {
         const { id } = req.params
         const updatedUser: UserType = req.body
 

@@ -5,45 +5,69 @@
       Users:
         type: object
         properties:
-        id:
-          type: varchar
-          example: 1
+          id:
+            type: varchar
+            example: 1
+          nome:
+            type: string
+            example: Helio Barbosa
+          numero_identificação:
+            type: number
+            example: M001S
+          data_nascimento:
+            type: date
+            example: 22-03-1997
+          email:
+            type: string
+            example: barbosahifb1997@gmail.com
+          telefone:
+            type: number
+            example: 9867602
+          pais:
+            type: string
+            example: Cabo Verde
+          localidade:
+            type: string
+            example: Ponta D agua
+          password:
+            type: string
+            example: 12345678
+          enabled:
+            type: boolean
+            example: true
+          created_at: 
+            type: string
+            example: "2022-01-01T00:00:00.000Z"
+          updated_at:
+            type: string
+            example: "2022-01-01T00:00:00.000Z"
+      
+      #schema para criar um novo utilizador
+    CreateService:
+      type: object
+      properties:
         nome:
+          type: object
+          example: Serviço de limpeza
+        descricao:
           type: string
-          example: Helio Barbosa
-        numero_identificação:
-          type: number
-          example: M001S
-        data_nascimento:
-          type: date
-          example: 22-03-1997
-        email:
+          example: Serviço de limpreza para residfencias e empresa
+        categoria:
           type: string
-          example: barbosahifb1997@gmail.com
-        telefone:
-          type: number
-          example: 9867602
-        pais:
-          type: string
-          example: Cabo Verde
-        localidade:
-          type: string
-          example: Ponta D agua
-        password:
-          type: string
-          example: 12345678
+          example: limpeza
         enabled:
           type: boolean
           example: true
-        created_at: 
+
+    LoginUser:
+      type: object
+      properties:
+        email:
           type: string
-          example: "2022-01-01T00:00:00.000Z"
-        updated_at:
+          example: "user@example.com"
+        password:
           type: string
-          example: "2022-01-01T00:00:00.000Z"
-      
-      #schema para criar um novo utilizador
-    
+          example: senha123
     
       # Schema genérico de resposta de sucesso
     ResponseSucess:

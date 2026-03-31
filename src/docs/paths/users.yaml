@@ -20,7 +20,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResponseError"
-
+  /user/create:
     post:
       summary: Criar um novo usuário
       tags:
@@ -46,7 +46,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /user/{id}:
+  /user/getById/{id}:
     get:
       summary: Buscar usuário por ID
       tags:
@@ -74,6 +74,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
+  /user/update/{id}:
     put:
       summary: Atualizar usuário
       tags:
@@ -113,6 +114,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
+  /user/delete/{id}:
     delete:
       summary: Apagar usuário
       tags:
@@ -135,6 +137,38 @@ paths:
                 $ref: "#/components/schemas/ResponseSucess"
         "404":
           description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        
+  /users/login:
+    post:
+      summary: Login de um Usuarios
+      tags:
+        - Usuarios
+      description:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginUser"
+      responses:
+        "200":
+          description: Usuario encontrado 
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseSucess"
+        "404":
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseError"
+        "400":
+          description: Erro ao logar utilizador
           content:
             application/json:
               schema:
