@@ -21,7 +21,7 @@ app.use("/prestador", prestadorRouter)
 app.use("/orcamento", orcamentoRouter)
 app.use("/prestacao-servico", prestacaoServicoRouter)
 
-app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!")
