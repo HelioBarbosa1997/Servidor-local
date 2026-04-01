@@ -6,32 +6,32 @@
         type: object
         properties:
           id:
-            type: varchar
+            type: string
             example: 1
           nome:
             type: string
-            example: Helio Barbosa
+            example: "Helio Barbosa"
           numero_identificação:
-            type: number
-            example: M001S
+            type: string
+            example: "M001S"
           data_nascimento:
-            type: date
-            example: 22-03-1997
+            type: string
+            example: "22-03-1997"
           email:
             type: string
-            example: barbosahifb1997@gmail.com
+            example: "barbosahifb1997@gmail.com"
           telefone:
-            type: number
-            example: 9867602
+            type: string
+            example: "9867602"
           pais:
             type: string
-            example: Cabo Verde
+            example: "Cabo Verde"
           localidade:
             type: string
-            example: Ponta D agua
+            example: "Ponta D agua"
           password:
             type: string
-            example: 12345678
+            example: "12345678"
           enabled:
             type: boolean
             example: true
@@ -42,57 +42,72 @@
             type: string
             example: "2022-01-01T00:00:00.000Z"
       
-      #schema para criar um novo utilizador
-    CreateUser:
-      type: object
-      properties:
-        nome:
-          type: object
-          example: Serviço de limpeza
-        descricao:
-          type: string
-          example: Serviço de limpreza para residfencias e empresa
-        categoria:
-          type: string
-          example: limpeza
-        enabled:
-          type: boolean
-          example: true
+    # schema para criar um novo utilizador
+      CreateUser:
+        type: object
+        properties:
+          nome:
+            type: string
+            example: "Helio Barbosa"
+          numero_identificacao:
+            type: string
+            example: "M001S"
+          data_nascimento:
+            type: string
+            example: "22-03-1997"
+          email:
+            type: string
+            example: "barbosahifb1997@gmail.com"
+          telefone:
+            type: string
+            example: "9867602"
+          pais:
+            type: string
+            example: "Cabo Verde"
+          localidade:
+            type: string
+            example: "Ponta D agua"
+          password:
+            type: string
+            example: "12345678"
+          enabled:
+            type: boolean
+            example: true
 
-    LoginUser:
-      type: object
-      properties:
-        email:
-          type: string
-          example: "user@example.com"
-        password:
-          type: string
-          example: senha123
-    
-      # Schema genérico de resposta de sucesso
-    ResponseSucess:
-      type: object
-      properties:
-        message:
-          type: string
-          example: "Usuário criado com sucesso"
-        status:
-          type: boolean
-          example: true
-        data:
-          type: object
-          $ref: "#/components/schemas/CreateUser"
+      LoginUser:
+        type: object
+        properties:
+          email:
+            type: string
+            example: "user@example.com"
+          password:
+            type: string
+            example: "senha123"
+      
+        # Schema genérico de resposta de sucesso
+      ResponseSucess:
+        type: object
+        properties:
+          message:
+            type: string
+            example: "Usuário criado com sucesso"
+          status:
+            type: boolean
+            example: true
+          data:
+            type: object
+            $ref: "#/components/schemas/CreateUser"
 
-    # Schema genérico de resposta de erro
-    ResponseError:
-      type: object
-      properties:
-        message:
-          type: string
-          example: "Erro ao processar usuário"
-        status:
-          type: boolean
-          example: false
-        data:
-          nullable: true
-          example: null
+      # Schema genérico de resposta de erro
+      ResponseError:
+        type: object
+        properties:
+          message:
+            type: string
+            example: "Erro ao processar usuário"
+          status:
+            type: boolean
+            example: false
+          data:
+            nullable: true
+            example: null

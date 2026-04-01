@@ -142,12 +142,12 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseError"
         
-  /users/login:
+  /user/login:
     post:
       summary: Login de um Usuarios
       tags:
         - Usuarios
-      description:
+      description: Faz login dos usuarios
       requestBody:
         required: true
         content:

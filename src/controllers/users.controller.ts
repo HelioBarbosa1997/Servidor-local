@@ -70,6 +70,8 @@ export const userController = {
     async login(req: Request, res: Response) {
         const { email, password } = req.body
 
+        console.log (email, password)
+
         if (!email || !password) {
             return res.status(400).json({
                 status: "error",
@@ -79,6 +81,8 @@ export const userController = {
         }
 
         const userData = await usersModel.getByEmail(email as string)
+        
+        console.log(userData)
 
         if (!userData) {
             return res.status(404).json({

@@ -15,7 +15,7 @@ app.use(express.json())
 dotenv.config()
 
 app.use("/service", serviceRouter)
-app.use("/users", userRouter)
+app.use("/user", userRouter)
 app.use("/proposta", propostaRouter)
 app.use("/prestador", prestadorRouter)
 app.use("/orcamento", orcamentoRouter)
