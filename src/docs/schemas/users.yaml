@@ -83,6 +83,35 @@
           password:
             type: string
             example: "senha123"
+
+      UpdatePassword:
+        type: object
+        required:
+          - oldPassword
+          - newPassword
+        properties:
+          oldPassword:
+            type: string
+            format: password
+          newPassword:
+            type: string
+            format: password
+      
+      ResetPasswordById:
+        type: object
+        required:
+          - id
+          - newPassword
+        properties:
+          id:
+            type: string
+            example: "1"
+            description: "ID do usuário cuja senha será redefinida"
+          newPassword:
+            type: string
+            format: password
+            example: "novaSenha123"
+            description: "Nova senha do usuário"
       
         # Schema genérico de resposta de sucesso
       ResponseSucess:
@@ -111,3 +140,6 @@
           data:
             nullable: true
             example: null
+
+      
+

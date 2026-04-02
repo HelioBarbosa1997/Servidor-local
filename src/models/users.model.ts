@@ -1,6 +1,6 @@
 import db from "../lib/db.js";
 import { formatDateDDMMYYYY } from "../utils/date.js";
-import { hashPassword } from "../utils/password.js";
+import { hashPassword, updatePassword } from "../utils/password.js";
 import type { UserType } from "../utils/types.js";
 import { generateUUID } from "../utils/uuid.js";
 
@@ -63,13 +63,29 @@ export const usersModel = {
 
             )
 
-            if (Array.isArray(rows) && rows.length ===0) return null
+            if (Array.isArray(rows) && rows.length === 0) return null
             return Array.isArray(rows) ? rows[0] as UserType : null
-        }catch (err) {
+        } catch (err) {
             console.log(err)
             return null
         }
     },
+
+    async getById(id: string): Promise<UserType | null> {
+        try {
+            const [rows] = await db.execute(
+                `SELECT * FROM tbl_utilizadores WHERE tbl_utilizadores.id = ?`, [id]
+
+            )
+
+            if (Array.isArray(rows) && rows.length === 0) return null
+            return Array.isArray(rows) ? rows[0] as UserType : null
+        } catch (err) {
+            console.log(err)
+            return null
+        }
+    },
+
     async updatedUser(id: string, updateUser: UserType) {
         try {
             const query = `UPDATE tbl_utilizadores
@@ -124,5 +140,36 @@ export const usersModel = {
             return null
         }
 
+    },
+
+    async updatePassword(id: string, newPassword: string) {
+        try {
+            const query = "tbl_utilizadores SET password=?, updated_at=? WHERE id=?";
+
+            const hasPassword = await hashPassword(newPassword)
+            const value = [hasPassword, new Date(), id]
+            
+            //User se existe
+            const [rows] = await db.execute(query, value);
+            return rows
+        } catch (error) {
+            return null
+        }
+    },
+
+    async resetPassword(id: string, newPassword: string) {
+        try {
+            const query = "tbl_utilizadores SET password=?, updated_at=? WHERE id=?";
+
+            const hasPassword = await hashPassword(newPassword)
+            const value = [hasPassword, new Date(), id]
+            
+            //User se existe
+            const [rows] = await db.execute(query, value);
+            return rows
+        } catch (error) {
+            return null
+        }
     }
+
 }
