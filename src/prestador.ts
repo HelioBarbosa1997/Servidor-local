@@ -1,5 +1,6 @@
 import db from "./lib/db.js"
 import type { PrestadorType } from "./utils/types.js"
+import { generateUUID } from "./utils/uuid.js"
 
 class Prestador {
     nome: string
@@ -70,7 +71,7 @@ console.log(prestador1.nome) // nome do prestador, Tiago Soares
             ( id, nome, precoHora, minimoParaDesconto, percentagemDesconto, enabled, created_at, updated_at)
             VALUES (?, ?, ?, ?, ?, ?, ?,?)`,
                 [
-                    null,
+                    generateUUID(),
                     newPrestador.nome,
                     newPrestador.precoHora,
                     newPrestador.minimoParaDesconto,

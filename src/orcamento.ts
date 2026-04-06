@@ -1,6 +1,7 @@
 import db from "./lib/db.js"
 import { catalogoServicos } from "./servico.js"
 import { type OrcamentoTypeDB, type PedidoServicoType, type PrestadorType, type ServicoType } from "./utils/types.js"
+import { generateUUID } from "./utils/uuid.js"
 
 
 const taxaUrgencia: number = 0.3
@@ -206,7 +207,7 @@ export function calcularOrcamento(pedido: PedidoServicoType) {
             ( id, total, id_utilizadores, enabled, created_at, updated_at)
             VALUES (?, ?, ?, ?, ?, ?, ?,?)`,
                 [
-                    null,
+                    generateUUID(),
                     newOrcamento.total,
                     newOrcamento.id_utilizadores,
                     newOrcamento.enabled,

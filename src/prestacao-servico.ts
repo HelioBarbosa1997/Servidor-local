@@ -1,9 +1,10 @@
 import db from "./lib/db.js";
 import type { PrestadorServicoTypeDB } from "./utils/types.js";
+import { generateUUID } from "./utils/uuid.js";
 
 
 
-    export async function create(newPrestadorServico: PrestadorServicoTypeDB) {
+    export async function create(newPrestacaoServico: PrestadorServicoTypeDB) {
         try {
 
             const [rows] = await db.execute(
@@ -11,16 +12,16 @@ import type { PrestadorServicoTypeDB } from "./utils/types.js";
             ( id, designacao, subtotal, horas_estimadas, id_prestador, id_servicos, preco_hora, estado, id_orcamento, enabled, created_at, updated_at)
             VALUES (?, ?, ?, ?, ?, ?, ?,?)`,
                 [
-                    null,
-                    newPrestadorServico.designacao,
-                    newPrestadorServico.subtotal,
-                    newPrestadorServico.horas_estimadas,
-                    newPrestadorServico.id_prestador,
-                    newPrestadorServico.id_servicos,
-                    newPrestadorServico.preco_hora,
-                    newPrestadorServico.estado,
-                    newPrestadorServico.id_orcamento,
-                    newPrestadorServico.enabled,
+                    generateUUID(),
+                    newPrestacaoServico.designacao,
+                    newPrestacaoServico.subtotal,
+                    newPrestacaoServico.horas_estimadas,
+                    newPrestacaoServico.id_prestador,
+                    newPrestacaoServico.id_servicos,
+                    newPrestacaoServico.preco_hora,
+                    newPrestacaoServico.estado,
+                    newPrestacaoServico.id_orcamento,
+                    newPrestacaoServico.enabled,
                     new Date(),
                     new Date()
                 ]

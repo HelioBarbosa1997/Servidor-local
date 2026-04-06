@@ -2,7 +2,7 @@ import db from "./lib/db.js";
 import type { PropostaType } from "./utils/types.js";
 
 
-// --- CRIAR NOVA PROPOSTA ---
+
 export async function createProposta(proposta: PropostaType) {
     try {
         const query = `
@@ -26,7 +26,7 @@ export async function createProposta(proposta: PropostaType) {
     }
 }
 
-// --- BUSCAR TODAS AS PROPOSTAS ---
+
 export async function getPropostas() {
     try {
         const [rows] = await db.execute("SELECT * FROM tbl_proposta");
@@ -37,7 +37,6 @@ export async function getPropostas() {
     }
 }
 
-// --- BUSCAR POR ID ---
 export async function getPropostaById(id: string) {
     try {
         const [rows]: any = await db.execute(
@@ -51,7 +50,7 @@ export async function getPropostaById(id: string) {
     }
 }
 
-// --- ATUALIZAR PROPOSTA ---
+
 export async function updateProposta(id: string, proposta: PropostaType) {
     try {
         const query = `
@@ -82,8 +81,6 @@ export async function updateProposta(id: string, proposta: PropostaType) {
     }
 }
 
-// --- REMOVER PROPOSTA ---
-// Nota: 'delete' é uma palavra reservada no JS, por isso usamos 'removerProposta'
 export async function removerProposta(id: string) {
     try {
         const query = `DELETE FROM tbl_proposta WHERE id = ?`;

@@ -1,6 +1,7 @@
 
 import db from "./lib/db.js";
 import { type ResponseType, type ServicoDBType, type ServicoType } from "./utils/types.js"
+import { generateUUID } from "./utils/uuid.js";
 
 export let catalogoServicos: ServicoType[] = []
 
@@ -75,7 +76,7 @@ export async function addServicesToDB(newService: ServicoDBType) {
         const query = `INSERT INTO tbl_servicos VALUES (?, ?, ?, ?, ?, ?, ?)`
 
         const values = [
-            null,
+            generateUUID(),
             newService.nome,
             newService.descricao,
             newService.categoria,
