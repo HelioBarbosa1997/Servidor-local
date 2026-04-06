@@ -25,9 +25,11 @@ components:
           format: date-time
           example: "2022-01-01T00:00:00.000Z"
 
-    # Schema para criar novo orçamento
     CreateOrcamento:
       type: object
+      required:
+        - total
+        - id_utilizadores
       properties:
         total:
           type: number
@@ -40,8 +42,7 @@ components:
           type: boolean
           example: true
 
-    # Schema genérico de resposta de sucesso
-    ResponseSucess:
+    ResponseSuccess:        
       type: object
       properties:
         message:
@@ -53,7 +54,6 @@ components:
         data:
           $ref: "#/components/schemas/Orcamento"
 
-    # Schema genérico de resposta de erro
     ResponseError:
       type: object
       properties:
@@ -64,5 +64,60 @@ components:
           type: boolean
           example: false
         data:
+          type: object         
           nullable: true
           example: null
+
+    OrcamentoCalculoResponse:
+      type: object
+      description: Resultado do cálculo do orçamento
+      properties:
+        id:
+          type: integer
+          example: 1
+        id_prestador:
+          type: integer
+          example: 1
+        taxa_urgencia:
+          type: number
+          format: float
+          example: 10
+        subtotal:
+          type: number
+          format: float
+          example: 200
+        total:
+          type: number
+          format: float
+          example: 220
+        servicos:
+          type: array
+          description: Lista de serviços do orçamento com total individual
+          items:
+            $ref: '#/components/schemas/ServicoCalculoResponse'
+
+    ServicoCalculoResponse:
+      type: object
+      required:
+        - preco_hora
+        - horas_estimadas
+        - total
+      properties:
+        id_servico:              
+          type: integer
+          example: 5
+        nome:                   
+          type: string
+          example: "Instalação elétrica"
+        preco_hora:
+          type: number
+          format: float
+          example: 50
+        horas_estimadas:
+          type: number
+          format: float
+          example: 4
+        total:
+          type: number
+          format: float
+          example: 200

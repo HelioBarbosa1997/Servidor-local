@@ -6,7 +6,8 @@ const propostaRoute = {
     getById:"/get-by-id/:id",
     getAll:"/",
     update:"/update/:id",
-    delete:"/delete/:id"
+    delete:"/delete/:id",
+    aceitar:"/aceitarProposta/:id"
 }
 
 const router = Router()
@@ -15,6 +16,7 @@ router.get(propostaRoute.getById,propostaControler.get)
 router.post(propostaRoute.create,propostaControler.create)
 router.put(propostaRoute.update,propostaControler.updated)
 router.delete(propostaRoute.delete,propostaControler.delete)
+router.put(propostaRoute.aceitar,propostaControler.aceitar)
 
 
 export { router }

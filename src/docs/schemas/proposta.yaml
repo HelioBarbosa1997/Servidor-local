@@ -80,3 +80,65 @@ components:
         data:
           nullable: true
           example: null
+
+  #projecto final
+
+    PropostaAceite:
+      type: object
+      description: Representa uma proposta que foi aceite
+      properties:
+        id:
+          type: integer
+          description: ID da proposta
+          example: 10
+        id_prestacao_servico:
+          type: integer
+          description: ID da prestação de serviço associada
+          example: 5
+        estado:
+          type: string
+          description: Estado atual da proposta
+          enum:
+            - Pendente
+            - Aceite
+            - Rejeitada
+          example: Aceite
+        data_aceite:
+          type: string
+          format: date-time
+          description: Data em que a proposta foi aceite
+          example: "2026-04-04T15:30:00Z"
+        mensagem:
+          type: string
+          description: Mensagem de confirmação
+          example: "Proposta aceite com sucesso"
+
+    # Response de sucesso
+    successResponse:
+      type: object
+      description: Resposta retornada quando a proposta é aceite com sucesso
+      properties:
+        status:
+          type: string
+          description: Status da operação
+          example: success
+        mensagem:
+          type: string
+          description: Mensagem de confirmação
+          example: Proposta aceite com sucesso
+        proposta:
+          $ref: '#/components/schemas/PropostaAceite'
+
+    # Response de erro
+    ErrorResponse:
+      type: object
+      description: Proposta nao aceite
+      properties:
+        status:
+          type: string
+          description: Status da operação
+          example: error
+        mensagem:
+          type: string
+          description: Erro ao fazer Proposta
+          example: Proposta não encontrada ou já aceite

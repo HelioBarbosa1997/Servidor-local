@@ -1,6 +1,8 @@
 import db from "../lib/db.js";
 import type { OrcamentoTypeDB } from "../utils/types.js";
 
+
+
 export const OrcamentoModel = {
     async create(newOrcamento: OrcamentoTypeDB) {
         try {
@@ -101,6 +103,83 @@ export const OrcamentoModel = {
         } catch (error) {
             console.log(error)
             return null
+        }
+    },
+
+
+    
+                //projecto final
+    async calcularOrcamento(idOrcamento: number) {
+        const connection = await db.getConnection();
+
+        try {
+            // 1. Buscar serviços do orçamento
+            const [servicos]: any = await connection.query(
+                `
+    SELECT preco_hora, horas_estimadas
+    FROM tbl_prestacao_servico
+    WHERE id_orcamento = ?
+    `,
+                [idOrcamento]
+            );
+
+            if (servicos.length === 0) {
+                throw new Error("Nenhum serviço encontrado para este orçamento");
+            }
+
+            // 2. Calcular subtotal
+            let subtotal = 0;
+
+            for (const servico of servicos) {
+                subtotal += servico.preco_hora * servico.horas_estimadas;
+            }
+
+            // 3. Buscar dados do orçamento (urgência + prestador)
+            const [[orcamento]]: any = await connection.query(
+                `
+    SELECT o.taxa_urgencia, p.desconto
+    FROM tbl_orcamento o
+    LEFT JOIN tbl_prestadores p ON p.id = o.id_prestador
+    WHERE o.id = ?
+    `,
+                [idOrcamento]
+            );
+
+            if (!orcamento) {
+                throw new Error("Orçamento não encontrado");
+            }
+
+            let total = subtotal;
+
+            // 4. Aplicar taxa de urgência
+            if (orcamento.taxa_urgencia) {
+                total += total * (orcamento.taxa_urgencia / 100);
+            }
+
+            // 5. Aplicar desconto do prestador
+            if (orcamento.desconto) {
+                total -= total * (orcamento.desconto / 100);
+            }
+
+            // 6. Atualizar total no banco
+            await connection.query(
+                `
+    UPDATE tbl_orcamento
+    SET total = ?
+    WHERE id = ?
+    `,
+                [total, idOrcamento]
+            );
+
+            return {
+                subtotal,
+                total,
+            };
+
+        } catch (error) {
+            throw error;
+        } finally {
+            connection.release();
         }
     }
 }

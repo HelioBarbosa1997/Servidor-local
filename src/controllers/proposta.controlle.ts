@@ -101,31 +101,53 @@ export const propostaControler = {
             data: updatePropostaResponse
         })
     },
-    async delete(req: Request, res: Response) {
-            const { id } = req.params
-    
-    
-            if (!id) {
-                return res.status(400).json({
-                    status: "error",
-                    message: "Id é obrigatorio",
-                    data: null
-                })
-            }
-    
-            const deletePropostaResponse = await PropostaModel.delete(id as string)
-    
-            if (!deletePropostaResponse) {
-                return res.status(400).json({
-                    status: "error",
-                    message: "Erro ao eliminar proposta!",
-                    data: null
-                })
-            }
+
+    //Projeto final
+    async aceitar(req: Request, res: Response) {
+        try {
+            const id = Number(req.params.id);
+
+            await PropostaModel.aceitarProposta(id);
+
             return res.status(200).json({
                 status: "success",
-                message: "Proposta eliminado com sucesso",
-                data: deletePropostaResponse
+                message: "Proposta aceite com sucesso"
+            });
+
+        } catch (error: any) {
+            return res.status(400).json({
+                status: "error",
+                message: error.message
+            });
+        }
+    },
+
+
+    async delete(req: Request, res: Response) {
+        const { id } = req.params
+
+
+        if (!id) {
+            return res.status(400).json({
+                status: "error",
+                message: "Id é obrigatorio",
+                data: null
             })
         }
+
+        const deletePropostaResponse = await PropostaModel.delete(id as string)
+
+        if (!deletePropostaResponse) {
+            return res.status(400).json({
+                status: "error",
+                message: "Erro ao eliminar proposta!",
+                data: null
+            })
+        }
+        return res.status(200).json({
+            status: "success",
+            message: "Proposta eliminado com sucesso",
+            data: deletePropostaResponse
+        })
+    }
 }

@@ -174,7 +174,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResponseError"
 
-  /auth/update-password:
+  /user/update-password:
     put:
       summary: Atualizar password
       tags:
@@ -194,7 +194,7 @@ paths:
         "401":
           description: Password atual incorreta
 
-  /auth/reset-password:
+  /user/reset-password:
     put:
       summary: Resetar password
       tags:
@@ -220,4 +220,4 @@ paths:
         "200":
           description: Password redefinida com sucesso
         "400":
-          description: Token inválido ou expirado
+          description: Password inválido ou expirado

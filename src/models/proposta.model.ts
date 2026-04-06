@@ -73,7 +73,7 @@ export const PropostaModel = {
                         id=?
                             ;`
             const values = [
-                
+
                 id,
                 PropostaAtualizado.id_prestacao_servico,
                 PropostaAtualizado.preco_hora,
@@ -101,6 +101,59 @@ export const PropostaModel = {
         } catch (error) {
             console.log(error)
             return null
+        }
+    },
+
+    //Projecto final
+    async aceitarProposta(idProposta: number) {
+        const conn = await db.getConnection();
+
+        try {
+            await conn.beginTransaction();
+
+            // 1. Buscar prestação associada
+            const [rows]: any = await conn.execute(
+                `SELECT id_prestacao_servico FROM tbl_propostas WHERE id = ?`,
+                [idProposta]
+            );
+
+            if (rows.length === 0) {
+                throw new Error("Proposta não encontrada");
+            }
+
+            const idPrestacao = rows[0].id_prestacao_servico;
+
+            // 2. Aceitar proposta
+            await conn.execute(
+                `UPDATE tbl_propostas SET estado = 'Aceite' WHERE id = ?`,
+                [idProposta]
+            );
+
+            // 3. Rejeitar restantes
+            await conn.execute(
+                `UPDATE tbl_propostas 
+            SET estado = 'Rejeitada' 
+            WHERE id_prestacao_servico = ? AND id != ?`,
+                [idPrestacao, idProposta]
+            );
+
+            // 4. Atualizar prestação
+            await conn.execute(
+                `UPDATE tbl_prestacao_servico 
+            SET estado = 'Aceite' 
+            WHERE id = ?`,
+                [idPrestacao]
+            );
+
+            await conn.commit();
+
+            return { success: true };
+
+        } catch (error) {
+            await conn.rollback();
+            throw error;
+        } finally {
+            conn.release();
         }
     }
 }

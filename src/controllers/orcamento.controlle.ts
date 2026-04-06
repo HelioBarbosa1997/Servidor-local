@@ -129,5 +129,30 @@ export const orcamentoControler = {
             message: "Orcamento criado com sucesso",
             data: deleteOrcamentoResponse
         })
+    },
+
+    //projeto final
+    async calcular(req: Request, res: Response) {
+        try {
+            const idOrcamento = Number(req.params.id);
+
+            if (!idOrcamento) {
+                return res.status(400).json({
+                    message: "ID do orçamento inválido",
+                });
+            }
+
+            const resultado = await OrcamentoModel.calcularOrcamento(idOrcamento);
+
+            return res.status(200).json({
+                message: "Orçamento calculado com sucesso",
+                data: resultado,
+            });
+
+        } catch (error: any) {
+            return res.status(500).json({
+                message: error.message,
+            });
+        }
     }
 }

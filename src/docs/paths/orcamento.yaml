@@ -154,3 +154,34 @@ paths:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseError"
+    
+
+    #calcular orcamento
+  
+  /orcamento/{id}/calcular:
+    put:
+      summary: Calcula o orçamento final
+      tags:
+        - Orçamento
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Orçamento calculado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrcamentoCalculoResponse'
+        '400':
+          description: ID do orçamento inválid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrcamentoCalculoResponse'
+          
+
+  
