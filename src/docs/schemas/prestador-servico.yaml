@@ -1,101 +1,48 @@
-#schema/prestador-servico.ymal
-
 components:
   schemas:
-    prestador-servico:
-      properties:
-        id:
-          type: intenger
-          example: 1
-        designacao:
-          type: string
-          example: Fazer manutencao
-        subTotal:
-          type: number
-          example: 2000
-        horas_estimadas:
-          type: number
-          example: 24
-        id_prestador:
-          type: string
-          example: 1
-        id_servico:
-          type: string
-          example: 2
-        preco_hora:
-          type: string
-          example: 200
-        estado:
-          type: enum
-          example: pendente
-        id_orcamento:
-          type: string
-          example: 3
-        enabled:
-          type: boolean
-          example: true
-        created_at: 
-          type: string
-          example: "2022-01-01T00:00:00.000Z"
-        updated_at:
-          type: string
-          example: "2022-01-01T00:00:00.000Z"
-
-    #schema para criar um novo prestadpr-servico
-    CreatePrestadorService:
+    PrestadorServico:
       type: object
       properties:
-        designacao:
-          type: string
-          example: Fazer manutencao
-        subTotal:
-          type: number
-          example: 2000
-        id_prestador:
-          type: string
+        id:
+          type: integer
           example: 1
-        id_servico:
+        idPrestador:
+          type: integer
+          example: 10
+        idServico:
+          type: integer
+          example: 5
+        createdAt:
           type: string
-          example: 2
-        preco_hora:
-          type: string
-          example: 200
-        estado:
-          type: enum
-          example: pendente
-        id_orcamento:
-          type: string
-          example: 3
-        enabled:
-          type: boolean
-          example: true
+          format: date-time
+          example: "2026-04-07T12:00:00Z"
 
-    #schema generico para sucesso
+    CreatePrestadorServico:
+      type: object
+      required:
+        - idPrestador
+        - idServico
+      properties:
+        idPrestador:
+          type: integer
+          example: 10
+        idServico:
+          type: integer
+          example: 5
+
     ResponseSucess:
       type: object
       properties:
         message:
           type: string
-          example: Prestador de servico criado com sucesso
-        status:
-          type: boolean
-          example: true
-        data: 
-          type: object
-          $ref: "#/components/schemas/Prestador-servico"
+          example: "Operação realizada com sucesso"
 
-    # #shema generico de resposta a erro
     ResponseError:
       type: object
       properties:
         message:
           type: string
-          example: "Error ao buscar serviços"
-        status:
-          type: boolean
-          example: false
-        data:
-          type: object
-          properties:
-            null
-
+          example: "Erro: registro não encontrado"
+        code:
+          type: integer
+          example: 404

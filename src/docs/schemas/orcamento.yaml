@@ -23,7 +23,8 @@ components:
         updated_at:
           type: string
           format: date-time
-          example: "2022-01-01T00:00:00.000Z"
+          nullable: true
+          example: null
 
     CreateOrcamento:
       type: object
@@ -64,7 +65,7 @@ components:
           type: boolean
           example: false
         data:
-          type: object         
+          type: object
           nullable: true
           example: null
 
@@ -103,10 +104,10 @@ components:
         - horas_estimadas
         - total
       properties:
-        id_servico:              
+        id_servico:
           type: integer
           example: 5
-        nome:                   
+        nome:
           type: string
           example: "Instalação elétrica"
         preco_hora:
@@ -121,3 +122,18 @@ components:
           type: number
           format: float
           example: 200
+
+    OrcamentoCalculoRequest:
+      type: object
+      required:
+        - taxa_urgencia
+        - servicos_ids
+      properties:
+        taxa_urgencia:
+          type: number
+          example: 10
+        servicos_ids:
+          type: array
+          items:
+            type: integer
+          example: [1, 2, 3]
