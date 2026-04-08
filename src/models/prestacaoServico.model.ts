@@ -1,5 +1,6 @@
+import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
-import type { PrestadorServicoTypeDB } from "../utils/types.js";
+import type{ PrestadorServicoTypeDB } from "../utils/types.js";
 
 export const PrestadorServicoModel = {
     async create(newPrestadorServico: PrestadorServicoTypeDB) {
@@ -105,6 +106,21 @@ export const PrestadorServicoModel = {
 
         } catch (error) {
             console.log(error)
+            return null
+        }
+    },
+    async getByIdOrcamento(idOrcamento: string): Promise<PrestadorServicoTypeDB | null> {
+        try {
+            const [rows] = await db.execute<PrestadorServicoTypeDB[] & RowDataPacket[]>(
+                `SELECT * TROM tbl_prestador_servico
+                WHERE tbl_prestador_servico.id_orcamento`,
+
+                [idOrcamento]
+            )
+            if(Array.isArray(rows) && rows.length === 0) return null
+            return Array.isArray(rows) ? rows[0] as PrestadorServicoTypeDB : null
+        } catch (err) {
+            console.log(err)
             return null
         }
     }

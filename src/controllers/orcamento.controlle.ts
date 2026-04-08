@@ -1,5 +1,7 @@
 import { OrcamentoModel } from "../models/orcamento.model.js"
-import type { OrcamentoTypeDB } from "../utils/types.js"
+import { PrestadorServicoModel } from "../models/prestacaoServico.model.js"
+import { PropostaModel } from "../models/proposta.model.js"
+import { EstadoProposta, type OrcamentoTypeDB, type PropostaTypeDB } from "../utils/types.js"
 import type { Request, Response } from "express"
 
 export const orcamentoControler = {
@@ -130,7 +132,7 @@ export const orcamentoControler = {
             data: deleteOrcamentoResponse
         })
     },
-
+    /*
     //projeto final
     async calcular(req: Request, res: Response) {
         try {
@@ -154,5 +156,87 @@ export const orcamentoControler = {
                 message: error.message,
             });
         }
+    }*/
+
+    async calculateBudget(req:Request, res: Response) {
+        const {id} = req.params
+
+        if (!id) {
+            return res.status(400).json({
+                status: "error",
+                message: "Id é obrigatorio",
+                data: null
+            })
+        }
+        const prestacaoServico = await PrestadorServicoModel.getByIdOrcamento(id as string)
+
+        if (!prestacaoServico) {
+            return res.status(404).json({
+                status: "error",
+                message: "Prestacao de serviço nao encontrado"
+            })
+        }
+
+        const proposals = await PropostaModel.getByPrestacaoServico(prestacaoServico.id)
+
+        if(!proposals) {
+            return res.status(404).json({
+                status: "error",
+                message: "Proposta nao encontrado",
+                data: null
+            })
+        }
+        const acceptedProposal: PropostaTypeDB | undefined = proposals.find((proposals) => proposals.estado === EstadoProposta.ACEITE)
+
+        if(!acceptedProposal) {
+            return res.status(404).json({
+                status: "error",
+                message: "Ainda nenhuma proposta foi aceite",
+                data: null
+            })
+        }
+
+        const precoHora = acceptedProposal.preco_hora
+        const horasEstimadas = acceptedProposal.horas_estimadas
+
+        //fetch prestador to get urgency
+        const prestador = await PrestadorModel.get(acceptedProposal.id_prestador)
+
+        if (!prestador) {
+            return res.status(404).json({
+                status: "error",
+                message: "Prestador nao encontrado",
+                data: null
+            })
+        }
+        const urgencyTax = prestador.taxaUrgencia
+        const minimumDiscount = prestador.minimoDesconto
+        const discountPercentage = prestador.percentagemDesconto
+
+        //calculate the budget based no utilis
+        let subtotal = precoHora * horasEstimadas
+
+        if (subtotal> minimumDiscount) {
+            subtotal = subtotal * (1 - discountPercentage)
+        }
+
+        if (prestacaoServico.urgente) {
+            subtotal = subtotal *(1 - urgencyTax)
+        }
+
+        const updateOrcamentoResponse = await OrcamentoModel.updateBudget(id as string)
+
+        if (!updateOrcamentoResponse) {
+            return res.status(400).json({
+                status: "error",
+                message: "Erro ao calcular orcamento",
+                data: null
+            })
+        }
+        return res.status(200).json({
+                status: "sucess",
+                message: "Erro ao calcular orcamento",
+                data: updateOrcamentoResponse
+        })
     }
 }

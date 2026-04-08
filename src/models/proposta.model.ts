@@ -1,3 +1,4 @@
+import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
 import type { PropostaTypeDB } from "../utils/types.js";
 
@@ -104,6 +105,7 @@ export const PropostaModel = {
         }
     },
 
+    /*
     //Projecto final
     async aceitarProposta(idProposta: number) {
         const conn = await db.getConnection();
@@ -154,6 +156,23 @@ export const PropostaModel = {
             throw error;
         } finally {
             conn.release();
+        }
+    }
+        */
+    
+    async getByPrestacaoServico(idPrestacaoServico: string): Promise<PropostaTypeDB[] | null> {
+        try {
+            const [rows] = await db.execute<PropostaTypeDB[] & RowDataPacket[]>(
+                `SELECT * FROM tbl_proposta
+                WHERE tbl_proposta.id_prestador_servico = ?`,
+
+                [idPrestacaoServico]
+            )
+            if (Array.isArray(rows) && rows.length === 0) return null
+            return Array.isArray(rows) ? rows :null
+        }catch (err) { 
+            console.log (err)
+            return null
         }
     }
 }
