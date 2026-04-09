@@ -1,7 +1,8 @@
 import { OrcamentoModel } from "../models/orcamento.model.js"
 import { PrestadorServicoModel } from "../models/prestacaoServico.model.js"
+import { PrestadorModel } from "../models/prestador.model.js"
 import { PropostaModel } from "../models/proposta.model.js"
-import { EstadoProposta, type OrcamentoTypeDB, type PropostaTypeDB } from "../utils/types.js"
+import { EstadoProposta, type OrcamentoTypeDB, type PropostaTypeDB, type ResponseType } from "../utils/types.js"
 import type { Request, Response } from "express"
 
 export const orcamentoControler = {
@@ -158,28 +159,31 @@ export const orcamentoControler = {
         }
     }*/
 
-    async calculateBudget(req:Request, res: Response) {
-        const {id} = req.params
+    async calculateBudget(req: Request, res: Response) {
+        const { id } = req.params
 
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Id é obrigatorio",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
         const prestacaoServico = await PrestadorServicoModel.getByIdOrcamento(id as string)
 
         if (!prestacaoServico) {
-            return res.status(404).json({
+            const response: ResponseType<null> = {
                 status: "error",
-                message: "Prestacao de serviço nao encontrado"
-            })
+                message: "Prestacao de serviço nao encontrado",
+                data: null
+            }
+            return res.status(404).json(response)
         }
 
         const proposals = await PropostaModel.getByPrestacaoServico(prestacaoServico.id)
 
-        if(!proposals) {
+        if (!proposals) {
             return res.status(404).json({
                 status: "error",
                 message: "Proposta nao encontrado",
@@ -188,7 +192,7 @@ export const orcamentoControler = {
         }
         const acceptedProposal: PropostaTypeDB | undefined = proposals.find((proposals) => proposals.estado === EstadoProposta.ACEITE)
 
-        if(!acceptedProposal) {
+        if (!acceptedProposal) {
             return res.status(404).json({
                 status: "error",
                 message: "Ainda nenhuma proposta foi aceite",
@@ -216,15 +220,15 @@ export const orcamentoControler = {
         //calculate the budget based no utilis
         let subtotal = precoHora * horasEstimadas
 
-        if (subtotal> minimumDiscount) {
+        if (subtotal > minimumDiscount) {
             subtotal = subtotal * (1 - discountPercentage)
         }
 
         if (prestacaoServico.urgente) {
-            subtotal = subtotal *(1 - urgencyTax)
+            subtotal = subtotal * (1 - urgencyTax)
         }
 
-        const updateOrcamentoResponse = await OrcamentoModel.updateBudget(id as string)
+        const updateOrcamentoResponse = await OrcamentoModel.updateBudget(id as string, subtotal as number)
 
         if (!updateOrcamentoResponse) {
             return res.status(400).json({
@@ -233,10 +237,11 @@ export const orcamentoControler = {
                 data: null
             })
         }
-        return res.status(200).json({
-                status: "sucess",
-                message: "Erro ao calcular orcamento",
-                data: updateOrcamentoResponse
-        })
+        const response: ResponseType<OrcamentoTypeDB> = {
+            status: "sucess",
+            message: "Erro ao calcular orcamento",
+            data: updateOrcamentoResponse
+        }
+        return res.status(200).json(response)
     }
 }

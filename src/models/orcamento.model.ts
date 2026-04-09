@@ -107,8 +107,8 @@ export const OrcamentoModel = {
     },
 
 
-    
-                //projecto final
+/*
+    //projecto final
     async calcularOrcamento(idOrcamento: number) {
         const connection = await db.getConnection();
 
@@ -180,6 +180,20 @@ export const OrcamentoModel = {
             throw error;
         } finally {
             connection.release();
+        }
+    },
+*/
+
+    async updateBudget(id: string, total: number) {
+        try {
+            const rows: any = await db.execute(
+                `UPATED tbl_orcamento SET total = ?, updated_at = ? WHERE id = ?`,
+                [total, new Date(), id]
+            )
+            return rows[0].affectedRows === 0 ? null : rows[0]
+        } catch (err) {
+            console.log(err)
+            return null
         }
     }
 }

@@ -1,23 +1,23 @@
 import db from "../lib/db.js";
-import type { PrestadorType } from "../utils/types.js";
+import type { PrestadorType, PrestadorTypeDB } from "../utils/types.js";
 
 
 export const PrestadorModel = {
-    async create(newPrestador: PrestadorType) {
+    async create(newPrestador: PrestadorTypeDB) {
         try {
 
             const [rows] = await db.execute(
                 `INSERT INTO tbl_prestador
-            ( id, nome, precoHora, minimoParaDesconto, percentagemDesconto, enabled, created_at, updated_at)
+            ( id, taxaUrgencia, percentagemDesconto, minimoDesconto, nif, profissao, enable, created_at, updated_at)
             VALUES (?, ?, ?, ?, ?, ?, ?,?)`,
                 [
                     null,
-                    newPrestador.nome,
-                    newPrestador.precoHora,
-                    newPrestador.minimoParaDesconto,
-                    newPrestador.percentagemDesconto,
                     newPrestador.taxaUrgencia,
-                    newPrestador.enabled,
+                    newPrestador.percentagemDesconto,
+                    newPrestador.minimoDesconto,
+                    newPrestador.nif,
+                    newPrestador.profissao,
+                    newPrestador.enable,
                     new Date(),
                     new Date()
                 ]
@@ -46,15 +46,15 @@ export const PrestadorModel = {
         }
     },
 
-    async get(id: string) {
+    async get(id: string): Promise<PrestadorTypeDB | null> {
         try {
             const query = `SELECT * FROM tbl_prestador WHERE id = ?`
 
             const value = [id]
 
-            const rows = await db.execute(query, value)
+            const [rows] = await db.execute(query, value)
 
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] : null
+            return Array.isArray(rows) ? rows[0] as PrestadorTypeDB : null
 
         } catch (error) {
             console.log(error)
@@ -62,16 +62,15 @@ export const PrestadorModel = {
         }
     },
 
-    async update(id: string, PrestadorAtualizado: PrestadorType) {
+    async update(id: string, PrestadorAtualizado: PrestadorTypeDB) {
         try {
             const query = `UPDATE tbl_prestador 
                     SET 
-                        nome=?,
-                        precoHora=?,
-                        profissao=?,
-                        minimoParaDesconto=?,
-                        percentagemDesconto=?,
                         taxaUrgencia=?,
+                        percentagemDesconto=?,
+                        minimoDesconto=?,
+                        nif=?,
+                        profissao=?,
                         enabled=?,
                         uptaded=?
 
@@ -80,13 +79,13 @@ export const PrestadorModel = {
                             ;`
             const values = [
                 
-                PrestadorAtualizado.nome,
-                PrestadorAtualizado.precoHora,
-                PrestadorAtualizado.profissao,
-                PrestadorAtualizado.minimoParaDesconto,
-                PrestadorAtualizado.percentagemDesconto,
                 PrestadorAtualizado.taxaUrgencia,
-                PrestadorAtualizado.enabled,
+                PrestadorAtualizado.percentagemDesconto,
+                PrestadorAtualizado.minimoDesconto,
+                PrestadorAtualizado.nif,
+                PrestadorAtualizado.profissao,
+                PrestadorAtualizado.taxaUrgencia,
+                PrestadorAtualizado.enable,
                 Date()
             ]
             const rows = await db.execute(query, values)
