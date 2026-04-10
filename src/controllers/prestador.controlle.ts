@@ -1,79 +1,93 @@
 import type { Request, Response } from "express"
-import type { PrestadorType } from "../utils/types.js"
+import type { PrestadorTypeDB, ResponseType } from "../utils/types.js"
 import { PrestadorModel } from "../models/prestador.model.js"
 
 export const prestadorControler = {
     async create(req: Request, res: Response) {
-        const newPrestador: PrestadorType = req.body
+        const newPrestador: PrestadorTypeDB = req.body
         if (!newPrestador) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
-                message: "Proposta de servico invalidos",
+                message: "Prestador de servico invalidos",
                 data: null
-            })
-        }
-        const createPropostaResponse = await PrestadorModel.create(newPrestador)
+            }
+            return res.status(400).json(response)
 
-        if (createPropostaResponse === null) {
-            return res.status(400).json({
-                status: "error",
-                message: "Erro ao criar Proposta",
-                data: null
-            })
+
         }
-        res.status(200).json({
+        const createPrestadorResponse = await PrestadorModel.create(newPrestador)
+
+        if (createPrestadorResponse === null) {
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Erro ao criar Prestador",
+                data: null
+            }
+            return res.status(400).json(response)
+        }
+        const response: ResponseType<PrestadorTypeDB> = {
             status: "success",
-            message: "Proposta criado com sucesso",
-            data: createPropostaResponse
-        })
+            message: "Prestador criado com sucesso",
+            data: createPrestadorResponse
+        }
+        return res.status(200).json(response)
     },
 
 
     async getAll(req: Request, res: Response) {
         const getAllPrestadorResponse = await PrestadorModel.getAll()
         if (!getAllPrestadorResponse) {
-            return res.status(500).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao buscar servidor",
                 data: null
-            })
+            }
+            return res.status(500).json(response)
         }
-        return res.status(200).json({
-            status: "sucess",
+
+        const response: ResponseType<PrestadorTypeDB[]> = {
+            status: "success",
             message: "Prestador buscado com sucesso",
             data: getAllPrestadorResponse
-        })
+        }
+        return res.status(200).json(response)
     },
 
     async get(req: Request, res: Response) {
         const id = req.params.id
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Id de prestador nao encontrado!",
                 data: null
+            }
+            return res.status(400).json({
+
             })
         }
-        const getServiceResponse = await PrestadorModel.get(id as string)
+        const getPrestadorResponse = await PrestadorModel.get(id as string)
 
-        if (!getServiceResponse) {
-            return res.status(404).json({
+        if (!getPrestadorResponse) {
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Prestador nao encontrado!",
                 data: null
-            })
+            }
+            return res.status(404).json(response)
+
         }
-        return res.status(200).json({
-            status: "sucess",
+        const response: ResponseType<PrestadorTypeDB> = {
+            status: "success",
             message: "Prestador encontrado com sucesso!",
-            data: getServiceResponse
-        })
+            data: getPrestadorResponse
+        }
+        return res.status(200).json(response)
     },
 
     async updated(req: Request, res: Response) {
         const { id } = req.params
 
-        const updatePrestador: PrestadorType = req.body
+        const updatePrestador: PrestadorTypeDB = req.body
 
         if (!id) {
             return res.status(400).json({
@@ -106,30 +120,30 @@ export const prestadorControler = {
     },
 
     async delete(req: Request, res: Response) {
-                const { id } = req.params
-        
-        
-                if (!id) {
-                    return res.status(400).json({
-                        status: "error",
-                        message: "Id é obrigatorio",
-                        data: null
-                    })
-                }
-        
-                const deletePropostaResponse = await PrestadorModel.delete(id as string)
-        
-                if (!deletePropostaResponse) {
-                    return res.status(400).json({
-                        status: "error",
-                        message: "Erro ao eliminar prestador!",
-                        data: null
-                    })
-                }
-                return res.status(200).json({
-                    status: "success",
-                    message: "Prestador eliminado com sucesso",
-                    data: deletePropostaResponse
-                })
-            }
+        const { id } = req.params
+
+
+        if (!id) {
+            return res.status(400).json({
+                status: "error",
+                message: "Id é obrigatorio",
+                data: null
+            })
+        }
+
+        const deletePrestadorResponse = await PrestadorModel.delete(id as string)
+
+        if (!deletePrestadorResponse) {
+            return res.status(400).json({
+                status: "error",
+                message: "Erro ao eliminar prestador!",
+                data: null
+            })
+        }
+        return res.status(200).json({
+            status: "success",
+            message: "Prestador eliminado com sucesso",
+            data: deletePrestadorResponse
+        })
+    }
 }

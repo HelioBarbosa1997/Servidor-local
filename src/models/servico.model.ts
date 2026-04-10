@@ -1,9 +1,10 @@
+import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
 import type { ServicoDBType } from "../utils/types.js";
 import { generateUUID } from "../utils/uuid.js";
 
 export const ServiceModel = {
-    async create(newService: ServicoDBType) {
+    async create(newService: ServicoDBType): Promise<ServicoDBType | null> {
         try {
 
             const query = `INSERT INTO tbl_servicos VALUES (?, ?, ?, ?, ?, ?, ?)`
@@ -18,37 +19,36 @@ export const ServiceModel = {
                 new Date()
             ]
 
-            const rows = await db.execute(query, values)
+            const [rows] = await db.execute<ServicoDBType & RowDataPacket[]>(query, values)
 
-            return rows
+            return rows as ServicoDBType;
         } catch (error) {
             console.log(error)
             return null
         }
     },
 
-    async getAll() {
+    async getAll(): Promise<ServicoDBType[] | null> {
         try {
-            const query = `SELECT * FROM tbl_servicos`
 
-            const rows = await db.execute(query)
+            const [rows] = await db.execute<ServicoDBType[] & RowDataPacket[]>(`SELECT * FROM tbl_servicos`)
 
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] : []
+            return rows as ServicoDBType[]
 
         } catch (error) {
             console.log(error)
             return null
         }
     },
-    async get(id: string) {
+    async get(id: string): Promise<ServicoDBType | null> {
         try {
             const query = `SELECT * FROM tbl_servicos WHERE id = ?`
 
             const value = [id]
 
-            const rows = await db.execute(query, value)
+            const [rows] = await db.execute<ServicoDBType & RowDataPacket[]>(query, value)
 
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] : null
+            return Array.isArray(rows) && rows.length > 0 ? rows[0] as ServicoDBType : null
 
         } catch (error) {
             console.log(error)

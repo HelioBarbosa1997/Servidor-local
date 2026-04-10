@@ -140,7 +140,7 @@ export interface PrestadorTypeDB {
 }
 
 export interface ResponseType<T> {
-    status: "sucess" | "error",
+    status: "success" | "error",
     message: string,
     data: T | null
 }

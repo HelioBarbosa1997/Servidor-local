@@ -17,7 +17,7 @@ router.get(orcamentoRoute.getById,orcamentoControler.get)
 router.post(orcamentoRoute.create,orcamentoControler.create)
 router.put(orcamentoRoute.update,orcamentoControler.updated)
 router.delete(orcamentoRoute.delete,orcamentoControler.delete)
-router.put(orcamentoRoute.calcular,orcamentoControler.calcular)
+router.put(orcamentoRoute.calcular,orcamentoControler.calculateBudget)
 
 
 export { router }

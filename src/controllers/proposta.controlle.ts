@@ -1,70 +1,85 @@
 import { PropostaModel } from "../models/proposta.model.js"
-import type { PropostaTypeDB } from "../utils/types.js"
+import type { PropostaTypeDB, ResponseType } from "../utils/types.js"
 import type { Request, Response } from "express"
 
 export const propostaControler = {
     async create(req: Request, res: Response) {
         const newProposta: PropostaTypeDB = req.body
+
         if (!newProposta) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Proposta de servico invalidos",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
         const createPropostaResponse = await PropostaModel.create(newProposta)
 
         if (createPropostaResponse === null) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao criar Proposta",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
-        res.status(200).json({
+
+        const response: ResponseType<PropostaTypeDB> = {
             status: "success",
             message: "Proposta criado com sucesso",
             data: createPropostaResponse
-        })
+        }
+        res.status(200).json(response)
     },
+
+
     async getAll(req: Request, res: Response) {
         const getAllPropostaResponse = await PropostaModel.getAll()
+
         if (!getAllPropostaResponse) {
-            return res.status(500).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao buscar servidor",
                 data: null
-            })
+            }
+            return res.status(500).json(response)
         }
-        return res.status(200).json({
-            status: "sucess",
-            message: "Serviços buscado com sucesso",
+        const response: ResponseType<PropostaTypeDB[]> = {
+            status: "success",
+            message: "Proposta buscado com sucesso",
             data: getAllPropostaResponse
-        })
+        }
+        return res.status(200).json(response)
     },
     async get(req: Request, res: Response) {
         const id = req.params.id
+
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Id de proposta nao fornecido",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
         const getPropostaResponse = await PropostaModel.get(id as string)
 
         if (!getPropostaResponse) {
-            return res.status(404).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Proposta nao efetuado!",
                 data: null
-            })
+            }
+            return res.status(404).json(response)
         }
-        return res.status(200).json({
-            status: "sucess",
+
+        const response: ResponseType<PropostaTypeDB> = {
+            status: "success",
             message: "Proposta efetuado com sucesso",
             data: getPropostaResponse
-        })
+        }
+        return res.status(200).json(response)
     },
 
     async updated(req: Request, res: Response) {

@@ -7,7 +7,7 @@ const propostaRoute = {
     getById:"/get-by-id/:id",
     getAll:"/",
     update:"/update/:id",
-    delete:"/delete/:id"
+    delete:"/delete/:id",
 }
 
 const router = Router()

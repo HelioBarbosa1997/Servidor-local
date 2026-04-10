@@ -1,12 +1,13 @@
+import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
 import type { PrestadorType, PrestadorTypeDB } from "../utils/types.js";
 
 
 export const PrestadorModel = {
-    async create(newPrestador: PrestadorTypeDB) {
+    async create(newPrestador: PrestadorTypeDB): Promise<PrestadorTypeDB | null> {
         try {
 
-            const [rows] = await db.execute(
+            const [rows] = await db.execute<PrestadorTypeDB & RowDataPacket[]>(
                 `INSERT INTO tbl_prestador
             ( id, taxaUrgencia, percentagemDesconto, minimoDesconto, nif, profissao, enable, created_at, updated_at)
             VALUES (?, ?, ?, ?, ?, ?, ?,?)`,
@@ -25,23 +26,20 @@ export const PrestadorModel = {
 
             console.log({ rows });
 
-            return rows;
+            return rows as PrestadorTypeDB;
 
         } catch (error) {
-            console.log(error);
             return null;
         }
     },
-    async getAll() {
+    async getAll(): Promise<PrestadorTypeDB[] | null> {
         try {
-            const query = `SELECT * FROM tbl_prestador`
 
-            const rows = await db.execute(query)
+            const [rows] = await db.execute<PrestadorTypeDB[] & RowDataPacket[]>(`SELECT * FROM tbl_prestador`)
 
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] : []
+            return rows as PrestadorTypeDB[]
 
         } catch (error) {
-            console.log(error)
             return null
         }
     },
@@ -52,9 +50,9 @@ export const PrestadorModel = {
 
             const value = [id]
 
-            const [rows] = await db.execute(query, value)
+            const [rows] = await db.execute<PrestadorTypeDB & RowDataPacket[]>(query, value)
 
-            return Array.isArray(rows) ? rows[0] as PrestadorTypeDB : null
+            return Array.isArray(rows) && rows.length > 0 ? rows[0] as PrestadorTypeDB : null
 
         } catch (error) {
             console.log(error)
@@ -78,7 +76,7 @@ export const PrestadorModel = {
                         id=?
                             ;`
             const values = [
-                
+
                 PrestadorAtualizado.taxaUrgencia,
                 PrestadorAtualizado.percentagemDesconto,
                 PrestadorAtualizado.minimoDesconto,

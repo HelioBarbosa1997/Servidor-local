@@ -1,5 +1,5 @@
-import type { PrestadorServicoTypeDB } from "../utils/types.js"
-import { PrestadorServicoModel } from "../models/prestadorServico.model.js"
+import type { PrestadorServicoTypeDB, ResponseType } from "../utils/types.js"
+import { PrestadorServicoModel } from "../models/prestacaoServico.model.js"
 import type { Request, Response } from "express"
 
 
@@ -8,67 +8,82 @@ export const prestadorServicoControler = {
     async create(req: Request, res: Response) {
         const newPrestacaoServico: PrestadorServicoTypeDB = req.body
         if (!newPrestacaoServico) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Orcamento de servico invalidos",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
         const createPrestadorServicoResponse = await PrestadorServicoModel.create(newPrestacaoServico)
 
         if (createPrestadorServicoResponse === null) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao pedir orcamento",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
-        res.status(200).json({
+
+        const response: ResponseType<PrestadorServicoTypeDB> = {
             status: "success",
             message: "Pedido de orcamento feito com sucesso",
             data: createPrestadorServicoResponse
-        })
+        }
+        res.status(200).json(response)
     },
+
+
     async getAll(req: Request, res: Response) {
         const getAllPrestadorServicoResponse = await PrestadorServicoModel.getAll()
+
         if (!getAllPrestadorServicoResponse) {
-            return res.status(500).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao buscar servidor",
                 data: null
-            })
+            }
+            return res.status(500).json(response)
         }
-        return res.status(200).json({
-            status: "sucess",
+        const response: ResponseType<PrestadorServicoTypeDB[]> = {
+            status: "success",
             message: "Prestacao de servico feito com sucesso",
             data: getAllPrestadorServicoResponse
-        })
+        }
+        return res.status(200).json(response)
     },
 
     async get(req: Request, res: Response) {
         const id = req.params.id
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Id de prestação de serviço nao encontrado!",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
         const getPrestadorServicoResponse = await PrestadorServicoModel.get(id as string)
 
         if (!getPrestadorServicoResponse) {
-            return res.status(404).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Prestação de servico nao encontrado!",
                 data: null
-            })
+            }
+            return res.status(404).json(response)
         }
-        return res.status(200).json({
-            status: "sucess",
+
+        const response: ResponseType<PrestadorServicoTypeDB> = {
+            status: "success",
             message: "Prestacao de serviço encontrado com sucesso!",
             data: getPrestadorServicoResponse
-        })
+        }
+        return res.status(200).json(response)
     },
+
+
     async updated(req: Request, res: Response) {
         const { id } = req.params
 
@@ -104,31 +119,56 @@ export const prestadorServicoControler = {
         })
     },
     async delete(req: Request, res: Response) {
-            const { id } = req.params
-    
-    
-            if (!id) {
-                return res.status(400).json({
-                    status: "error",
-                    message: "Id é obrigatorio",
-                    data: null
-                })
-            }
-    
-            const deletePrestadorServicoResponse = await PrestadorServicoModel.delete(id as string)
-    
-            if (!deletePrestadorServicoResponse) {
-                return res.status(400).json({
-                    status: "error",
-                    message: "Erro ao eliminar prestador de serviço!",
-                    data: null
-                })
-            }
-            return res.status(200).json({
-                status: "success",
-                message: "Prestador de serviço criado com sucesso",
-                data: deletePrestadorServicoResponse
+        const { id } = req.params
+
+
+        if (!id) {
+            return res.status(400).json({
+                status: "error",
+                message: "Id é obrigatorio",
+                data: null
             })
         }
+
+        const deletePrestadorServicoResponse = await PrestadorServicoModel.delete(id as string)
+
+        if (!deletePrestadorServicoResponse) {
+            return res.status(400).json({
+                status: "error",
+                message: "Erro ao eliminar prestador de serviço!",
+                data: null
+            })
+        }
+        return res.status(200).json({
+            status: "success",
+            message: "Prestador de serviço criado com sucesso",
+            data: deletePrestadorServicoResponse
+        })
+    },
+
+    async getAllPrestacaoServicoDetalhada(req: Request, res: Response) {
+        const { limit, offset } = req.query as { limit: string, offset: string }
+
+        let LIMIT = 10
+        let OFFSET = 0
+
+        if (limit && parseInt(limit) > 0) LIMIT = parseInt(limit)
+        if (offset && parseInt(offset) > 0) OFFSET = parseInt(offset)
+
+        const getAllPrestacaoServicoResponse = await PrestadorServicoModel.getAllPrestacaoServicoDetalhada(LIMIT, OFFSET)
+
+        if (!getAllPrestacaoServicoResponse) {
+            return res.status(500).json({
+                status: "error",
+                message: "Erro ao buscar prestacoes de servico",
+                data: null
+            })
+        }
+        return res.status(200).json({
+            status: "sucess",
+            message: "Prestadocoes de servico buscadas com sucesso",
+            data: getAllPrestacaoServicoResponse
+        })
     }
+}
 

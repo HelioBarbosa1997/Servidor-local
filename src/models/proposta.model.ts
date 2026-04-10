@@ -4,10 +4,10 @@ import type { PropostaTypeDB } from "../utils/types.js";
 
 
 export const PropostaModel = {
-    async create(newProposta: PropostaTypeDB) {
+    async create(newProposta: PropostaTypeDB): Promise<PropostaTypeDB | null> {
         try {
 
-            const [rows] = await db.execute(
+            const [rows] = await db.execute<PropostaTypeDB & RowDataPacket[]>(
                 `INSERT INTO tbl_proposta
             ( id, id_prestacao_servico, preco_hora, horas_estimadas, estado, enabled, created_at, updated_at)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
@@ -25,35 +25,37 @@ export const PropostaModel = {
 
             console.log({ rows });
 
-            return rows;
+            return rows as PropostaTypeDB;
 
         } catch (error) {
             console.log(error);
             return null;
         }
     },
-    async getAll() {
+    async getAll(): Promise<PropostaTypeDB[] | null> {
         try {
             const query = `SELECT * FROM tbl_proposta`
 
-            const rows = await db.execute(query)
+            const [rows] = await db.execute<PropostaTypeDB[] & RowDataPacket[]>(query)
 
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] : []
+            return rows as PropostaTypeDB[]
 
         } catch (error) {
             console.log(error)
             return null
         }
     },
-    async get(id: string) {
+
+    
+    async get(id: string): Promise<PropostaTypeDB | null> {
         try {
             const query = `SELECT * FROM tbl_proposta WHERE id = ?`
 
             const value = [id]
 
-            const rows = await db.execute(query, value)
+            const [rows] = await db.execute<PropostaTypeDB & RowDataPacket[]>(query, value)
 
-            return Array.isArray(rows) && rows.length > 0 ? rows[0] : null
+            return Array.isArray(rows) && rows.length > 0 ? rows[0] as PropostaTypeDB : null
 
         } catch (error) {
             console.log(error)
@@ -105,7 +107,7 @@ export const PropostaModel = {
         }
     },
 
-    /*
+
     //Projecto final
     async aceitarProposta(idProposta: number) {
         const conn = await db.getConnection();
@@ -157,9 +159,9 @@ export const PropostaModel = {
         } finally {
             conn.release();
         }
-    }
-        */
-    
+    },
+
+
     async getByPrestacaoServico(idPrestacaoServico: string): Promise<PropostaTypeDB[] | null> {
         try {
             const [rows] = await db.execute<PropostaTypeDB[] & RowDataPacket[]>(
@@ -169,9 +171,9 @@ export const PropostaModel = {
                 [idPrestacaoServico]
             )
             if (Array.isArray(rows) && rows.length === 0) return null
-            return Array.isArray(rows) ? rows :null
-        }catch (err) { 
-            console.log (err)
+            return Array.isArray(rows) ? rows : null
+        } catch (err) {
+            console.log(err)
             return null
         }
     }
