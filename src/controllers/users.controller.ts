@@ -1,6 +1,6 @@
 import { usersModel } from "../models/users.model.js"
 import { comparePassword, hashPassword } from "../utils/password.js"
-import type { UserType } from "../utils/types.js"
+import type { ResponseType, UserType } from "../utils/types.js"
 import type { Request, Response } from "express"
 import jwt from "jsonwebtoken"
 
@@ -10,25 +10,27 @@ export const userController = {
         const newUser: UserType = req.body
 
         if (!newUser) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Dados de utilizador inválidos",
                 data: null,
-            })
+            }
+            return res.status(400).json(response)
         }
 
         console.log(newUser)
 
         const createUserResponse = await usersModel.create(newUser)
 
-        return res.status(201).json({
+        const response: ResponseType<UserType> = {
             status: "success",
             message: "Utilizador criado com sucesso",
             data: createUserResponse,
-        })
+        }
+        return res.status(201).json(response)
     },
 
-    // Listar todos os utilizadores
+    // Listar  os utilizadores por id
     async get(req: Request, res: Response) {
         const getUsersResponse = await usersModel.get()
         return res.status(200).json({
@@ -147,7 +149,7 @@ export const userController = {
         if (!isPwdValid) {
             return res.status(400).json({
                 status: "error",
-                message: "Credenciais inv;alidas"
+                message: "Credenciais invalidas"
             })
         }
 

@@ -43,7 +43,7 @@ export const OrcamentoModel = {
             console.log(error)
             return null
         }
-    },
+    },   
 
     async get(id: string): Promise<OrcamentoTypeDB | null> {
         try {
@@ -82,7 +82,7 @@ export const OrcamentoModel = {
                 OrcamentoAtualizado.total,
                 OrcamentoAtualizado.id_utilizadores,
                 OrcamentoAtualizado.enabled,
-                Date()
+                new  Date()
             ]
             const rows = await db.execute(query, values)
 

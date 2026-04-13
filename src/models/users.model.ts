@@ -1,3 +1,4 @@
+import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
 import { formatDateDDMMYYYY } from "../utils/date.js";
 import { hashPassword, updatePassword } from "../utils/password.js";
@@ -5,9 +6,9 @@ import type { UserType } from "../utils/types.js";
 import { generateUUID } from "../utils/uuid.js";
 
 export const usersModel = {
-    async create(newUser: UserType) {
+    async create(newUser: UserType): Promise<UserType | null> {
         try {
-            const [rows] = await db.execute(
+            const [rows] = await db.execute<UserType & RowDataPacket[]>(
                 `INSERT INTO tbl_utilizadores 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
@@ -26,17 +27,41 @@ export const usersModel = {
                 ]
             )
             console.log({ rows })
-            return rows
+            return rows as UserType
         } catch (err) {
             console.log(err)
             return null
         }
     },
 
-    async get() {
-        const [rows] = await db.execute("SELECT * FROM tbl_utilizadores")
+    async getAll(): Promise<UserType[] | null> {
+        try {
+            const query = `SELECT * FROM tbl_utilizadores`
 
-        return rows
+            const [rows] = await db.execute<UserType[] & RowDataPacket[]>(query);
+
+            return rows as UserType[]
+
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    },
+
+    async get(id: string): Promise<UserType | null> {
+        try {
+            const query = `SELECT * FROM tbl_utilizadores WHERE id = ?`
+
+            const value = [id]
+
+            const [rows] = await db.execute<UserType & RowDataPacket[]>(query, value)
+
+            return Array.isArray(rows) && rows.length > 0 ? rows[0] as UserType : null
+
+        } catch (error) {
+            console.log(error)
+            return null
+        }
     },
 
     async getUserById(id: string) {
@@ -148,7 +173,7 @@ export const usersModel = {
 
             const hasPassword = await hashPassword(newPassword)
             const value = [hasPassword, new Date(), id]
-            
+
             //User se existe
             const [rows] = await db.execute(query, value);
             return rows
@@ -163,7 +188,7 @@ export const usersModel = {
 
             const hasPassword = await hashPassword(newPassword)
             const value = [hasPassword, new Date(), id]
-            
+
             //User se existe
             const [rows] = await db.execute(query, value);
             return rows
