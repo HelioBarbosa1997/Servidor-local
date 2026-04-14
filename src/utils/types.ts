@@ -205,3 +205,8 @@ export interface EmpresaTypeDB {
     created_at: string,
     updated_at: string
 }
+
+export interface AuthResponse {
+    user: UserType,
+    token: string
+}

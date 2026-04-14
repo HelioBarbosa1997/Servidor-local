@@ -64,9 +64,9 @@ export const usersModel = {
         }
     },
 
-    async getUserById(id: string) {
+    async getUserById(id: string): Promise<UserType | null> {
         try {
-            const [rows] = await db.execute(
+            const [rows] = await db.execute<UserType & RowDataPacket[]>(
                 `SELECT * FROM tbl_utilizadores 
         WHERE tbl_utilizadores.id = ?`,
 
@@ -74,7 +74,7 @@ export const usersModel = {
             )
 
             if (Array.isArray(rows) && rows.length === 0) return null
-            return Array.isArray(rows) ? rows[0] : null
+            return Array.isArray(rows) ? rows[0] as UserType : null
         } catch (err) {
             console.log(err)
             return null
@@ -83,7 +83,7 @@ export const usersModel = {
 
     async getByEmail(email: string): Promise<UserType | null> {
         try {
-            const [rows] = await db.execute(
+            const [rows] = await db.execute<UserType & RowDataPacket[]>(
                 `SELECT * FROM tbl_utilizadores WHERE tbl_utilizadores.email = ?`, [email]
 
             )
@@ -98,7 +98,7 @@ export const usersModel = {
 
     async getById(id: string): Promise<UserType | null> {
         try {
-            const [rows] = await db.execute(
+            const [rows] = await db.execute<UserType & RowDataPacket[]>(
                 `SELECT * FROM tbl_utilizadores WHERE tbl_utilizadores.id = ?`, [id]
 
             )
@@ -167,7 +167,7 @@ export const usersModel = {
 
     },
 
-    async updatePassword(id: string, newPassword: string) {
+    async updatePassword(id: string, newPassword: string):Promise<UserType | null> {
         try {
             const query = "tbl_utilizadores SET password=?, updated_at=? WHERE id=?";
 
@@ -175,14 +175,14 @@ export const usersModel = {
             const value = [hasPassword, new Date(), id]
 
             //User se existe
-            const [rows] = await db.execute(query, value);
-            return rows
+            const [rows] = await db.execute<UserType & RowDataPacket[]>(query, value);
+            return rows as UserType
         } catch (error) {
             return null
         }
     },
 
-    async resetPassword(id: string, newPassword: string) {
+    async resetPassword(id: string, newPassword: string):Promise<UserType | null> {
         try {
             const query = "tbl_utilizadores SET password=?, updated_at=? WHERE id=?";
 
@@ -190,8 +190,8 @@ export const usersModel = {
             const value = [hasPassword, new Date(), id]
 
             //User se existe
-            const [rows] = await db.execute(query, value);
-            return rows
+            const [rows] = await db.execute<UserType & RowDataPacket[]>(query, value);
+            return rows as UserType
         } catch (error) {
             return null
         }

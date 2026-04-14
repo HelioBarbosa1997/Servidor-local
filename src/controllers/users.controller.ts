@@ -1,6 +1,6 @@
 import { usersModel } from "../models/users.model.js"
 import { comparePassword, hashPassword } from "../utils/password.js"
-import type { ResponseType, UserType } from "../utils/types.js"
+import type { AuthResponse, ResponseType, UserType } from "../utils/types.js"
 import type { Request, Response } from "express"
 import jwt from "jsonwebtoken"
 
@@ -37,15 +37,20 @@ export const userController = {
         const getUsersResponse = await usersModel.get(id as string)
 
         if (!getUsersResponse) {
-            return res.status(404).json({
-                status: "error",
-                message: "Usuário não encontrado"
-            });
+        const response: ResponseType<null> = {
+            status: "error",
+            message: "Usuário não encontrado",
+            data: null
         }
-        return res.status(200).json({
+            return res.status(404).json(response);
+        }
+
+        const response: ResponseType<UserType> ={
             status: "success",
+            message: "Usuario encontrado com sucesso",
             data: getUsersResponse,
-        })
+        }
+        return res.status(200).json(response)
     },
 
 
@@ -53,28 +58,31 @@ export const userController = {
         const { id } = req.query
 
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Id é obrigatório",
                 data: null,
-            })
+            }
+            return res.status(400).json(response)
         }
 
         const getUserByIdResponse = await usersModel.getUserById(id as string)
 
         if (!getUserByIdResponse) {
-            return res.status(404).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Utilizador não encontrado",
                 data: null,
-            })
+            }
+            return res.status(404).json(response)
         }
 
-        return res.status(200).json({
+        const response:ResponseType<UserType> = {
             status: "success",
             message: "Utilizador encontrado",
             data: getUserByIdResponse,
-        })
+        }
+        return res.status(200).json(response)
     },
 
 
@@ -84,11 +92,12 @@ export const userController = {
         console.log(email, password)
 
         if (!email || !password) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Credenciais inválidas",
                 data: null,
-            })
+            }
+            return res.status(400).json(response)
         }
 
         const userData = await usersModel.getByEmail(email as string)
@@ -96,22 +105,24 @@ export const userController = {
         console.log(userData)
 
         if (!userData) {
-            return res.status(404).json({
+            const response: ResponseType<null>= {
                 status: "error",
                 message: "Email ou senha incorretos",
                 data: null,
-            })
+            }
+            return res.status(404).json(response)
         }
 
 
         const isPasswordValid = await comparePassword(password, userData.password)
 
         if (!isPasswordValid) {
-            return res.status(401).json({
+            const respose: ResponseType<null> = {
                 status: "error",
                 message: "Credenciais invalidos",
                 data: null
-            })
+            }
+            return res.status(401).json(respose)
         }
 
         const playload = {
@@ -122,14 +133,15 @@ export const userController = {
         }
         const token = jwt.sign(playload, process.env.JWT_SECRET as string, { expiresIn: "1h" })
 
-        return res.status(200).json({
-            status: "sucess",
+        const response: ResponseType<AuthResponse> = {
+            status: "success",
             message: "Login realizado com sucesso",
             data: {
                 token,
                 user: playload
             }
-        })
+        }
+        return res.status(200).json(response)
     },
 
     async updatePassword(req: Request, res: Response) {
@@ -185,21 +197,23 @@ export const userController = {
         const { email, newPassword } = req.body;
 
         if (!email || !newPassword) {
-            return res.status(400).json({
+            const response: ResponseType<null> ={
                 status: "error",
                 message: "Credenciais inválidas",
                 data: null
-            });
+            }
+            return res.status(400).json(response);
         }
 
         const userData = await usersModel.getByEmail(email);
 
         if (!userData) {
-            return res.status(404).json({
+            const response: ResponseType<null> ={
                 status: "error",
                 message: "Utilizador não encontrado",
                 data: null
-            });
+            }
+            return res.status(404).json(response);
         }
 
         const updatePasswordResponse = await usersModel.updatePassword(
@@ -208,18 +222,20 @@ export const userController = {
         );
 
         if (!updatePasswordResponse) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao atualizar password",
                 data: null
-            });
+            }
+            return res.status(400).json(response);
         }
 
-        return res.status(200).json({
-            status: "sucess",
+        const response: ResponseType<UserType> = {
+            status: "success",
             message: "Password redefinida com sucesso",
             data: updatePasswordResponse
-        });
+        }
+        return res.status(200).json(response);
     },
 
 
@@ -265,27 +281,30 @@ export const userController = {
         const { id } = req.params
 
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Id é obrigatório",
                 data: null,
-            })
+            }
+            return res.status(400).json(response)
         }
 
         const deleteUserResponse = await usersModel.deleteUser(id as string)
 
         if (!deleteUserResponse) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao apagar utilizador",
                 data: null,
-            })
+            }
+            return res.status(400).json(response)
         }
 
-        return res.status(200).json({
+        const response: ResponseType<UserType> = {
             status: "success",
             message: "Utilizador apagado com sucesso",
             data: deleteUserResponse,
-        })
+        }
+        return res.status(200).json(response)
     },
 }
