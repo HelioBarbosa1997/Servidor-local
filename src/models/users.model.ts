@@ -151,15 +151,15 @@ export const usersModel = {
     },
 
 
-    async deleteUser(id: string) {
+    async deleteUser(id: string): Promise<UserType | null> {
         try {
             const query = `DELETE tbl_utilizadore WHERE ID =? `
 
             const value = [id]
 
-            const rows: any = await db.execute(query, value)
+            const rows: any = await db.execute<UserType & RowDataPacket[]>(query, value)
 
-            return rows[0]?.affectedRows === 0 ? null : rows
+            return rows[0]?.affectedRows === 0 ? null : rows as UserType
         } catch (error) {
             console.log(error)
             return null

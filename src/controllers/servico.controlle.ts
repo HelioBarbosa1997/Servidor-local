@@ -1,5 +1,5 @@
 import { ServiceModel } from "../models/servico.model.js"
-import type { ResponseType, ServicoDBType } from "../utils/types.js"
+import type { ResponseType, ServicoDBType, ServicoDetalhadoType } from "../utils/types.js"
 import type { Request, Response } from "express"
 
 export const ServicoControler = {
@@ -146,10 +146,9 @@ export const ServicoControler = {
             data: deleteServiceResponse
         })
     },
-    async getAllServivoDetalhado(req: Request, res: Response) {
+    async getAllServicoDetalhado(req: Request, res: Response) {
         const { limit, offset } = req.query as { limit: string, offset: string }
 
-        try {
             let LIMIT = 10
             let OFFSET = 0
 
@@ -159,24 +158,21 @@ export const ServicoControler = {
             const getAllPrestacaoServicoResponse = await ServiceModel.getAllServicoDetalhado(LIMIT, OFFSET)
 
             if (!getAllPrestacaoServicoResponse) {
-                return res.status(404).json({
+                const response: ResponseType<null> = {
                     status: "error",
-                    message: "Nenhum serviço encontrado"
-                });
+                    message: "Nenhum serviço encontrado",
+                    data: null
+                }
+                return res.status(404).json(response);
             }
 
-            return res.status(200).json({
+            const response: ResponseType<ServicoDetalhadoType[]> = {
                 status: "success",
                 message: "Serviços obtidos com sucesso",
                 data: getAllPrestacaoServicoResponse
-            });
+            }
 
-        } catch (error) {
-            console.error(error);
-            return res.status(500).json({
-                status: "error",
-                message: "Erro interno do servidor"
-            });
-        }
-    }
+            return res.status(200).json(response);
+
+        } 
 }

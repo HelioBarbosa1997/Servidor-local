@@ -1,6 +1,6 @@
 import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
-import type { PrestadorType, PrestadorTypeDB } from "../utils/types.js";
+import type { PrestadorType, PrestadorTypeDB, PropostaTypeDB } from "../utils/types.js";
 
 
 export const PrestadorModel = {
@@ -95,12 +95,14 @@ export const PrestadorModel = {
         }
     },
 
-    async delete(id: string) {
+    async delete(id: string): Promise<PrestadorTypeDB | null > {
         try {
             const query = `DELETE FROM tbl_prestador WHERE id=?`
             const value = [id]
-            const rows: any = await db.execute(query, value)
-            return rows[0]?.affectedRows === 0 ? null : rows
+
+            const[rows]: any = await db.execute<PrestadorTypeDB & RowDataPacket[]>(query, value)
+
+            return rows[0]?.affectedRows === 0 ? null : rows as PrestadorTypeDB
 
         } catch (error) {
             console.log(error)

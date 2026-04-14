@@ -97,12 +97,14 @@ export const PrestadorServicoModel = {
             return null
         }
     },
-    async delete(id: string) {
+    async delete(id: string): Promise<PrestadorServicoTypeDB | null> {
         try {
             const query = `DELETE FROM tbl_prestador_de_servico WHERE id=?`
+
             const value = [id]
-            const rows: any = await db.execute(query, value)
-            return rows[0]?.affectedRows === 0 ? null : rows
+
+            const [rows]: any = await db.execute<PrestadorServicoTypeDB & RowDataPacket[]>(query, value)
+            return rows[0]?.affectedRows === 0 ? null : rows as PrestadorServicoTypeDB
 
         } catch (error) {
             console.log(error)
@@ -118,6 +120,7 @@ export const PrestadorServicoModel = {
                 [idOrcamento]
             )
             if (Array.isArray(rows) && rows.length === 0) return null
+            
             return Array.isArray(rows) ? rows[0] as PrestadorServicoTypeDB : null
         } catch (err) {
             console.log(err)

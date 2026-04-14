@@ -32,7 +32,16 @@ export const userController = {
 
     // Listar  os utilizadores por id
     async get(req: Request, res: Response) {
-        const getUsersResponse = await usersModel.get()
+        const { id } = req.params
+
+        const getUsersResponse = await usersModel.get(id as string)
+
+        if (!getUsersResponse) {
+            return res.status(404).json({
+                status: "error",
+                message: "Usuário não encontrado"
+            });
+        }
         return res.status(200).json({
             status: "success",
             data: getUsersResponse,
@@ -108,7 +117,8 @@ export const userController = {
         const playload = {
             id: userData.id,
             email: userData.email,
-            nome: userData.nome
+            nome: userData.nome,
+            role: userData.role
         }
         const token = jwt.sign(playload, process.env.JWT_SECRET as string, { expiresIn: "1h" })
 

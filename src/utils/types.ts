@@ -1,3 +1,28 @@
+export enum Role {
+    CLIENTE = "cliente",
+    ADMIN = "admin",
+    PRESTADOR = "prestador",
+    EMPRESA = "empresa"
+}
+
+export enum EstadoProposta {
+    PENDENTE = "pendente",
+    ACEITE = "aceite",
+    CANCELADO = "cancelado"
+}
+
+export enum EstadoPrestacao {
+    PENDENTE = "pendente",
+    FINALIZADO = "finalizado",
+    EM_PROCESSO = "em_processo",
+    CANCELADO = "cancelado"
+}
+
+export enum TipoPrestador {
+    PARATICULAR = "particular",
+    EMPRESA = "empresa"
+}
+
 
 export interface PedidoServicoType {
     cliente: string;
@@ -36,6 +61,7 @@ export interface UserType {
     pais: string,
     localidade: string,
     password: string,
+    role: Role
     enabled: boolean,
     created_at: string,
     updated_at: string
@@ -86,18 +112,7 @@ export interface pretadorDeServicoType {
     created: string,
     updated: string
 }
-export enum EstadoProposta {
-    PENDENTE = "pendente",
-    ACEITE = "aceite",
-    CANCELADO = "cancelado"
-}
 
-export enum EstadoPrestacao {
-    PENDENTE = "pendente",
-    FINALIZADO = "finalizado",
-    EM_PROCESSO = "em_processo",
-    CANCELADO = "cancelado"
-}
 
 export interface PrestadorServicoTypeDB {
     id: string,
@@ -106,6 +121,8 @@ export interface PrestadorServicoTypeDB {
 	horas_estimadas: number,
 	id_prestador: string,
 	id_servicos: string,
+    id_empresa: string,
+    tipo_prestador: TipoPrestador,
 	preco_hora: number,
     urgente: boolean,
 	estado: string,
@@ -166,4 +183,25 @@ export interface ServicoDetalhadoType {
     icone_empresa: string;
     enabled: boolean;
 
+}
+
+export interface CategoriaTypeBD {
+    id: string,
+    designacao: string,
+    icone: string,
+    created_at: string,
+    updated_at: string
+}
+
+export interface EmpresaTypeDB {
+    id: string,
+    designacao: string,
+    descricao: string,
+    nif: string
+    icone: string,
+    id_utilizadores: string,
+    localidade: string,
+    enabled: boolean,
+    created_at: string,
+    updated_at: string
 }

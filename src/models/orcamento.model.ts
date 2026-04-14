@@ -93,12 +93,14 @@ export const OrcamentoModel = {
         }
     },
 
-    async delete(id: string) {
+    async delete(id: string): Promise<OrcamentoTypeDB | null> {
         try {
             const query = `DELETE FROM tbl_orcamento WHERE id=?`
+
             const value = [id]
-            const rows: any = await db.execute(query, value)
-            return rows[0]?.affectedRows === 0 ? null : rows
+
+            const [rows]: any = await db.execute<OrcamentoTypeDB & RowDataPacket[]>(query, value)
+            return rows[0]?.affectedRows === 0 ? null : rows as OrcamentoTypeDB
 
         } catch (error) {
             console.log(error)
@@ -107,7 +109,7 @@ export const OrcamentoModel = {
     },
 
 
-    /*
+
         //projecto final
         async calcularOrcamento(idOrcamento: number) {
             const connection = await db.getConnection();
@@ -182,7 +184,7 @@ export const OrcamentoModel = {
                 connection.release();
             }
         },
-    */
+    
 
     async updateBudget(id: string, total: number) {
         try {
