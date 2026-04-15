@@ -1,6 +1,6 @@
 import {Router} from "express"
 import { ServicoControler } from "../controllers/servico.controlle.js"
-import { authorize } from "../security/auth.middleware.js"
+import AuthMiddleware, { authorize } from "../security/auth.middleware.js"
 import { Role } from "../utils/types.js"
 
 const ServiceRoute = {
@@ -12,17 +12,20 @@ const ServiceRoute = {
     getAllDetailed:"/all-detailed"
 }
 const router = Router()
-router.get(ServiceRoute.getAll,ServicoControler.getAll)
+router.get(ServiceRoute.getAll,authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]),ServicoControler.getAll)
 
-router.get(ServiceRoute.getById,ServicoControler.get)
+router.get(ServiceRoute.getById,authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]),ServicoControler.get)
 
-router.post(ServiceRoute.create,ServicoControler.createServico)
+router.get(ServiceRoute.getAllDetailed,authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]),ServicoControler.getAllServicoDetalhado)
 
-router.put(ServiceRoute.update,ServicoControler.updated)
+router.use(AuthMiddleware)
+
+router.post(ServiceRoute.create,authorize([Role.ADMIN]),ServicoControler.createServico)
+
+router.put(ServiceRoute.update,authorize([Role.ADMIN]),ServicoControler.updated)
 
 router.delete(ServiceRoute.delete,authorize([Role.ADMIN]),ServicoControler.delete)
 
-router.get(ServiceRoute.getAllDetailed,ServicoControler.getAllServicoDetalhado)
 
 
 export { router }

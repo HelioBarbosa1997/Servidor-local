@@ -1,6 +1,6 @@
 import type { RowDataPacket } from "mysql2";
 import db from "../lib/db.js";
-import type { PrestacaoServicoDetalhadoType, PrestadorServicoTypeDB, pretadorDeServicoType } from "../utils/types.js";
+import type { P_ServicoByCategoriaTypeDB, PrestacaoServicoDetalhadoType, PrestadorServicoTypeDB, pretadorDeServicoType } from "../utils/types.js";
 
 export const PrestadorServicoModel = {
     async create(newPrestadorServico: PrestadorServicoTypeDB): Promise<PrestadorServicoTypeDB | null> {
@@ -120,7 +120,7 @@ export const PrestadorServicoModel = {
                 [idOrcamento]
             )
             if (Array.isArray(rows) && rows.length === 0) return null
-            
+
             return Array.isArray(rows) ? rows[0] as PrestadorServicoTypeDB : null
         } catch (err) {
             console.log(err)
@@ -136,20 +136,52 @@ export const PrestadorServicoModel = {
                 ps.designacao as descricao,
                 u.nome as nome_utilizador,
                 u.email as email_utilizador,
-                s.nome as nome_servico
-                ps.crerated_at as data_pedido
+                s.nome as nome_servico,
+                ps.created_at as data_pedido,
                 ps.urgente
 
             FROM tbl_prestacao_servico ps
             INNER JOIN tbl_utilizadores u ON ps.id_utilizador=u.id
-            INNER JOIN tbl_servicos s ON ps.id_servico = s.id
-            Order BY ps.created_at DESC
+            INNER JOIN tbl_servico s ON ps.id_servico = s.id
+            ORDER BY ps.created_at DESC
             LIMIT ? OFFSET ?
             `
             const [rows] = await db.execute<PrestacaoServicoDetalhadoType[] & RowDataPacket[]>(query, [limit.toString(), offset.toString()])
 
             if (Array.isArray(rows) && rows.length === 0) return null
             return Array.isArray(rows) ? rows as PrestacaoServicoDetalhadoType[] : null
+        } catch (err) {
+            console.log(err)
+            return null
+        }
+    },
+
+
+    async prestacaoServicoBycategoria(categoria: string, limit: number, offset: number): Promise<P_ServicoByCategoriaTypeDB[] | null> {
+        try {
+            const query = `
+            SELECT DISTINCT
+                ps.id as id_prestacao_servico,
+                ps.designacao as descricao,
+                ps.created_at as data_pedido,
+                s.id as id_servico,
+                s.nome as nome_servico,
+                c.designacao as categoria_nome,
+                c.icone as categoria_icone
+
+            FROM tbl_prestacao_servico ps
+            INNER JOIN tbl_servico s ON ps.id_servico = s.id
+            INNER JOIN tbl_categoria c ON s.categoria_id = c.id
+            WHERE (c.designacao) = (?)
+            ORDER BY ps.created_at DESC
+            LIMIT ? OFFSET ?
+            `
+
+            const [rows] = await db.execute<P_ServicoByCategoriaTypeDB[] & RowDataPacket[]>(query, [categoria, limit, offset])
+
+            if (Array.isArray(rows) && rows.length === 0) return null
+
+            return Array.isArray(rows) ? (rows as P_ServicoByCategoriaTypeDB[]) : null
         } catch (err) {
             console.log(err)
             return null

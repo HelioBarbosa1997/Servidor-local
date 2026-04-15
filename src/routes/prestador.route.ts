@@ -1,8 +1,10 @@
 import{ Router } from "express"
 import { prestadorControler } from "../controllers/prestador.controlle.js"
+import AuthMiddleware, { authorize } from "../security/auth.middleware.js"
+import { Role } from "../utils/types.js"
 
 
-const propostaRoute = {
+const prestadorRoute = {
     create:"/create",
     getById:"/get-by-id/:id",
     getAll:"/",
@@ -11,11 +13,17 @@ const propostaRoute = {
 }
 
 const router = Router()
-router.get(propostaRoute.getAll,prestadorControler.getAll)
-router.get(propostaRoute.getById,prestadorControler.get)
-router.post(propostaRoute.create,prestadorControler.create)
-router.put(propostaRoute.update,prestadorControler.updated)
-router.delete(propostaRoute.delete,prestadorControler.delete)
+router.get(prestadorRoute.getAll,authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]),prestadorControler.getAll)
+
+router.get(prestadorRoute.getById,authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]),prestadorControler.get)
+
+router.use(AuthMiddleware)
+
+router.post(prestadorRoute.create, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR]),prestadorControler.create)
+
+router.put(prestadorRoute.update,authorize ([Role.ADMIN]),prestadorControler.updated)
+
+router.delete(prestadorRoute.delete,authorize ([Role.ADMIN]),prestadorControler.delete)
 
 
 export { router }

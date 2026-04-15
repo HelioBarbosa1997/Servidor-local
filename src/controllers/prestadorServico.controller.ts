@@ -169,6 +169,45 @@ export const prestadorServicoControler = {
             message: "Prestadocoes de servico buscadas com sucesso",
             data: getAllPrestacaoServicoResponse
         })
+    },
+
+
+    async prestacaoServicoByCategoria(req: Request, res: Response) {
+
+        const { categoria } = req.params as { categoria: string }
+        const { limit, offset } = req.query as { limit: string, offset: string }
+
+        if (!categoria) {
+            return res.status(400).json({
+                status: "error",
+                message: "Categoria é obrigatória",
+                data: null
+            })
+        }
+
+        let LIMIT = 10
+        let OFFSET = 0
+
+        if (limit && parseInt(limit) > 0) { LIMIT = parseInt(limit) }
+
+        if (offset && parseInt(offset) >= 0) { OFFSET = parseInt(offset) }
+
+        const result = await PrestadorServicoModel.prestacaoServicoBycategoria(categoria, LIMIT, OFFSET)
+
+        if (!result) {
+            return res.status(404).json({
+                status: "error",
+                message: "Nenhuma prestação de serviço encontrada para esta categoria",
+                data: null
+            })
+        }
+
+        return res.status(200).json({
+            status: "success",
+            message: "Prestações de serviço buscadas com sucesso",
+            data: result
+        })
     }
+
 }
 

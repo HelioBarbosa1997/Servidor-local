@@ -207,6 +207,19 @@ export interface EmpresaTypeDB {
 }
 
 export interface AuthResponse {
-    user: UserType,
+    user: Playload,
     token: string
+}
+export interface Playload {
+    id: string,
+    email: string,
+    nome: string,
+    role: string
+}
+
+export interface P_ServicoByCategoriaTypeDB {
+    id_prestacao_servico: string
+    descricao: string
+    data_pedido: string
+    urgente: boolean
 }
