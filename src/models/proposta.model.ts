@@ -49,7 +49,13 @@ export const PropostaModel = {
     
     async get(id: string): Promise<PropostaTypeDB | null> {
         try {
-            const query = `SELECT * FROM tbl_proposta WHERE id = ?`
+            const query = `SELECT DISTINCT
+                pt.*,
+                pr.id as owner
+                FROM tbl_proposta pt
+            INNER JOIN tbl_prestadores pr ON pt.id_prestador = pr.id
+            INNER JOIN tbl_utilizadores u ON pr.id_utilizadores = u.id
+            WHERE pt. id = ?`
 
             const value = [id]
 

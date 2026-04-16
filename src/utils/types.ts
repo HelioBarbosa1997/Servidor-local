@@ -218,8 +218,12 @@ export interface Playload {
 }
 
 export interface P_ServicoByCategoriaTypeDB {
-    id_prestacao_servico: string
-    descricao: string
-    data_pedido: string
+    id_prestacao_servico: string,
+    descricao: string,
+    data_pedido: string,
+    id_servico: string,
+    nome_servico: string,
+    categoria_nome: string,
+    categoria_icone: string,
     urgente: boolean
 }

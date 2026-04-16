@@ -11,7 +11,7 @@ const prestadorServicoRoute = {
     update:"/update/:id",
     delete:"/delete/:id",
     getAllPrestacaoServicoDetalhada:"/get-all-detalhado",
-    prestacaoServicoByCategoria:"Pres-servico-categoria"
+    prestacaoServicoByCategoria:"pres-servico-categoria"
 }
 
 const router = Router()

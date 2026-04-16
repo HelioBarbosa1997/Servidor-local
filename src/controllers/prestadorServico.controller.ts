@@ -1,4 +1,4 @@
-import type { PrestadorServicoTypeDB, ResponseType } from "../utils/types.js"
+import type { P_ServicoByCategoriaTypeDB, PrestacaoServicoDetalhadoType, PrestadorServicoTypeDB, ResponseType, ServicoDetalhadoType } from "../utils/types.js"
 import { PrestadorServicoModel } from "../models/prestacaoServico.model.js"
 import type { Request, Response } from "express"
 
@@ -158,17 +158,19 @@ export const prestadorServicoControler = {
         const getAllPrestacaoServicoResponse = await PrestadorServicoModel.getAllPrestacaoServicoDetalhada(LIMIT, OFFSET)
 
         if (!getAllPrestacaoServicoResponse) {
-            return res.status(500).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao buscar prestacoes de servico",
                 data: null
-            })
+            }
+            return res.status(500).json(response)
         }
-        return res.status(200).json({
-            status: "sucess",
+        const response: ResponseType<PrestacaoServicoDetalhadoType[]> = {
+            status: "success",
             message: "Prestadocoes de servico buscadas com sucesso",
             data: getAllPrestacaoServicoResponse
-        })
+        }
+        return res.status(200).json(response)
     },
 
 
@@ -178,11 +180,12 @@ export const prestadorServicoControler = {
         const { limit, offset } = req.query as { limit: string, offset: string }
 
         if (!categoria) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Categoria é obrigatória",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
 
         let LIMIT = 10
@@ -192,21 +195,23 @@ export const prestadorServicoControler = {
 
         if (offset && parseInt(offset) >= 0) { OFFSET = parseInt(offset) }
 
-        const result = await PrestadorServicoModel.prestacaoServicoBycategoria(categoria, LIMIT, OFFSET)
+        const prestacaoServicoByCategoriaResponse = await PrestadorServicoModel.prestacaoServicoBycategoria(categoria, LIMIT, OFFSET)
 
-        if (!result) {
-            return res.status(404).json({
+        if (!prestacaoServicoByCategoriaResponse) {
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Nenhuma prestação de serviço encontrada para esta categoria",
                 data: null
-            })
+            }
+            return res.status(404).json(response)
         }
 
-        return res.status(200).json({
+        const response: ResponseType<P_ServicoByCategoriaTypeDB[]> = {
             status: "success",
             message: "Prestações de serviço buscadas com sucesso",
-            data: result
-        })
+            data: prestacaoServicoByCategoriaResponse
+        }
+        return res.status(200).json(response)
     }
 
 }

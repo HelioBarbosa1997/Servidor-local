@@ -47,8 +47,15 @@ export const OrcamentoModel = {
 
     async get(id: string): Promise<OrcamentoTypeDB | null> {
         try {
-            const query = `SELECT * FROM tbl_orcamento WHERE id = ?`
-
+            const query = `SELECT DISTINC
+                pt.*,
+                pr.id as owner
+                FROM tbl_proposta 
+            FROM tbl_orcamento WHERE id = ?
+            INNER JOIN tbl_prestadores pr ON pt.id_prestador = pr.id
+            INNER JOIN tbl_utilizadores u ON pr.id_utilizadores = u.id
+            WHERE pt. id = ?
+            `
             const value = [id]
 
             const [rows] = await db.execute<OrcamentoTypeDB & RowDataPacket[]>(query, value)
