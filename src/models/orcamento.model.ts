@@ -50,8 +50,7 @@ export const OrcamentoModel = {
             const query = `SELECT DISTINC
                 pt.*,
                 pr.id as owner
-                FROM tbl_proposta 
-            FROM tbl_orcamento WHERE id = ?
+                FROM tbl_orcamento pt
             INNER JOIN tbl_prestadores pr ON pt.id_prestador = pr.id
             INNER JOIN tbl_utilizadores u ON pr.id_utilizadores = u.id
             WHERE pt. id = ?

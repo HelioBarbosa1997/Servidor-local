@@ -1,7 +1,8 @@
 import{ Router } from "express"
 import { orcamentoControler } from "../controllers/orcamento.controlle.js"
 import { Role } from "../utils/types.js"
-import AuthMiddleware, { authorize } from "../security/auth.middleware.js"
+import AuthMiddleware, { authorize, isOwner } from "../security/auth.middleware.js"
+import { OrcamentoModel } from "../models/orcamento.model.js"
 
 
 const orcamentoRoute = {
@@ -23,9 +24,9 @@ router.get(orcamentoRoute.getById,authorize([Role.ADMIN, Role.PRESTADOR, Role.EM
 
 router.post(orcamentoRoute.create,authorize([Role.ADMIN, Role.CLIENTE,]),orcamentoControler.create)
 
-router.put(orcamentoRoute.update,authorize([Role.ADMIN]),orcamentoControler.updated)
+router.put(orcamentoRoute.update,authorize([Role.ADMIN]),isOwner(OrcamentoModel, "owner"),orcamentoControler.updated)
 
-router.delete(orcamentoRoute.delete,authorize([Role.ADMIN,]),orcamentoControler.delete)
+router.delete(orcamentoRoute.delete,authorize([Role.ADMIN,]),isOwner(OrcamentoModel, "owner"),orcamentoControler.delete)
 
 router.put(orcamentoRoute.calcular,authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]),orcamentoControler.calculateBudget)
 

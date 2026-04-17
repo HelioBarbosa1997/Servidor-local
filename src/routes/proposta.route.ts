@@ -17,7 +17,7 @@ const router = Router()
 
 router.use(AuthMiddleware)
 
-router.get(propostaRoute.getAll,authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]),propostaControler.getAll)
+router.get(propostaRoute.getAll,authorize([Role.ADMIN, Role.PRESTADOR, Role.EMPRESA]),propostaControler.getAll)
 
 router.get(propostaRoute.getById,authorize([Role.ADMIN, Role.PRESTADOR, Role.EMPRESA]),propostaControler.get)
 

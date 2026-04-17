@@ -46,7 +46,14 @@ export const PrestadorModel = {
 
     async get(id: string): Promise<PrestadorTypeDB | null> {
         try {
-            const query = `SELECT * FROM tbl_prestador WHERE id = ?`
+            const query = `SELECT DISTINCT
+                pt.*,
+                pr.id as owner
+                FROM tbl_prestador 
+            INNER JOIN tbl_prestadores pr ON pt.id_prestador = pr.id
+            INNER JOIN tbl_utilizadores u ON pr.id_utilizadores = u.id
+            WHERE pt. id = ?
+            `
 
             const value = [id]
 

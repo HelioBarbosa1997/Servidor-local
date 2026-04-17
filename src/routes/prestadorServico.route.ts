@@ -1,7 +1,8 @@
 import{ Router } from "express"
 import { prestadorServicoControler } from "../controllers/prestadorServico.controller.js"
-import AuthMiddleware, { authorize } from "../security/auth.middleware.js"
+import AuthMiddleware, { authorize, isOwner } from "../security/auth.middleware.js"
 import { Role } from "../utils/types.js"
+import { PrestadorModel } from "../models/prestador.model.js"
 
 
 const prestadorServicoRoute = {
@@ -27,9 +28,9 @@ router.use(AuthMiddleware)
 
 router.post(prestadorServicoRoute.create,authorize([Role.ADMIN, Role.PRESTADOR, Role.EMPRESA]),prestadorServicoControler.create)
 
-router.put(prestadorServicoRoute.update,authorize([Role.ADMIN, Role.PRESTADOR, Role.EMPRESA]),prestadorServicoControler.updated)
+router.put(prestadorServicoRoute.update,authorize([Role.ADMIN, Role.PRESTADOR, Role.EMPRESA]), isOwner(PrestadorModel, "owner"),prestadorServicoControler.updated)
 
-router.delete(prestadorServicoRoute.delete,authorize([Role.ADMIN, Role.PRESTADOR, Role.EMPRESA]),prestadorServicoControler.delete)
+router.delete(prestadorServicoRoute.delete,authorize([Role.ADMIN, Role.PRESTADOR, Role.EMPRESA]), isOwner(PrestadorModel, "owner"),prestadorServicoControler.delete)
 
 
 export { router }

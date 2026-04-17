@@ -163,7 +163,7 @@ paths:
     get:
       summary: Listar todos os servicos detalhados
       tags:
-        - service
+        - Serviços
       description: Retorna uma lista de todos os servicos disponiveis com detalhes
       parameters:
         - name: limit

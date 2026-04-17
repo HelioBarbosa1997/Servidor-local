@@ -1,7 +1,8 @@
 import { Router } from "express"
 import { userController } from "../controllers/users.controller.js"
-import AuthMiddleware, { authorize } from "../security/auth.middleware.js"
+import AuthMiddleware, { authorize, isOwner } from "../security/auth.middleware.js"
 import { Role } from "../utils/types.js"
+import { usersModel } from "../models/users.model.js"
 
 const userRoutes = {
     create: "/create",
@@ -21,16 +22,16 @@ router.post(userRoutes.create, userController.createUsers)
 
 router.use(AuthMiddleware)
 
-router.put(userRoutes.updated,authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), userController.updatePassword)
+router.put(userRoutes.updated,authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]),isOwner(usersModel, "owner"), userController.updatePassword)
 
-router.put(userRoutes.reset,authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), userController.resetPassword)
+router.put(userRoutes.reset,authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]),isOwner(usersModel, "owner"), userController.resetPassword)
 
 router.get(userRoutes.get, authorize([Role.ADMIN]), userController.get)
 
 router.get(userRoutes.getById, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), userController.getUserById)
 
-router.put(userRoutes.update, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]), userController.update)
+router.put(userRoutes.update, authorize([Role.ADMIN, Role.CLIENTE, Role.PRESTADOR, Role.EMPRESA]),isOwner(usersModel, "owner"), userController.update)
 
-router.delete(userRoutes.delete, authorize([Role.ADMIN]), userController.delete)
+router.delete(userRoutes.delete, authorize([Role.ADMIN]),isOwner(usersModel, "owner"), userController.delete)
 
 export { router }

@@ -1,0 +1,47 @@
+paths:
+  /Empresa:
+    get:
+      summary: Listar todos as empresas
+      tags:
+        - Empresas
+      description: Retorna uma lista de todos as empresas disponíveis
+      responses:
+        "200":
+          description: Lista de empresas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Empresa"
+        "400":
+          description: "Nenhuma empresa encontrado"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseError"
+
+  /empresa/create:
+    post:
+      summary: Criar uma nova empresa
+      tags:
+        - Empresas
+      description: Criar uma nova empresa
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/CreateEmpresa"
+      responses:
+        "200":
+          description: Empresa criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseSuccess" 
+
+          

@@ -1,7 +1,8 @@
 import {Router} from "express"
 import { ServicoControler } from "../controllers/servico.controlle.js"
-import AuthMiddleware, { authorize } from "../security/auth.middleware.js"
+import AuthMiddleware, { authorize, isOwner } from "../security/auth.middleware.js"
 import { Role } from "../utils/types.js"
+import { ServiceModel } from "../models/servico.model.js"
 
 const ServiceRoute = {
     create:"/create",
@@ -22,9 +23,9 @@ router.use(AuthMiddleware)
 
 router.post(ServiceRoute.create,authorize([Role.ADMIN]),ServicoControler.createServico)
 
-router.put(ServiceRoute.update,authorize([Role.ADMIN]),ServicoControler.updated)
+router.put(ServiceRoute.update,authorize([Role.ADMIN]), isOwner(ServiceModel, "owner"),ServicoControler.updated)
 
-router.delete(ServiceRoute.delete,authorize([Role.ADMIN]),ServicoControler.delete)
+router.delete(ServiceRoute.delete,authorize([Role.ADMIN]), isOwner(ServiceModel, "owner"),ServicoControler.delete)
 
 
 

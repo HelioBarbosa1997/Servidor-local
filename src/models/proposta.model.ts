@@ -55,7 +55,8 @@ export const PropostaModel = {
                 FROM tbl_proposta pt
             INNER JOIN tbl_prestadores pr ON pt.id_prestador = pr.id
             INNER JOIN tbl_utilizadores u ON pr.id_utilizadores = u.id
-            WHERE pt. id = ?`
+            WHERE pt. id = ?
+            `
 
             const value = [id]
 

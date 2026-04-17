@@ -183,7 +183,7 @@ paths:
     get:
       sumary: Buscar as prestaçoes de serviço por categoria
       tags:
-        -Prestador-Serviço
+        - Prestador-Serviço
       description: Retornar as lista de prestacao de servico por categoria
       parameters:
         - name: limit
