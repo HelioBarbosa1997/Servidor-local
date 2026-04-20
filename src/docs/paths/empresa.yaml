@@ -43,5 +43,10 @@ paths:
               schema:
                 type: object
                 $ref: "#/components/schemas/ResponseSuccess" 
-
-          
+        "400":
+          description: Dados inválidos
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/ResponseError"  

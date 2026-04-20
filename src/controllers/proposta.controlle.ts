@@ -143,26 +143,30 @@ export const propostaControler = {
 
 
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Id é obrigatorio",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
 
         const deletePropostaResponse = await PropostaModel.delete(id as string)
 
         if (!deletePropostaResponse) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao eliminar proposta!",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
-        return res.status(200).json({
+
+        const response: ResponseType<PropostaTypeDB> = {
             status: "success",
             message: "Proposta eliminado com sucesso",
             data: deletePropostaResponse
-        })
+        }
+        return res.status(200).json(response)
     }
 }

@@ -124,28 +124,33 @@ export const ServicoControler = {
 
 
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Id é obrigatorio",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
 
         const deleteServiceResponse = await ServiceModel.delete(id as string)
 
         if (!deleteServiceResponse) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao apgar serviço!",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
-        return res.status(200).json({
+
+        const response: ResponseType<ServicoDBType> = {
             status: "success",
             message: "Serviço Pagado com sucesso",
             data: deleteServiceResponse
-        })
+        }
+        return res.status(200).json(response)
     },
+    
     async getAllServicoDetalhado(req: Request, res: Response) {
         const { limit, offset } = req.query as { limit: string, offset: string }
 

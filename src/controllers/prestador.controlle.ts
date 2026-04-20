@@ -124,26 +124,30 @@ export const prestadorControler = {
 
 
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Id é obrigatorio",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
 
         const deletePrestadorResponse = await PrestadorModel.delete(id as string)
 
         if (!deletePrestadorResponse) {
-            return res.status(400).json({
+            const response : ResponseType<null> = {
                 status: "error",
                 message: "Erro ao eliminar prestador!",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
-        return res.status(200).json({
+
+        const response: ResponseType<PrestadorTypeDB> = {
             status: "success",
             message: "Prestador eliminado com sucesso",
             data: deletePrestadorResponse
-        })
+        }
+        return res.status(200).json(response)
     }
 }

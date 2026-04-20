@@ -127,27 +127,31 @@ export const orcamentoControler = {
 
 
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Id é obrigatorio",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
 
         const deleteOrcamentoResponse = await OrcamentoModel.delete(id as string)
 
         if (!deleteOrcamentoResponse) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao eliminar orcamento!",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
-        return res.status(200).json({
+
+        const response: ResponseType<OrcamentoTypeDB> = {
             status: "success",
             message: "Orcamento criado com sucesso",
             data: deleteOrcamentoResponse
-        })
+        }
+        return res.status(200).json(response)
     },
     /*
     //projeto final

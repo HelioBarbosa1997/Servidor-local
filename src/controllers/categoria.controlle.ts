@@ -109,28 +109,31 @@ export const categoriaController = {
     async delete(req: Request, res: Response) {
             const { id } = req.params
     
-    
             if (!id) {
-                return res.status(400).json({
-                    status: "error",
-                    message: "Id é obrigatorio",
-                    data: null
-                })
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Id é obrigatorio",
+                data: null
+            }
+                return res.status(400).json(response)
             }
     
             const deleteServiceResponse = await categoriaModel.delete(id as string)
     
             if (!deleteServiceResponse) {
-                return res.status(400).json({
+                const response: ResponseType<null> = {
                     status: "error",
                     message: "Erro ao apgar serviço!",
                     data: null
-                })
+                }
+                return res.status(400).json(response)
             }
-            return res.status(200).json({
+
+            const response: ResponseType<CategoriaTypeBD> = {
                 status: "success",
                 message: "Serviço Pagado com sucesso",
                 data: deleteServiceResponse
-            })
+            }
+            return res.status(200).json(response)
         },
 }

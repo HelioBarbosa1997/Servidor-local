@@ -77,33 +77,39 @@ export const empresaController = {
         const updateService: EmpresaTypeDB = req.body
 
         if (!id) {
-            return res.status(400).json({
+            const response: ResponseType<null> ={
                 status: "error",
                 message: "Id é obrigatorio!",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
+
         if (!updateService) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao atualizar servico",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
 
         const updateServiceResponse = await empresaModel.update(id as string, updateService)
         if (!updateServiceResponse) {
-            return res.status(400).json({
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Erro ao atualizar servico",
                 data: null
-            })
+            }
+            return res.status(400).json(response)
         }
-        return res.status(200).json({
+
+        const response: ResponseType<EmpresaTypeDB> ={
             status: "success",
             message: "Serviço atualizado com sucesso!",
             data: updateServiceResponse
-        })
+        }
+        return res.status(200).json(response )
     },
 
     async delete(req: Request, res: Response) {
@@ -111,26 +117,30 @@ export const empresaController = {
     
     
             if (!id) {
-                return res.status(400).json({
+                const response: ResponseType<null> ={
                     status: "error",
                     message: "Id é obrigatorio",
                     data: null
-                })
+                }
+                return res.status(400).json(response)
             }
     
             const deleteServiceResponse = await empresaModel.delete(id as string)
     
             if (!deleteServiceResponse) {
-                return res.status(400).json({
+                const response: ResponseType<null> = {
                     status: "error",
                     message: "Erro ao apgar serviço!",
                     data: null
-                })
+                }
+                return res.status(400).json(response)
             }
-            return res.status(200).json({
+
+            const response: ResponseType<EmpresaTypeDB> = {
                 status: "success",
                 message: "Serviço Pagado com sucesso",
                 data: deleteServiceResponse
-            })
+            }
+            return res.status(200).json(response)
         },
 }

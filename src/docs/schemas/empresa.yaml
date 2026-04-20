@@ -1,0 +1,36 @@
+components:
+  schemas:
+    Orcamento:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 1
+        designacao:
+          type: string
+          example: Furtado Barbosa felial
+        descricao:
+          type: string
+          exemple: "Somos uma empresa especializada em soluções de gestão e tecnologia para o setor logístico
+        nif: 
+          type: string
+          example: 987j23j
+        icone:
+          type: string
+          example: ""
+        id_utilizadores:
+          type: string
+          example: 1
+        localidade:
+          type: string
+          example: Ponta d agua
+        enabled:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          example: "2022-01-01T00:00:00.000Z"
+        upadated_at:
+          type: string
+          example: "2022-01-01T00:00:00.000Z"
+

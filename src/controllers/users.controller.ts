@@ -37,15 +37,15 @@ export const userController = {
         const getUsersResponse = await usersModel.get(id as string)
 
         if (!getUsersResponse) {
-        const response: ResponseType<null> = {
-            status: "error",
-            message: "Usuário não encontrado",
-            data: null
-        }
+            const response: ResponseType<null> = {
+                status: "error",
+                message: "Usuário não encontrado",
+                data: null
+            }
             return res.status(404).json(response);
         }
 
-        const response: ResponseType<UserType> ={
+        const response: ResponseType<UserType> = {
             status: "success",
             message: "Usuario encontrado com sucesso",
             data: getUsersResponse,
@@ -77,7 +77,7 @@ export const userController = {
             return res.status(404).json(response)
         }
 
-        const response:ResponseType<UserType> = {
+        const response: ResponseType<UserType> = {
             status: "success",
             message: "Utilizador encontrado",
             data: getUserByIdResponse,
@@ -105,7 +105,7 @@ export const userController = {
         console.log(userData)
 
         if (!userData) {
-            const response: ResponseType<null>= {
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Email ou senha incorretos",
                 data: null,
@@ -197,7 +197,7 @@ export const userController = {
         const { email, newPassword } = req.body;
 
         if (!email || !newPassword) {
-            const response: ResponseType<null> ={
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Credenciais inválidas",
                 data: null
@@ -208,7 +208,7 @@ export const userController = {
         const userData = await usersModel.getByEmail(email);
 
         if (!userData) {
-            const response: ResponseType<null> ={
+            const response: ResponseType<null> = {
                 status: "error",
                 message: "Utilizador não encontrado",
                 data: null
