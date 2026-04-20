@@ -1,36 +1,79 @@
 components:
   schemas:
-    Orcamento:
+    Empresa:
       type: object
       properties:
         id:
-          type: string
+          type: integer
           example: 1
         designacao:
           type: string
-          example: Furtado Barbosa felial
+          example: "Furtado Barbosa filial"
         descricao:
           type: string
-          exemple: "Somos uma empresa especializada em soluções de gestão e tecnologia para o setor logístico
-        nif: 
+          example: "Somos uma empresa especializada em soluções de gestão e tecnologia para o setor logístico"
+        nif:
           type: string
-          example: 987j23j
+          example: "987j23j"
         icone:
           type: string
           example: ""
         id_utilizadores:
-          type: string
+          type: integer
           example: 1
         localidade:
           type: string
-          example: Ponta d agua
+          example: "Ponta d'água"
         enabled:
           type: boolean
           example: true
         created_at:
           type: string
           example: "2022-01-01T00:00:00.000Z"
-        upadated_at:
+        updated_at:
           type: string
           example: "2022-01-01T00:00:00.000Z"
+    CreateEmpresa:
+      type: object
+      properties:
+        designacao:
+          type: string
+          example: "Furtado Barbosa filial"
+        descricao:
+          type: string
+          example: "Empresa de tecnologia"
+        nif:
+          type: string
+          example: "987j23j"
+        id_utilizadores:
+          type: integer
+          example: 1
+        localidade:
+          type: string
+          example: "Ponta d'água"
+        enabled:
+          type: boolean
+          example: true
+    ResponseSucess:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Empresa criado com sucesso"
+        status:
+          type: boolean
+          example: true
+        data:
+          type: object
+          $ref: "#components/schemas/Empresa"
+    ResponseError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Erro ao criar empresa"
+        status:
+          type: boolean
+          example: false
+  
 

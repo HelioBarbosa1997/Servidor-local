@@ -36,38 +36,30 @@ components:
       id_prestacao_servico:
         type: string
         example: "123"
-
       descricao:
         type: string
         example: "Reparação de computadores"
-
       data_pedido:
         type: string
         example: "2026-04-16T10:00:00.000Z"
-
       id_servico:
         type: string
         example: "123"
-
       nome_servico:
         type: string
         example: "Informática"
-
       categoria_nome:
         type: string
         example: "Tecnologia"
-
       categoria_icone:
         type: string
         example: ""
-
     ResponseSucess:
       type: object
       properties:
         message:
           type: string
           example: "Operação realizada com sucesso"
-
     ResponseError:
       type: object
       properties:
