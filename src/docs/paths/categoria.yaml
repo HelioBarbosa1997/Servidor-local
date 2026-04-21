@@ -1,13 +1,13 @@
 paths:
   /Categoria:
     get:
-      summary: Listar todos as categorias
+      summary: Listar todas as categorias
       tags:
         - Categoria
-      description: Retorna uma lista de todos as categorias disponíveis
+      description: Retorna uma lista de todas as categorias disponíveis
       responses:
         "200":
-          description: Lista de categoria
+          description: Lista de categorias
           content:
             application/json:
               schema:
@@ -15,12 +15,12 @@ paths:
                 items:
                   $ref: "#/components/schemas/Categoria"
         "400":
-          description: "Nenhuma categoria encontrado"
+          description: Nenhuma categoria encontrada
           content:
             application/json:
               schema:
-                type: object
                 $ref: "#/components/schemas/ResponseError"
+
   /Categoria/create:
     post:
       summary: Criar uma nova categoria
@@ -32,29 +32,27 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              $ref: "#/components/schemas/CreateEmpresa"
+              $ref: "#/components/schemas/CreateCategoria"
       responses:
         "200":
-          description: Categoria criado com sucesso
+          description: Categoria criada com sucesso
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseSuccess" 
+                $ref: "#/components/schemas/ResponseSuccess"
         "400":
           description: Dados inválidos
           content:
             application/json:
               schema:
-                type: object
                 $ref: "#/components/schemas/ResponseError"
+
   /Categoria/get-by-id/{id}:
     get:
-      summary: Buscar um categoria por id
+      summary: Buscar uma categoria por ID
       tags:
         - Categoria
-      description: Retorna um categoria específico pelo id
+      description: Retorna uma categoria específica pelo ID
       parameters:
         - name: id
           in: path
@@ -65,30 +63,29 @@ paths:
             example: 1
       responses:
         "200":
-          description: Categoria encontrado
+          description: Categoria encontrada
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseSucess"
+                $ref: "#/components/schemas/ResponseSuccess"
         "404":
-          description: Categoria não encontrado
+          description: Categoria não encontrada
           content:
             application/json:
               schema:
-                type: object
                 $ref: "#/components/schemas/ResponseError"
+
   /Categoria/update/{id}:
     put:
       summary: Atualizar uma categoria
       tags:
         - Categoria
-      description: Atualiza uma categoria específico pelo id
+      description: Atualiza uma categoria específica pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID da categoria a ser atualizado
+          description: ID da categoria a ser atualizada
           schema:
             type: integer
             example: 1
@@ -97,56 +94,51 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               $ref: "#/components/schemas/CreateCategoria"
       responses:
         "200":
-          description: Categoria atualizado atualizado
+          description: Categoria atualizada com sucesso
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseSucess"
+                $ref: "#/components/schemas/ResponseSuccess"
         "400":
           description: Dados inválidos
           content:
             application/json:
               schema:
-                type: object
                 $ref: "#/components/schemas/ResponseError"
         "404":
-          description: Categoria não encontrado
+          description: Categoria não encontrada
           content:
             application/json:
               schema:
-                type: object
                 $ref: "#/components/schemas/ResponseError"
+
   /Categoria/delete/{id}:
     delete:
       summary: Apagar uma categoria
       tags:
         - Categoria
-      description: Apagar um categoria específico pelo ID
+      description: Apagar uma categoria específica pelo ID
       parameters:
         - name: id
           in: path
           required: true
-          description: ID do categoria a ser apagado
+          description: ID da categoria a ser apagada
           schema:
             type: integer
             example: 1
       responses:
         "200":
-          description: Categoria apagado cpm sucesso
+          description: Categoria apagada com sucesso
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseSucess"
+                $ref: "#/components/schemas/ResponseSuccess"
         "404":
-          description: Categoria não encontrado
+          description: Categoria não encontrada
           content:
             application/json:
               schema:
-                type: object
-                $ref: "#/components/schemas/ResponseError"  
+                $ref: "#/components/schemas/ResponseError"

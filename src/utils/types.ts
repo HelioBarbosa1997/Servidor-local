@@ -84,6 +84,7 @@ export interface PropostaTypeDB {
     horas_estimadas: number,
     id_prestador: string,
     estado: string,
+    owner: string,
     enabled: boolean,
     created_at: string,
     updated_at: string
