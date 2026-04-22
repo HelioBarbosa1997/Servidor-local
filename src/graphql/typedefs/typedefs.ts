@@ -17,17 +17,18 @@ export const typeDefs = gql`
         updated_at: String
     }
     enum Role {
-        CLIENTE = "cliente",
-        ADMIN = "admin",
-        PRESTADOR = "prestador",
-        EMPRESA = "empresa"
+        CLIENTE,
+        ADMIN,
+        PRESTADOR,
+        EMPRESA 
+    }
 
     type Proposta {
         id: ID!,
-        id_prestacao_servico: ID!,
+        id_prestacao_servico: PrestacaoServico,
         preco_hora: Float!,
         horas_estimadas: Int,
-        id_prestador: ID!,
+        id_prestador: Prestador,
         estado: EstadoProposta,
         owner: String,
         enabled: boolean,
@@ -35,9 +36,9 @@ export const typeDefs = gql`
         updated_at: string
     }
     enum EstadoProposta {
-        PENDENTE = "pendente",
-        ACEITE = "aceite",
-        CANCELADO = "cancelado"
+        PENDENTE,
+        ACEITE ,
+        CANCELADO 
     }
 
     type Service {
@@ -52,12 +53,12 @@ export const typeDefs = gql`
 
     type Prestador {
         id: ID!,
-        taxaUrgencia: INT!,
-        percentagemDesconto: INT!,
-        minimoDesconto: INT!,
+        taxaUrgencia: Float!,
+        percentagemDesconto: Float!,
+        minimoDesconto: Float!,
         nif: INT!,
         profissao: String,
-        enable: boolean,
+        enable: Boolean,
         created_at: string,
         updated_at: string
     }
@@ -67,34 +68,34 @@ export const typeDefs = gql`
         designacao: String!,
         subtotal: INT!,
         horas_estimadas: INT!,
-        id_prestador: ID!,
-        id_servicos: ID!,
-        id_empresa: String!,
+        id_prestador: Prestador,
+        id_servicos: Servico!,
+        id_empresa: Empresa!,
         tipo_prestador: TipoPrestador,
         preco_hora: INT!,
         urgente: Boolean,
         estado: EstadoPrestacao,
-        id_orcamento: INT!,
-        id_utilizadores: INT!,
+        id_orcamento: Orcamento!,
+        id_utilizadores: Utilizadores,
         enabled: Boolean,
         created_at: String
         updated_at: String
     }
     enum TipoPrestador {
-        PARATICULAR = "particular",
-        EMPRESA = "empresa"
+        PARATICULAR
+        EMPRESA 
     }
     enum EstadoPrestacao {
-        PENDENTE = "pendente",
-        FINALIZADO = "finalizado",
-        EM_PROCESSO = "em_processo",
-        CANCELADO = "cancelado"
+        PENDENTE 
+        FINALIZADO 
+        EM_PROCESSO 
+        CANCELADO 
     }
 
     type Orcamento {
         id: ID!,
         total: INT!,
-        id_utilizadores: ID!,
+        id_utilizadores: Utilizadores,
         enabled: Boolean,
         created: String,
         updated: String
@@ -105,8 +106,8 @@ export const typeDefs = gql`
         designacao: String,
         descricao: String,
         nif: String
-        icone: "",
-        id_utilizadores: String,
+        icone: "String",
+        id_utilizadores: Utilizadores,
         localidade: String,
         enabled: Boolean,
         created_at: String,
@@ -120,4 +121,14 @@ export const typeDefs = gql`
         created_at: String,
         updated_at: String
     }
-}`
+}
+    type Query {
+        getAllUsers: [Utilizador]
+        getUserById: [Utilizador]
+    }
+
+    type Mutation {
+        createUser
+    }
+
+`

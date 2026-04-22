@@ -74,7 +74,7 @@ export const categoriaModel = {
                 updateCategoria.id,
                 updateCategoria.designacao,
                 updateCategoria.icone,
-                new Date (),
+                new Date(),
                 new Date()
             ]
             const rows: any = await db.execute<CategoriaTypeBD & RowDataPacket[]>(query, values)
@@ -84,6 +84,17 @@ export const categoriaModel = {
             console.log(error)
             return null
         }
+
+    },
+
+    async categoria(id: string): Promise<CategoriaTypeBD | null> {
+        const query = `SELECT * FROM tbl_categoria`
+
+        const value = [id]
+
+        const [rows] = await db.execute<CategoriaTypeBD & RowDataPacket[]>(query, value)
+
+        return rows as CategoriaTypeBD
 
     },
 

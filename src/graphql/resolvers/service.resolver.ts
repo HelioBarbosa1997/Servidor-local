@@ -1,3 +1,4 @@
+import { categoriaModel } from "../../models/categoria.model.js";
 import { ServiceModel } from "../../models/servico.model.js";
 import type { ServicoDBType } from "../../utils/types.js";
 
@@ -20,7 +21,12 @@ export const serviceResolver = {
         },
         deleteService: async (_: any, args: { id: string }) => {
             return await ServiceModel.delete(args.id,);
+        },
+    },
+    // Relacionamento de tabelas
+    Servico: {
+        Categoria: async (parent: { id: string}) => {
+            return await categoriaModel.get(parent.id)
         }
-
     }
 }

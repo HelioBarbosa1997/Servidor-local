@@ -22,6 +22,6 @@ export const categoriaResolver = {
         deletecategoria: async (_: any, args: { id: string }) => {
             return await categoriaModel.delete(args.id,);
         }
-
     }
+    
 }
