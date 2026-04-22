@@ -16,10 +16,10 @@ export const categoriaResolver = {
         createCategoria: async (_: any, args: { categoria: CategoriaTypeBD }) => {
             return await categoriaModel.create(args.categoria);
         },
-        updatedCategoria: async (_: any, args: { id: string, categoria: CategoriaTypeBD }) => {
+        updateCategoria: async (_: any, args: { id: string, categoria: CategoriaTypeBD }) => {
             return await categoriaModel.updated(args.id, args.categoria);
         },
-        deletecategoria: async (_: any, args: { id: string }) => {
+        deleteCategoria: async (_: any, args: { id: string }) => {
             return await categoriaModel.delete(args.id,);
         }
     }

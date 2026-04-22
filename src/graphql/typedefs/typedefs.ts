@@ -2,133 +2,190 @@ import { gql } from "graphql-tag"
 
 export const typeDefs = gql`
     type Utilizador {
-        id: ID!,
-        nome: String!,
-        numero_identificacao: String!,
-        data_nascimento: String!,
-        email: String!,
-        telefone: String!,
-        pais: String!,
-        localidade: String,
-        password: String,
+        id: ID!
+        nome: String!
+        numero_identificacao: String!
+        data_nascimento: String!
+        email: String!
+        telefone: String!
+        pais: String!
+        localidade: String
+        password: String
         role: Role
-        enabled: Boolean,
-        created_at: String,
+        enabled: Boolean
+        created_at: String
         updated_at: String
     }
+
     enum Role {
-        CLIENTE,
-        ADMIN,
-        PRESTADOR,
+        CLIENTE
+        ADMIN
+        PRESTADOR
         EMPRESA 
     }
 
     type Proposta {
-        id: ID!,
-        id_prestacao_servico: PrestacaoServico,
-        preco_hora: Float!,
-        horas_estimadas: Int,
-        id_prestador: Prestador,
-        estado: EstadoProposta,
-        owner: String,
-        enabled: boolean,
-        created_at: string,
-        updated_at: string
+        id: ID!
+        id_prestacao_servico: PrestacaoServico
+        preco_hora: Float!
+        horas_estimadas: Int
+        id_prestador: Prestador
+        estado: EstadoProposta
+        owner: String
+        enabled: Boolean
+        created_at: String
+        updated_at: String
     }
+
     enum EstadoProposta {
-        PENDENTE,
-        ACEITE ,
+        PENDENTE
+        ACEITE
         CANCELADO 
     }
 
-    type Service {
-        id: ID!,
-        nome: String!,
-        descricao: String!,
-        categoria: String!,
-        enabled: Boolean,
-        created_at: String,
+    type Servico {
+        id: ID!
+        nome: String!
+        descricao: String!
+        categoria: String!
+        enabled: Boolean
+        created_at: String
         updated_at: String
     }
 
     type Prestador {
-        id: ID!,
-        taxaUrgencia: Float!,
-        percentagemDesconto: Float!,
-        minimoDesconto: Float!,
-        nif: INT!,
-        profissao: String,
-        enable: Boolean,
-        created_at: string,
-        updated_at: string
-    }
-
-    type PrestacaoServico {
-        id: ID!,
-        designacao: String!,
-        subtotal: INT!,
-        horas_estimadas: INT!,
-        id_prestador: Prestador,
-        id_servicos: Servico!,
-        id_empresa: Empresa!,
-        tipo_prestador: TipoPrestador,
-        preco_hora: INT!,
-        urgente: Boolean,
-        estado: EstadoPrestacao,
-        id_orcamento: Orcamento!,
-        id_utilizadores: Utilizadores,
-        enabled: Boolean,
+        id: ID!
+        taxaUrgencia: Float!
+        percentagemDesconto: Float!
+        minimoDesconto: Float!
+        nif: Int!
+        profissao: String
+        enabled: Boolean
         created_at: String
         updated_at: String
     }
+
+    type PrestacaoServico {
+        id: ID!
+        designacao: String!
+        subtotal: Int!
+        horas_estimadas: Int!
+        id_prestador: Prestador
+        id_servicos: Servico!
+        id_empresa: Empresa!
+        tipo_prestador: TipoPrestador
+        preco_hora: Int!
+        urgente: Boolean
+        estado: EstadoPrestacao
+        id_orcamento: Orcamento!
+        id_utilizadores: Utilizador
+        enabled: Boolean
+        created_at: String
+        updated_at: String
+    }
+
     enum TipoPrestador {
         PARATICULAR
         EMPRESA 
-    }
+        }
+
     enum EstadoPrestacao {
         PENDENTE 
         FINALIZADO 
         EM_PROCESSO 
         CANCELADO 
-    }
+        }
 
     type Orcamento {
-        id: ID!,
-        total: INT!,
-        id_utilizadores: Utilizadores,
-        enabled: Boolean,
-        created: String,
+        id: ID!
+        total: Int!
+        id_utilizadores: Utilizador
+        enabled: Boolean
+        created: String
         updated: String
-    }
+        }
 
     type Empresa {
-        id: INT!,
-        designacao: String,
-        descricao: String,
+        id: Int!
+        designacao: String
+        descricao: String
         nif: String
-        icone: "String",
-        id_utilizadores: Utilizadores,
-        localidade: String,
-        enabled: Boolean,
-        created_at: String,
+        icone: String
+        id_utilizadores: Utilizador
+        localidade: String
+        enabled: Boolean
+        created_at: String
         updated_at: String
     }
 
     type Categoria {
-        id: ID!,
-        designacao: String,
-        icone: String,
-        created_at: String,
+        id: ID!
+        designacao: String
+        icone: String
+        created_at: String
         updated_at: String
     }
-}
+
+
     type Query {
-        getAllUsers: [Utilizador]
-        getUserById: [Utilizador]
+        getAllUsers: [Utilizador],
+        getUserById(id: ID!): Utilizador,
+
+        getAllService: [Servico],
+        getServiceById(id: ID!): Servico,
+
+        getAllProposta: [Proposta],
+        getPropostaById(id: ID!): Proposta,
+
+        getAllPrestador: [Prestador],
+        getPrestadorById(id: ID!): Prestador,
+
+        getAllPrestacaoServico: [PrestacaoServico],
+        getPrestacaoServicoById(id: ID!): PrestacaoServico,
+
+        getAllOrcamento: [Orcamento],
+        getOrcamentoById(id: ID!): Orcamento,
+
+        getAllEmpresa: [Empresa],
+        getEmpresaById(id: ID!): Empresa,
+
+        getAllCategoria: [Categoria],
+        getCategoriaById(id: ID!): Categoria
     }
 
     type Mutation {
-        createUser
+        createUser(nome: String!, numero_identidade: String!, data_nascimento: String!, email: String!, password: String!, telefone: String!, pais: String!, localidade: String, role: Role, enebled: Boolean): Utilizador,
+        updatedUser(id: ID!, nome: String, numero_identidade: String, data_nascimento: String, email: String, password: String, telefone: String, pais: String, localidade: String, role: Role, enebled: Boolean): Utilizador,
+        deleteUser(id: ID!): Utilizador,
+
+        createService(nome: String!, descricao: String, categoria: [ID], enabled: Boolean): Servico,
+        updateService(id: ID!, nome: String, descricao: String, categoria: [ID], enabled: Boolean): Servico,
+        deleteService(id: ID!): Servico,
+
+        createProposta(id_prestacao_servico: ID!, id_prestador: ID!, preco_hora: Float!, horas_estimadas: Int!, estado: EstadoProposta, owner: String, enabled: Boolean): Proposta,
+        updateProposta(id: ID!, id_prestacao_servico: ID, id_prestador: ID, preco_hora: Float, horas_estimadas: Int, estado: EstadoProposta, owner: String, enabled: Boolean): Proposta,
+        deleteProposta(id: ID!): Proposta,
+
+        createPrestador(id: ID!, taxa_urgencia: Float!, percentagem_desconto: Float!, minimo_desconto: Float!, nif: String, profissao: String!, enable: Boolean): Prestador,
+        updatePrestador(id: ID!, taxa_urgencia: Float, percentagem_desconto: Float, minimo_desconto: Float, nif: String, profissao: String, enable: Boolean): Prestador,
+        deletePrestador(id: ID!): Prestador,
+
+        createPrestacaoServico(designacao: String!, subtotal: Float!, horas_estimadas: Int!, id_prestador: ID!, id_utilizador: ID!, id_servico: ID!, preco_hora: Float!, estado: EstadoPrestacao, id_orcamento: ID, id_empresa: ID, tipo_prestador: TipoPrestador, urgente: Boolean, enabled: Boolean): PrestacaoServico,
+        updatePrestacaoServico(id: ID!, designacao: String, subtotal: Float, horas_estimadas: Int, id_prestador: ID, id_utilizador: ID, id_servico: ID, preco_hora: Float, estado: EstadoPrestacao, id_orcamento: ID, id_empresa: ID, tipo_prestador: TipoPrestador, urgente: Boolean, enabled: Boolean): PrestacaoServico,
+        deletePrestacaoServico(id: ID!): PrestacaoServico,
+
+        createOrcamento(total: Float!, id_utilizadores: ID!, enabled: Boolean): Orcamento,
+        updateOrcamento(id: ID!, total: Float, id_utilizadores: ID, enabled: Boolean): Orcamento,
+        deleteOrcamento(id: ID!): Orcamento,
+
+        createEmpresa(designacao: String!, descricao: String, localizacao: String, nif: String, icone: String, id_utilizador: ID!, enabled: Boolean): Empresa,
+        updateEmpresa(id: ID!, designacao: String, descricao: String, localizacao: String, nif: String, icone: String, id_utilizador: ID, enabled: Boolean): Empresa,
+        deleteEmpresa(id: ID!): Empresa,
+
+        createCategoria(designacao: String!, icone: String): Categoria,
+        updateCategoria(id: ID!, designacao: String, icone: String): Categoria,
+        deleteCategoria(id: ID!): Categoria
     }
+
 
 `

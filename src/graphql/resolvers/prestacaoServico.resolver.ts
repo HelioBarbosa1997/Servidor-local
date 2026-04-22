@@ -15,7 +15,7 @@ export const prestacaoServicoResolver = {
     },
 
     Mutation: {
-        createPrestacaoPrestacao: async (_: any, args: { prestacaoServico: PrestadorServicoTypeDB }) => {
+        createPrestacaoServico: async (_: any, args: { prestacaoServico: PrestadorServicoTypeDB }) => {
             return await PrestadorServicoModel.create(args.prestacaoServico);
         },
         updatePrestacaoServico: async (_: any, args: { id: string, prestacaoServico: PrestadorServicoTypeDB }) => {
