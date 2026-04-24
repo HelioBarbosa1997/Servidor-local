@@ -18,16 +18,16 @@ components:
         updated_at:
           type: string
           example: "2022-01-01T00:00:00.000Z"
-    CreateEmpresa:
+    CreateCategoria:
       type: object
       properties:
         designacao:
-        type: string
-        example: "Furtado Barbosa filial" 
-      icone: 
-        type: string
-        example: ""
-    ResponseSucess:
+          type: string
+          example: "Furtado Barbosa filial" 
+        icone: 
+          type: string
+          example: ""
+    ResponseSuccess:
       type: object
       properties:
         message:
@@ -38,7 +38,7 @@ components:
           example: true
         data:
           type: object
-          $ref: "#components/schemas/Categoria"
+          $ref: "#/components/schemas/Categoria"
     ResponseError:
       type: object
       properties:
@@ -48,5 +48,4 @@ components:
         status:
           type: boolean
           example: false
-  
 

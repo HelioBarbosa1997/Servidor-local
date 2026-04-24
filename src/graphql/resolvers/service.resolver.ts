@@ -13,8 +13,17 @@ export const serviceResolver = {
     },
 
     Mutation: {
-        createService: async (_: any, args: { service: ServicoDBType }) => {
-            return await ServiceModel.create(args.service);
+        createService: async (_: any, args: { nome: string, descricao: string, categoria: string, enabled: boolean }) => {
+            const service: ServicoDBType = {
+                id: "",
+                nome: args.nome,
+                descricao: args.descricao,
+                categoria: args.categoria,
+                enabled: args.enabled,
+                created_at: "",
+                updated_at:""
+            } 
+            return await ServiceModel.create(service);
         },
         updateService: async (_: any, args: { id: string, service: ServicoDBType }) => {
             return await ServiceModel.update(args.id, args.service);

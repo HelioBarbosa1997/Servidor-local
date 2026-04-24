@@ -11,7 +11,7 @@ export const empresaController = {
         if (!newEmpresa) {
             const response: ResponseType<null> = {
                 status: "error",
-                message: "Dados de utilizador inválidos",
+                message: "Dados da empresa inválidos",
                 data: null,
             }
             return res.status(400).json(response)
@@ -23,7 +23,7 @@ export const empresaController = {
 
         const response: ResponseType<EmpresaTypeDB> = {
             status: "success",
-            message: "Utilizador criado com sucesso",
+            message: "Empresa criado com sucesso",
             data: createUserResponse,
         }
         return res.status(201).json(response)
@@ -37,7 +37,7 @@ export const empresaController = {
         if (!getUsersResponse) {
             const response: ResponseType<null> = {
                 status: "error",
-                message: "Usuário não encontrado",
+                message: "Empresa não encontrado",
                 data: null
             }
             return res.status(404).json(response);
@@ -45,7 +45,7 @@ export const empresaController = {
 
         const response: ResponseType<EmpresaTypeDB> = {
             status: "success",
-            message: "Usuario encontrado com sucesso",
+            message: "Empresa encontrado com sucesso",
             data: getUsersResponse,
         }
         return res.status(200).json(response)
@@ -65,7 +65,7 @@ export const empresaController = {
 
         const response: ResponseType<EmpresaTypeDB[]> = {
             status: "success",
-            message: "Serviços buscado com sucesso",
+            message: "Empresa buscado com sucesso",
             data: getAllServiceResponse
         }
         return res.status(200).json(response)
@@ -88,7 +88,7 @@ export const empresaController = {
         if (!updateService) {
             const response: ResponseType<null> = {
                 status: "error",
-                message: "Erro ao atualizar servico",
+                message: "Erro ao atualizar empresa",
                 data: null
             }
             return res.status(400).json(response)
@@ -98,7 +98,7 @@ export const empresaController = {
         if (!updateServiceResponse) {
             const response: ResponseType<null> = {
                 status: "error",
-                message: "Erro ao atualizar servico",
+                message: "Erro ao atualizar empresa",
                 data: null
             }
             return res.status(400).json(response)
@@ -106,7 +106,7 @@ export const empresaController = {
 
         const response: ResponseType<EmpresaTypeDB> ={
             status: "success",
-            message: "Serviço atualizado com sucesso!",
+            message: "Empresa atualizado com sucesso!",
             data: updateServiceResponse
         }
         return res.status(200).json(response )
@@ -130,7 +130,7 @@ export const empresaController = {
             if (!deleteServiceResponse) {
                 const response: ResponseType<null> = {
                     status: "error",
-                    message: "Erro ao apgar serviço!",
+                    message: "Erro ao apgar empresa!",
                     data: null
                 }
                 return res.status(400).json(response)
@@ -138,7 +138,7 @@ export const empresaController = {
 
             const response: ResponseType<EmpresaTypeDB> = {
                 status: "success",
-                message: "Serviço Pagado com sucesso",
+                message: "Empresa Pagado com sucesso",
                 data: deleteServiceResponse
             }
             return res.status(200).json(response)
