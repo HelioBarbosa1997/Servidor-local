@@ -21,8 +21,8 @@ export const serviceResolver = {
                 categoria: args.categoria,
                 enabled: args.enabled,
                 created_at: "",
-                updated_at:""
-            } 
+                updated_at: ""
+            }
             return await ServiceModel.create(service);
         },
         updateService: async (_: any, args: { id: string, service: ServicoDBType }) => {
@@ -34,7 +34,7 @@ export const serviceResolver = {
     },
     // Relacionamento de tabelas
     Servico: {
-        Categoria: async (parent: { id: string}) => {
+        Categoria: async (parent: { id: string }) => {
             return await categoriaModel.get(parent.id)
         }
     }
