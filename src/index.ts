@@ -24,6 +24,7 @@ app.use("/prestador", prestadorRouter)
 app.use("/orcamento", orcamentoRouter)
 app.use("/prestacao-servico", prestacaoServicoRouter)
 
+
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 const graphqlServer = new ApolloServer({
