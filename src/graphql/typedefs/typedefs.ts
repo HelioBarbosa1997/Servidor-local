@@ -158,28 +158,28 @@ export const typeDefs = gql`
         updatedUser(id: ID!, nome: String, numero_identidade: String, data_nascimento: String, email: String, password: String, telefone: String, pais: String, localidade: String, role: Role, enebled: Boolean): Utilizador,
         deleteUser(id: ID!): Utilizador,
 
-        createService(nome: String!, descricao: String, categoria: [ID], enabled: Boolean): Servico,
-        updateService(id: ID!, nome: String, descricao: String, categoria: [ID], enabled: Boolean): Servico,
+        createService(nome: String!, descricao: String, categoria: String, enabled: Boolean): Servico,
+        updateService(id: ID!, nome: String, descricao: String, categoria: String, enabled: Boolean): Servico,
         deleteService(id: ID!): Servico,
 
-        createProposta(id_prestacao_servico: ID!, id_prestador: ID!, preco_hora: Float!, horas_estimadas: Int!, estado: EstadoProposta, owner: String, enabled: Boolean): Proposta,
-        updateProposta(id: ID!, id_prestacao_servico: ID, id_prestador: ID, preco_hora: Float, horas_estimadas: Int, estado: EstadoProposta, owner: String, enabled: Boolean): Proposta,
+        createProposta(id_prestacao_servico: String, id_prestador: String, preco_hora: Float!, horas_estimadas: Int!, estado: EstadoProposta, owner: String, enabled: Boolean): Proposta,
+        updateProposta(id: ID!, id_prestacao_servico: String, id_prestador: String, preco_hora: Float, horas_estimadas: Int, estado: EstadoProposta, owner: String, enabled: Boolean): Proposta,
         deleteProposta(id: ID!): Proposta,
 
         createPrestador(id: ID!, taxa_urgencia: Float!, percentagem_desconto: Float!, minimo_desconto: Float!, nif: String, profissao: String!, enable: Boolean): Prestador,
         updatePrestador(id: ID!, taxa_urgencia: Float, percentagem_desconto: Float, minimo_desconto: Float, nif: String, profissao: String, enable: Boolean): Prestador,
         deletePrestador(id: ID!): Prestador,
 
-        createPrestacaoServico(designacao: String!, subtotal: Float!, horas_estimadas: Int!, id_prestador: ID!, id_utilizador: ID!, id_servico: ID!, preco_hora: Float!, estado: EstadoPrestacao, id_orcamento: ID, id_empresa: ID, tipo_prestador: TipoPrestador, urgente: Boolean, enabled: Boolean): PrestacaoServico,
-        updatePrestacaoServico(id: ID!, designacao: String, subtotal: Float, horas_estimadas: Int, id_prestador: ID, id_utilizador: ID, id_servico: ID, preco_hora: Float, estado: EstadoPrestacao, id_orcamento: ID, id_empresa: ID, tipo_prestador: TipoPrestador, urgente: Boolean, enabled: Boolean): PrestacaoServico,
+        createPrestacaoServico(designacao: String!, subtotal: Float!, horas_estimadas: Int!, id_prestador: String, id_utilizador: String, id_servico: String, preco_hora: Float!, estado: EstadoPrestacao, id_orcamento: String, id_empresa: String, tipo_prestador: TipoPrestador, urgente: Boolean, enabled: Boolean): PrestacaoServico,
+        updatePrestacaoServico(id: ID!, designacao: String, subtotal: Float, horas_estimadas: Int, id_prestador: String, id_utilizador: String, id_servico: String, preco_hora: Float, estado: EstadoPrestacao, id_orcamento: String, id_empresa: String, tipo_prestador: TipoPrestador, urgente: Boolean, enabled: Boolean): PrestacaoServico,
         deletePrestacaoServico(id: ID!): PrestacaoServico,
 
-        createOrcamento(total: Float!, id_utilizadores: ID!, enabled: Boolean): Orcamento,
-        updateOrcamento(id: ID!, total: Float, id_utilizadores: ID, enabled: Boolean): Orcamento,
+        createOrcamento(total: Float!, id_utilizadores: String, enabled: Boolean): Orcamento,
+        updateOrcamento(id: ID!, total: Float, id_utilizadores: String, enabled: Boolean): Orcamento,
         deleteOrcamento(id: ID!): Orcamento,
 
-        createEmpresa(designacao: String!, descricao: String, localizacao: String, nif: String, icone: String, id_utilizador: ID!, enabled: Boolean): Empresa,
-        updateEmpresa(id: ID!, designacao: String, descricao: String, localizacao: String, nif: String, icone: String, id_utilizador: ID, enabled: Boolean): Empresa,
+        createEmpresa(designacao: String!, descricao: String, localizacao: String, nif: String, icone: String, id_utilizador: String!, enabled: Boolean): Empresa,
+        updateEmpresa(id: ID!, designacao: String, descricao: String, localizacao: String, nif: String, icone: String, id_utilizador: String, enabled: Boolean): Empresa,
         deleteEmpresa(id: ID!): Empresa,
 
         createCategoria(designacao: String!, icone: String): Categoria,

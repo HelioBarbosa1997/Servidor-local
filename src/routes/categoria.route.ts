@@ -6,7 +6,7 @@ import { categoriaModel } from "../models/categoria.model.js"
 
 
 
-const categoriaRoute = {
+const categoriaRouter = {
     create:"/create",
     get:"/get-by-id/:id",
     getAll:"/",
@@ -18,15 +18,15 @@ const router = Router()
 
 router.use(AuthMiddleware)
 
-router.get(categoriaRoute.getAll,authorize([Role.ADMIN]),categoriaController.getAll)
+router.get(categoriaRouter.getAll,authorize([Role.ADMIN]),categoriaController.getAll)
 
-router.get(categoriaRoute.get,authorize([Role.ADMIN, Role.PRESTADOR, Role.EMPRESA]),categoriaController.get)
+router.get(categoriaRouter.get,authorize([Role.ADMIN, Role.PRESTADOR, Role.EMPRESA]),categoriaController.get)
 
-router.post(categoriaRoute.create,authorize([Role.ADMIN, Role.CLIENTE,]),categoriaController.createUsers)
+router.post(categoriaRouter.create,authorize([Role.ADMIN, Role.CLIENTE,]),categoriaController.createUsers)
 
-router.put(categoriaRoute.update,authorize([Role.ADMIN]),isOwner(categoriaModel, "owner"),categoriaController.updated)
+router.put(categoriaRouter.update,authorize([Role.ADMIN]),isOwner(categoriaModel, "owner"),categoriaController.updated)
 
-router.delete(categoriaRoute.delete,authorize([Role.ADMIN,]),isOwner(categoriaModel, "owner"),categoriaController.delete)
+router.delete(categoriaRouter.delete,authorize([Role.ADMIN,]),isOwner(categoriaModel, "owner"),categoriaController.delete)
 
 
 export { router }

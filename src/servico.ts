@@ -1,4 +1,3 @@
-
 import db from "./lib/db.js";
 import { type ResponseType, type ServicoDBType, type ServicoType } from "./utils/types.js"
 import { generateUUID } from "./utils/uuid.js";
@@ -149,21 +148,21 @@ export async function updatedService(id: string, updatedService: ServicoDBType) 
         const rows = await db.execute(query, values)
 
         return rows
-    }catch (error) {
-    console.log(error)
-    return null
+    } catch (error) {
+        console.log(error)
+        return null
     }
 }
 export async function deleteService(id: string) {
     try {
         const query = `DELETE FROM tbl_servicos WHERE id=?`
         const value = [id]
-        const rows: any = await db.execute(query,value)
-        return rows [0]?.affectedRows === 0 ? null : rows
+        const rows: any = await db.execute(query, value)
+        return rows[0]?.affectedRows === 0 ? null : rows
 
     } catch (error) {
-    console.log(error)
-    return null
+        console.log(error)
+        return null
     }
 }
 

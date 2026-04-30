@@ -5,7 +5,7 @@ import { Role } from "../utils/types.js"
 import { empresaModel } from "../models/empresa.model.js"
 
 
-const empresaRoute = {
+const empresaRouter = {
     create:"/create",
     get:"/get-by-id/:id",
     getAll:"/",
@@ -17,15 +17,15 @@ const router = Router()
 
 router.use(AuthMiddleware)
 
-router.get(empresaRoute.getAll,authorize([Role.ADMIN]),empresaController.getAll)
+router.get(empresaRouter.getAll,authorize([Role.ADMIN]),empresaController.getAll)
 
-router.get(empresaRoute.get,authorize([Role.ADMIN, Role.PRESTADOR, Role.EMPRESA]),empresaController.get)
+router.get(empresaRouter.get,authorize([Role.ADMIN, Role.PRESTADOR, Role.EMPRESA]),empresaController.get)
 
-router.post(empresaRoute.create,authorize([Role.ADMIN, Role.CLIENTE,]),empresaController.createUsers)
+router.post(empresaRouter.create,authorize([Role.ADMIN, Role.CLIENTE,]),empresaController.createUsers)
 
-router.put(empresaRoute.update,authorize([Role.ADMIN]),isOwner(empresaModel, "owner"),empresaController.updated)
+router.put(empresaRouter.update,authorize([Role.ADMIN]),isOwner(empresaModel, "owner"),empresaController.updated)
 
-router.delete(empresaRoute.delete,authorize([Role.ADMIN,]),isOwner(empresaModel, "owner"),empresaController.delete)
+router.delete(empresaRouter.delete,authorize([Role.ADMIN,]),isOwner(empresaModel, "owner"),empresaController.delete)
 
 
 export { router }
