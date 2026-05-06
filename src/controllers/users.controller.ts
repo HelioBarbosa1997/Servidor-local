@@ -27,7 +27,7 @@ export const userController = {
             message: "Utilizador criado com sucesso",
             data: createUserResponse,
         }
-        return res.status(201).json(response)
+        return res.status(200).json(response)
     },
 
     // Listar  os utilizadores por id
@@ -94,7 +94,7 @@ export const userController = {
         if (!email || !password) {
             const response: ResponseType<null> = {
                 status: "error",
-                message: "Credenciais inválidas",
+                 message: "Credenciais inválidas",
                 data: null,
             }
             return res.status(400).json(response)

@@ -10,7 +10,7 @@ export const usersModel = {
         try {
             const [rows] = await db.execute<UserType & RowDataPacket[]>(
                 `INSERT INTO tbl_utilizadores 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)`,
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
                     generateUUID(),
                     newUser.nome,
@@ -21,10 +21,11 @@ export const usersModel = {
                     newUser.pais,
                     newUser.localidade,
                     await hashPassword(newUser.password),
-                    newUser.role,
+                    
                     newUser.enabled,
                     new Date(),
-                    new Date()
+                    new Date(),
+                    newUser.role
                 ]
             )
             console.log({ rows })
