@@ -94,7 +94,7 @@ export const userController = {
         if (!email || !password) {
             const response: ResponseType<null> = {
                 status: "error",
-                 message: "Credenciais inválidas",
+                message: "Credenciais inválidas",
                 data: null,
             }
             return res.status(400).json(response)
